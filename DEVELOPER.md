@@ -6,13 +6,13 @@ This code should work equivalently on MacOS, Linux, and Windows.
 
 ## Packaging and Dependencies
 
-This project uses [Poetry](https://python-poetry.org/) to manage Python packaging and dependencies.  Most day-to-day tasks (such as running unit tests from the command line) are orchestrated through Poetry.  
+This project uses [Poetry](https://python-poetry.org/) to manage Python packaging and dependencies.  Most day-to-day tasks (such as running unit tests from the command line) are orchestrated through Poetry.
 
 A coding standard is enforced using [Black](https://github.com/psf/black), [isort](https://pypi.org/project/isort/) and [Pylint](https://www.pylint.org/).  Python 3 type hinting is validated using [MyPy](https://pypi.org/project/mypy/).
 
 ## Continuous Integration (CI)
 
-We use [GitHub Actions](https://docs.github.com/en/actions/quickstart) for CI.  See [.github/workflows/tox.yml](.github/workflows/tox.yml) for the definition of the workflow, and go to the [Actions tab](https://github.com/pronovic/sensor-track/actions) to see what actions have been executed.  
+We use [GitHub Actions](https://docs.github.com/en/actions/quickstart) for CI.  See [.github/workflows/tox.yml](.github/workflows/tox.yml) for the definition of the workflow, and go to the [Actions tab](https://github.com/pronovic/smartapp-sdk/actions) to see what actions have been executed.  
 
 ## Pre-Commit Hooks
 
@@ -84,7 +84,7 @@ $ curl -sSL https://install.python-poetry.org | python3 -
 
 First, install Python 3 from your preferred source, either a standard
 installer or a meta-installer like Chocolatey.  Make sure the `python`
-on your `$PATH` is Python 3.  
+on your `$PATH` is Python 3.
 
 Then, install Poetry in your home directory:
 
@@ -116,17 +116,12 @@ Usage: run <command>
 - run test: Run the unit tests
 - run test -c: Run the unit tests with coverage
 - run test -ch: Run the unit tests with coverage and open the HTML report
-- run docs: Build the Spinx documentation for apologies.readthedocs.io
-- run docs -o: Build the Spinx documentation and open in a browser
+- run docs: Build the Sphinx documentation for smartapp-sdk.readthedocs.io
+- run docs -o: Build the Sphinx documentation and open in a browser
 - run tox: Run the Tox test suite used by the GitHub CI action
-- run server: Run the REST server at localhost:8080
-- run database: Run the InfluxDB & Grafana servers via docker-compose
 - run release: Release a specific version and tag the code
 - run publish: Publish the current code to PyPI and push to GitHub
 ```
-
-For local testing, use `run influxdb` in one window and `run server` in another.
-The standard local configuration is able to connect to the database.
 
 ## Integration with PyCharm
 
@@ -155,7 +150,7 @@ $ run install && run checks && run test
 ### Open the Project
 
 Once you have a working shell development environment, **Open** (do not
-**Import**) the `sensor-track` directory in PyCharm, then follow the remaining
+**Import**) the `smartapp-sdk` directory in PyCharm, then follow the remaining
 instructions below.  By using **Open**, the existing `.idea` directory will be
 retained and all of the existing settings will be used.
 
@@ -170,7 +165,7 @@ environment.
 
 ### Project Structure
 
-Go to the PyCharm settings and find the `sensor-track` project.  Under **Project
+Go to the PyCharm settings and find the `smartapp-sdk` project.  Under **Project
 Structure**, mark both `src` and `tests` as source folders.  In the **Exclude
 Files** box, enter the following:
 
@@ -333,13 +328,13 @@ can be used instead.
 
 ### Documentation
 
-Documentation at [Read the Docs](https://sensor-track.readthedocs.io/en/stable/)
+Documentation at [Read the Docs](https://smartapp-sdk.readthedocs.io/en/stable/)
 is generated via a GitHub hook each time code is pushed to master.  So, there
 is no formal release process for the documentation.
 
 ### Code
 
-Code is released to [PyPI](https://pypi.org/project/sensor-track/).  There is a
+Code is released to [PyPI](https://pypi.org/project/smartapp-sdk/).  There is a
 partially-automated process to publish a new release.  
 
 > _Note:_ In order to publish code, you must must have push permissions to the
@@ -387,8 +382,8 @@ system keyring, and no other setup is required.  If you are using Debian, the
 process is more complicated.  See the notes below.
 
 First, in your PyPI [account settings](https://pypi.org/manage/account/),
-create an API token with upload permissions for the apologies project.
-Once you have a working keyring, configure Poetry following 
+create an API token with upload permissions for the smartapp-sdk
+project.  Once you have a working keyring, configure Poetry following 
 the [instructions](https://python-poetry.org/docs/repositories/#configuring-credentials):
 
 ```
