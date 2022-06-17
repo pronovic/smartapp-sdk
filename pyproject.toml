@@ -26,6 +26,7 @@ classifiers=[
    "Natural Language :: English",
    "Topic :: Home Automation",
    "Topic :: Software Development :: Libraries",
+   "Development Status :: 4 - Beta",
 ]
 
 [tool.poetry.dependencies]
