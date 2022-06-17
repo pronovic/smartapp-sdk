@@ -81,7 +81,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "Sensor"
+project = "SmartApp SDK"
 copyright = "2022 Kenneth J. Pronovici"
 author = "Kenneth J. Pronovici"
 
@@ -150,7 +150,7 @@ html_theme = "alabaster"
 html_theme_options = {
     "show_powered_by": False,
     "github_user": "pronovic",
-    "github_repo": "sensor-track",
+    "github_repo": "smartapp-sdk",
     "github_banner": True,
     "show_related": False,
     "note_bg": "#FFF59C",
@@ -241,7 +241,7 @@ html_show_copyright = True
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "sensensortrackdoc"
+htmlhelp_basename = "smartapp"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -259,7 +259,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [(master_doc, "sensortrack.tex", "Sensor Track Documentation", "Kenneth J. Pronovici", "manual")]
+latex_documents = [(master_doc, "smartapp.tex", "SmartApp SDK Documentation", "Kenneth J. Pronovici", "manual")]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -286,7 +286,7 @@ latex_documents = [(master_doc, "sensortrack.tex", "Sensor Track Documentation",
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "sensortrack", "Sensor Track Documentation", [author], 1)]
+man_pages = [(master_doc, "smartapp", "SmartApp SDK Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -300,10 +300,10 @@ man_pages = [(master_doc, "sensortrack", "Sensor Track Documentation", [author],
 texinfo_documents = [
     (
         master_doc,
-        "Sensor Track",
-        "Sensor Track Documentation",
+        "SmartApp SDK",
+        "SmartApp SDK Documentation",
         author,
-        "Sensor Track",
+        "SmartApp SDK",
         "Python library that implements a game similar to the Sorry board game",
         "Miscellaneous",
     )

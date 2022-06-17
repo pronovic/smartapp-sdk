@@ -1,31 +1,31 @@
-Sensor Track 
+SmartApp SDK
 ============
 
 Release v\ |version|
 
-.. image:: https://img.shields.io/pypi/v/sensor-track.svg
-    :target: https://pypi.org/project/sensor-track/
+.. image:: https://img.shields.io/pypi/v/smartapp-sdk.svg
+    :target: https://pypi.org/project/smartapp-sdk/
 
-.. image:: https://img.shields.io/pypi/l/sensor-track.svg
-    :target: https://github.com/pronovic/sensor-track/blob/master/LICENSE
+.. image:: https://img.shields.io/pypi/l/smartapp-sdk.svg
+    :target: https://github.com/pronovic/smartapp-sdk/blob/master/LICENSE
 
-.. image:: https://img.shields.io/pypi/wheel/sensor-track.svg
-    :target: https://pypi.org/project/sensor-track/
+.. image:: https://img.shields.io/pypi/wheel/smartapp-sdk.svg
+    :target: https://pypi.org/project/smartapp-sdk/
 
-.. image:: https://img.shields.io/pypi/pyversions/sensor-track.svg
-    :target: https://pypi.org/project/sensor-track/
+.. image:: https://img.shields.io/pypi/pyversions/smartapp-sdk.svg
+    :target: https://pypi.org/project/smartapp-sdk/
 
-.. image:: https://github.com/pronovic/sensor-track/workflows/Test%20Suite/badge.svg
-    :target: https://github.com/pronovic/sensor-track/actions?query=workflow%3A%22Test+Suite%22
+.. image:: https://github.com/pronovic/smartapp-sdk/workflows/Test%20Suite/badge.svg
+    :target: https://github.com/pronovic/smartapp-sdk/actions?query=workflow%3A%22Test+Suite%22
 
-.. image:: https://readthedocs.org/projects/sensortrack/badge/?version=stable&style=flat
-    :target: https://sensortrack.readthedocs.io/en/stable/
+.. image:: https://readthedocs.org/projects/smartapp-sdk/badge/?version=stable&style=flat
+    :target: https://smartapp-sdk.readthedocs.io/en/stable/
 
-.. image:: https://coveralls.io/repos/github/pronovic/sensor-track/badge.svg?branch=master
-    :target: https://coveralls.io/github/pronovic/sensor-track?branch=master
+.. image:: https://coveralls.io/repos/github/pronovic/smartapp-sdk/badge.svg?branch=master
+    :target: https://coveralls.io/github/pronovic/smartapp-sdk?branch=master
 
 
-Historically track data from SmartThings sensors.
+Python library to build a webhook-based SmartThings SmartApp.
 
 
 Installation
@@ -33,7 +33,7 @@ Installation
 
 Install the package with pip::
 
-    $ pip install sensor-track
+    $ pip install smartapp-sdk
 
 
 Documentation
