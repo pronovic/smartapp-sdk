@@ -205,7 +205,7 @@ run_release() {
    fi
 
    VERSION=$(echo "$1" | sed 's/^v//') # so you can use "0.1.5 or "v0.1.5"
-   COPYRIGHT="2020-$(date +'%Y')"
+   COPYRIGHT="$(date +'%Y')"
    DATE=$(date +'%d %b %Y')
    TAG="v$VERSION" # follow PEP 440 naming convention
    FILES="NOTICE pyproject.toml Changelog"
