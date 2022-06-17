@@ -1,0 +1,105 @@
+{
+  "lifecycle": "INSTALL",
+  "executionId": "82b5034e-XXXX-XXXX-XXXX-54591c538efe",
+  "appId": "f1a6bae1-XXXX-XXXX-XXXX-8bf947011bdf",
+  "locale": "en",
+  "version": "0.1.0",
+  "client": {
+    "os": "android",
+    "version": "1.0",
+    "language": "en-US",
+    "displayMode": "LIGHT",
+    "timeZoneOffset": "",
+    "supportedTemplates": [],
+    "samsungAccountId": "",
+    "mobileDeviceId": ""
+  },
+  "installData": {
+    "authToken": "ed1dd883-XXXX-XXXX-XXXX-2f2e55877260",
+    "refreshToken": "71a3edfe-XXXX-XXXX-XXXX-fb6cb9d14f70",
+    "installedApp": {
+      "installedAppId": "f426dd74-XXXX-XXXX-XXXX-c1fc4009d627",
+      "locationId": "15526d0a-XXXX-XXXX-XXXX-b6247aacbbb2",
+      "config": {
+        "retrieve-weather-frequency": [
+          {
+            "valueType": "STRING",
+            "stringConfig": {
+              "value": "15"
+            }
+          }
+        ],
+        "temperature-devices": [
+          {
+            "valueType": "DEVICE",
+            "deviceConfig": {
+              "deviceId": "ea5291a9-XXXX-XXXX-XXXX-53fb94391fee",
+              "componentId": "main"
+            }
+          },
+          {
+            "valueType": "DEVICE",
+            "deviceConfig": {
+              "deviceId": "171c59f7-XXXX-XXXX-XXXX-10a72db6c8d3",
+              "componentId": "main"
+            }
+          },
+          {
+            "valueType": "DEVICE",
+            "deviceConfig": {
+              "deviceId": "3ac74985-XXXX-XXXX-XXXX-ea9623be6a7b",
+              "componentId": "main"
+            }
+          },
+          {
+            "valueType": "DEVICE",
+            "deviceConfig": {
+              "deviceId": "0ff440ec-XXXX-XXXX-XXXX-a39e189b8cc9",
+              "componentId": "main"
+            }
+          }
+        ],
+        "retrieve-weather-notes": [
+          {
+            "valueType": "STRING",
+            "stringConfig": {
+              "value": "None"
+            }
+          }
+        ],
+        "humidity-devices": [
+          {
+            "valueType": "DEVICE",
+            "deviceConfig": {
+              "deviceId": "3ac74985-XXXX-XXXX-XXXX-ea9623be6a7b",
+              "componentId": "main"
+            }
+          },
+          {
+            "valueType": "DEVICE",
+            "deviceConfig": {
+              "deviceId": "0ff440ec-XXXX-XXXX-XXXX-a39e189b8cc9",
+              "componentId": "main"
+            }
+          }
+        ],
+        "retrieve-weather-enabled": [
+          {
+            "valueType": "STRING",
+            "stringConfig": {
+              "value": "true"
+            }
+          }
+        ]
+      },
+      "permissions": [
+        "r:devices:3ac74985-XXXX-XXXX-XXXX-ea9623be6a7b",
+        "r:devices:ea5291a9-XXXX-XXXX-XXXX-53fb94391fee",
+        "r:devices:171c59f7-XXXX-XXXX-XXXX-10a72db6c8d3",
+        "r:devices:*",
+        "r:devices:0ff440ec-XXXX-XXXX-XXXX-a39e189b8cc9"
+      ]
+    }
+  },
+  "settings": {}
+}
