@@ -11,7 +11,7 @@ import pytest
 
 from smartapp.converter import CONVERTER, deserialize_datetime, serialize_datetime
 from smartapp.interface import *
-from tests.testutil import load_data
+from tests.testutil import load_dir
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures/samples")
 REQUEST_DIR = os.path.join(FIXTURE_DIR, "request")
@@ -23,17 +23,17 @@ NOW = pendulum.datetime(2022, 6, 1, 2, 3, 4, microsecond=5, tz="UTC")
 
 @pytest.fixture
 def requests():
-    return load_data(REQUEST_DIR)
+    return load_dir(REQUEST_DIR)
 
 
 @pytest.fixture
 def responses():
-    return load_data(RESPONSE_DIR)
+    return load_dir(RESPONSE_DIR)
 
 
 @pytest.fixture
 def settings():
-    return load_data(SETTINGS_DIR)
+    return load_dir(SETTINGS_DIR)
 
 
 def validate_json_roundtrip(json, expected, cls):

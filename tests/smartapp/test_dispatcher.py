@@ -10,7 +10,7 @@ import pytest
 from smartapp.converter import CONVERTER
 from smartapp.dispatcher import SmartAppDispatcher
 from smartapp.interface import *
-from tests.testutil import load_data
+from tests.testutil import load_dir
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures/samples")
 REQUEST_DIR = os.path.join(FIXTURE_DIR, "request")
@@ -22,7 +22,7 @@ HEADERS = {"x-st-correlation": CORRELATION}
 
 @pytest.fixture
 def requests():
-    return load_data(REQUEST_DIR)
+    return load_dir(REQUEST_DIR)
 
 
 @pytest.fixture
@@ -63,7 +63,7 @@ def definition():
                                 required=False,
                             ),
                         ],
-                    )
+                    ),
                 ],
             ),
         ],
