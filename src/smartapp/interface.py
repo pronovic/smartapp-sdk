@@ -388,7 +388,7 @@ class Event:
         elif event_type == EventType.TIMER_EVENT:
             return self.timer_event
         elif event_type == EventType.WEATHER_EVENT:
-            return self.device_health_event
+            return self.weather_event
         return None
 
 
