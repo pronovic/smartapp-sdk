@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=line-too-long:
+# pylint: disable=line-too-long,too-many-lines:
 
 """
 Classes that are part of the SmartApp interface.
@@ -466,6 +466,18 @@ class InstallData:
     refresh_token: str = field(repr=False)
     installed_app: InstalledApp
 
+    def token(self) -> str:
+        """Return the auth token associated with this request."""
+        return self.auth_token
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.installed_app.location_id
+
     def as_devices(self, key: str) -> List[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return self.installed_app.as_devices(key)
@@ -499,6 +511,18 @@ class UpdateData:
     previous_config: Optional[Dict[str, List[ConfigValue]]] = None
     previous_permissions: List[str] = field(factory=list)
 
+    def token(self) -> str:
+        """Return the auth token associated with this request."""
+        return self.auth_token
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.installed_app.location_id
+
     def as_devices(self, key: str) -> List[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return self.installed_app.as_devices(key)
@@ -526,6 +550,14 @@ class UninstallData:
 
     installed_app: InstalledApp
 
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.installed_app.location_id
+
 
 @frozen(kw_only=True)
 class OauthCallbackData:
@@ -542,6 +574,18 @@ class EventData:
     auth_token: str = field(repr=False)
     installed_app: InstalledApp
     events: List[Event]
+
+    def token(self) -> str:
+        """Return the auth token associated with this request."""
+        return self.auth_token
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.installed_app.location_id
 
     def for_type(self, event_type: EventType) -> List[Dict[str, Any]]:
         """Get all events for a particular event type, possibly empty."""
@@ -603,15 +647,35 @@ class InstallRequest(AbstractRequest):
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
-        return self.install_data.auth_token
+        return self.install_data.token()
 
     def app_id(self) -> str:
         """Return the installed application id associated with this request."""
-        return self.install_data.installed_app.installed_app_id
+        return self.install_data.app_id()
 
     def location_id(self) -> str:
         """Return the installed location id associated with this request."""
-        return self.install_data.installed_app.location_id
+        return self.install_data.location_id()
+
+    def as_devices(self, key: str) -> List[DeviceValue]:
+        """Return a list of devices for a named configuration value."""
+        return self.install_data.as_devices(key)
+
+    def as_str(self, key: str) -> str:
+        """Return a named configuration value, interpreted as a string"""
+        return self.install_data.as_str(key)
+
+    def as_bool(self, key: str) -> bool:
+        """Return a named configuration value, interpreted as a boolean"""
+        return self.install_data.as_bool(key)
+
+    def as_int(self, key: str) -> int:
+        """Return a named configuration value, interpreted as an integer"""
+        return self.install_data.as_int(key)
+
+    def as_float(self, key: str) -> float:
+        """Return a named configuration value, interpreted as a float"""
+        return self.install_data.as_float(key)
 
 
 @frozen(kw_only=True)
@@ -630,15 +694,35 @@ class UpdateRequest(AbstractRequest):
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
-        return self.update_data.auth_token
+        return self.update_data.token()
 
     def app_id(self) -> str:
         """Return the installed application id associated with this request."""
-        return self.update_data.installed_app.installed_app_id
+        return self.update_data.app_id()
 
     def location_id(self) -> str:
         """Return the installed location id associated with this request."""
-        return self.update_data.installed_app.location_id
+        return self.update_data.location_id()
+
+    def as_devices(self, key: str) -> List[DeviceValue]:
+        """Return a list of devices for a named configuration value."""
+        return self.update_data.as_devices(key)
+
+    def as_str(self, key: str) -> str:
+        """Return a named configuration value, interpreted as a string"""
+        return self.update_data.as_str(key)
+
+    def as_bool(self, key: str) -> bool:
+        """Return a named configuration value, interpreted as a boolean"""
+        return self.update_data.as_bool(key)
+
+    def as_int(self, key: str) -> int:
+        """Return a named configuration value, interpreted as an integer"""
+        return self.update_data.as_int(key)
+
+    def as_float(self, key: str) -> float:
+        """Return a named configuration value, interpreted as a float"""
+        return self.update_data.as_float(key)
 
 
 @frozen(kw_only=True)
@@ -657,11 +741,11 @@ class UninstallRequest(AbstractRequest):
 
     def app_id(self) -> str:
         """Return the installed application id associated with this request."""
-        return self.uninstall_data.installed_app.installed_app_id
+        return self.uninstall_data.app_id()
 
     def location_id(self) -> str:
         """Return the installed location id associated with this request."""
-        return self.uninstall_data.installed_app.location_id
+        return self.uninstall_data.location_id()
 
 
 @frozen(kw_only=True)
@@ -694,15 +778,15 @@ class EventRequest(AbstractRequest):
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
-        return self.event_data.auth_token
+        return self.event_data.token()
 
     def app_id(self) -> str:
         """Return the installed application id associated with this request."""
-        return self.event_data.installed_app.installed_app_id
+        return self.event_data.app_id()
 
     def location_id(self) -> str:
         """Return the installed location id associated with this request."""
-        return self.event_data.installed_app.location_id
+        return self.event_data.location_id()
 
 
 @frozen(kw_only=True)
