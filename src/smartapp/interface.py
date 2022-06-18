@@ -26,7 +26,7 @@ Classes that are part of the SmartApp interface.
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Dict, List, Mapping, Optional, Union
+from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
 from attrs import field, frozen
 from pendulum.datetime import DateTime
@@ -365,6 +365,32 @@ class Event:
     weather_data: Optional[Dict[str, Any]] = None
     air_quality_data: Optional[Dict[str, Any]] = None
 
+    def for_type(self, event_type: EventType) -> Optional[Dict[str, Any]]:  # pylint: disable=too-many-return-statements
+        """Return the attribute associated with an event type."""
+        if event_type == EventType.DEVICE_COMMANDS_EVENT:
+            return self.device_commands_event
+        elif event_type == EventType.DEVICE_EVENT:
+            return self.device_event
+        elif event_type == EventType.DEVICE_HEALTH_EVENT:
+            return self.device_health_event
+        elif event_type == EventType.DEVICE_LIFECYCLE_EVENT:
+            return self.device_lifecycle_event
+        elif event_type == EventType.HUB_HEALTH_EVENT:
+            return self.hub_health_event
+        elif event_type == EventType.INSTALLED_APP_LIFECYCLE_EVENT:
+            return self.installed_app_lifecycle_event
+        elif event_type == EventType.MODE_EVENT:
+            return self.mode_event
+        elif event_type == EventType.SCENE_LIFECYCLE_EVENT:
+            return self.scene_lifecycle_event
+        elif event_type == EventType.SECURITY_ARM_STATE_EVENT:
+            return self.security_arm_state_event
+        elif event_type == EventType.TIMER_EVENT:
+            return self.timer_event
+        elif event_type == EventType.WEATHER_EVENT:
+            return self.device_health_event
+        return None
+
 
 @frozen(kw_only=True)
 class ConfirmationData:
@@ -516,6 +542,18 @@ class EventData:
     auth_token: str = field(repr=False)
     installed_app: InstalledApp
     events: List[Event]
+
+    def for_type(self, event_type: EventType) -> List[Dict[str, Any]]:
+        """Get all events for a particular event type, possibly empty."""
+        return [
+            event.for_type(event_type)  # type: ignore
+            for event in self.events
+            if event.event_type == event_type and event.for_type(event_type) is not None
+        ]
+
+    def filter(self, event_type: EventType, predicate: Optional[Callable[[Dict[str, Any]], bool]] = None) -> List[Dict[str, Any]]:
+        """Apply a filter to a set of events with a particular event type."""
+        return list(filter(predicate, self.for_type(event_type)))
 
 
 @frozen(kw_only=True)
