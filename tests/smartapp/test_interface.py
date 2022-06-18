@@ -59,7 +59,7 @@ class TestSmartAppRequestContext:
 
 
 class TestConfig:
-    def test_config_convenience_methods(self):
+    def test_install_convenience_methods(self):
         path = os.path.join("live", "request", "INSTALL.1.json")
         data = load_file(os.path.join(FIXTURE_DIR, path))
         request = CONVERTER.from_json(data, InstallRequest)
@@ -71,4 +71,16 @@ class TestConfig:
         assert request.install_data.as_devices("humidity-devices") == [
             DeviceValue(device_id="3ac74985-XXXX-XXXX-XXXX-ea9623be6a7b", component_id="main"),
             DeviceValue(device_id="0ff440ec-XXXX-XXXX-XXXX-a39e189b8cc9", component_id="main"),
+        ]
+
+    def test_update_convenience_methods(self):
+        path = os.path.join("samples", "request", "UPDATE.json")
+        data = load_file(os.path.join(FIXTURE_DIR, path))
+        request = CONVERTER.from_json(data, UpdateRequest)
+        assert request.update_data.as_str("minutes") == "5"
+        assert request.update_data.as_bool("minutes") is True
+        assert request.update_data.as_int("minutes") == 5
+        assert request.update_data.as_float("minutes") == 5.0
+        assert request.update_data.as_devices("contactSensor") == [
+            DeviceValue(device_id="e457978e-5e37-43e6-979d-18112e12c961", component_id="main"),
         ]

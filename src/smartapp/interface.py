@@ -473,6 +473,26 @@ class UpdateData:
     previous_config: Optional[Dict[str, List[ConfigValue]]] = None
     previous_permissions: List[str] = field(factory=list)
 
+    def as_devices(self, key: str) -> List[DeviceValue]:
+        """Return a list of devices for a named configuration value."""
+        return self.installed_app.as_devices(key)
+
+    def as_str(self, key: str) -> str:
+        """Return a named configuration value, interpreted as a string"""
+        return self.installed_app.as_str(key)
+
+    def as_bool(self, key: str) -> bool:
+        """Return a named configuration value, interpreted as a boolean"""
+        return self.installed_app.as_bool(key)
+
+    def as_int(self, key: str) -> int:
+        """Return a named configuration value, interpreted as an integer"""
+        return self.installed_app.as_int(key)
+
+    def as_float(self, key: str) -> float:
+        """Return a named configuration value, interpreted as a float"""
+        return self.installed_app.as_float(key)
+
 
 @frozen(kw_only=True)
 class UninstallData:
