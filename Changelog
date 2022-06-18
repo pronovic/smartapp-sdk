@@ -1,4 +1,4 @@
-Version 0.4.0     unreleased
+Version 0.4.0     18 Jun 2022
 
 	* Add for_type() and filter() on event.
 	* Add token()/app_id()/location_id() on requests.
