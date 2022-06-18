@@ -27,7 +27,7 @@ Verify HTTP signatures on SmartApp lifecycle event requests.
 # using the sample data provided in the Joyent spec.
 #
 # The retrieve_public_key() function is implemented as a function so we can cache the
-# result and implement retries outside of SignatureVerifier.  We retry up to 5 times (6
+# result and implement retries outside of SignatureVerifier.  We retry up to 4 times (5
 # total attempts), waiting 0.25 seconds before first retry, and limiting the wait between
 # retries to 2 seconds.  This is not configurable.  Note that the LRU cache only caches
 # responses, not any exceptions that were thrown.
