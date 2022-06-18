@@ -601,6 +601,18 @@ class InstallRequest(AbstractRequest):
     install_data: InstallData
     settings: Dict[str, Any] = field(factory=dict)
 
+    def token(self) -> str:
+        """Return the auth token associated with this request."""
+        return self.install_data.auth_token
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.install_data.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.install_data.installed_app.location_id
+
 
 @frozen(kw_only=True)
 class InstallResponse:
@@ -616,6 +628,18 @@ class UpdateRequest(AbstractRequest):
     update_data: UpdateData
     settings: Dict[str, Any] = field(factory=dict)
 
+    def token(self) -> str:
+        """Return the auth token associated with this request."""
+        return self.update_data.auth_token
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.update_data.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.update_data.installed_app.location_id
+
 
 @frozen(kw_only=True)
 class UpdateResponse:
@@ -630,6 +654,14 @@ class UninstallRequest(AbstractRequest):
 
     uninstall_data: UninstallData
     settings: Dict[str, Any] = field(factory=dict)
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.uninstall_data.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.uninstall_data.installed_app.location_id
 
 
 @frozen(kw_only=True)
@@ -659,6 +691,18 @@ class EventRequest(AbstractRequest):
 
     event_data: EventData
     settings: Dict[str, Any] = field(factory=dict)
+
+    def token(self) -> str:
+        """Return the auth token associated with this request."""
+        return self.event_data.auth_token
+
+    def app_id(self) -> str:
+        """Return the installed application id associated with this request."""
+        return self.event_data.installed_app.installed_app_id
+
+    def location_id(self) -> str:
+        """Return the installed location id associated with this request."""
+        return self.event_data.installed_app.location_id
 
 
 @frozen(kw_only=True)

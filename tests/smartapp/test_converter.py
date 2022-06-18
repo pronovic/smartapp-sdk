@@ -600,6 +600,9 @@ class TestConvertRequests:
         )
         validate_json_roundtrip(json, expected, LifecycleRequest)
         validate_yaml_roundtrip(None, expected, LifecycleRequest)
+        assert expected.token() == "authTokenValue"
+        assert expected.app_id() == "d692699d-e7a6-400d-a0b7-d5be96e7a564"
+        assert expected.location_id() == "e675a3d9-2499-406c-86dc-8a492a886494"
 
     def test_update(self, requests):
         json = requests["UPDATE.json"]
@@ -679,6 +682,9 @@ class TestConvertRequests:
         )
         validate_json_roundtrip(json, expected, LifecycleRequest)
         validate_yaml_roundtrip(None, expected, LifecycleRequest)
+        assert expected.token() == "authTokenValue"
+        assert expected.app_id() == "d692699d-e7a6-400d-a0b7-d5be96e7a564"
+        assert expected.location_id() == "e675a3d9-2499-406c-86dc-8a492a886494"
 
     def test_uninstall(self, requests):
         json = requests["UNINSTALL.json"]
@@ -728,6 +734,8 @@ class TestConvertRequests:
         )
         validate_json_roundtrip(json, expected, LifecycleRequest)
         validate_yaml_roundtrip(None, expected, LifecycleRequest)
+        assert expected.app_id() == "d692699d-e7a6-400d-a0b7-d5be96e7a564"
+        assert expected.location_id() == "e675a3d9-2499-406c-86dc-8a492a886494"
 
     def test_oauth_callback(self, requests):
         json = requests["OAUTH_CALLBACK.json"]
@@ -806,6 +814,9 @@ class TestConvertRequests:
         )
         validate_json_roundtrip(json, expected, LifecycleRequest)
         validate_yaml_roundtrip(None, expected, LifecycleRequest)
+        assert expected.token() == "authTokenValue"
+        assert expected.app_id() == "d692699d-e7a6-400d-a0b7-d5be96e7a564"
+        assert expected.location_id() == "e675a3d9-2499-406c-86dc-8a492a886494"
 
     def test_event_timer(self, requests):
         json = requests["EVENT-TIMER.json"]
@@ -868,6 +879,9 @@ class TestConvertRequests:
         )
         validate_json_roundtrip(json, expected, LifecycleRequest)
         validate_yaml_roundtrip(None, expected, LifecycleRequest)
+        assert expected.token() == "authTokenValue"
+        assert expected.app_id() == "d692699d-e7a6-400d-a0b7-d5be96e7a564"
+        assert expected.location_id() == "e675a3d9-2499-406c-86dc-8a492a886494"
 
 
 class TestConvertSmartAppDispatcherConfig:
