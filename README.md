@@ -14,6 +14,6 @@ The SDK is intended to be easy to use no matter how you choose to structure your
 
 The SDK handles all the mechanics of the [webhook lifecycle interface](https://developer-preview.smartthings.com/docs/connected-services/lifecycles/) on your behalf.  You just implement a single endpoint to accept the SmartApp webhook requests, and a single callback class where you define specialized behavior for the webhook events.  A clean [attrs](https://www.attrs.org/en/stable/) object interface is exposed for use by your callback.
 
-SDK documentation is found at [smartapp-sdk.readthedocs.io](https://smartapp-sdk.readthedocs.io/en/stable/).  Look there for installation instructions, the class model documentation, and example code.
+SDK documentation is found at [smartapp-sdk.readthedocs.io](https://smartapp-sdk.readthedocs.io/en/stable/).  Look there for installation instructions, the class model documentation, and example code.  The [smartapp-sensortrack](https://github.com/pronovic/smartapp-sensortrack) repo on GitHub is also a good example of how to use this SDK to build a traditional Python webapp.
 
 Developer documentation for the smartapp-sdk repo is found in [DEVELOPER.md](DEVELOPER.md).  See that file for notes about how the code is structured, how to set up a development environment, etc.
