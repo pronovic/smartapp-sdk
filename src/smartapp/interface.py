@@ -1002,7 +1002,7 @@ class SmartAppDefinition:
     config_pages: Optional[List[SmartAppConfigPage]]
 
 
-# pylint: disable=redefined-builtin:
+# pylint: disable=redefined-builtin,unused-argument:
 # noinspection PyShadowingBuiltins,PyMethodMayBeStatic
 class SmartAppConfigManager(ABC):
     """
@@ -1018,7 +1018,7 @@ class SmartAppConfigManager(ABC):
     build responses.
     """
 
-    def handle_initialize(self, definition: SmartAppDefinition) -> ConfigurationInitResponse:
+    def handle_initialize(self, request: ConfigurationRequest, definition: SmartAppDefinition) -> ConfigurationInitResponse:
         """Handle a CONFIGURATION INITIALIZE lifecycle request."""
         return self.build_init_response(
             id=definition.id,
@@ -1029,7 +1029,7 @@ class SmartAppConfigManager(ABC):
         )
 
     @abstractmethod
-    def handle_page(self, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
+    def handle_page(self, request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
         """Handle a CONFIGURATION PAGE lifecycle request."""
 
     def build_init_response(
