@@ -14,10 +14,6 @@ from .converter import CONVERTER
 from .interface import (
     AbstractRequest,
     BadRequestError,
-    ConfigInit,
-    ConfigInitData,
-    ConfigPage,
-    ConfigPageData,
     ConfigPhase,
     ConfigurationInitResponse,
     ConfigurationPageResponse,
@@ -33,6 +29,7 @@ from .interface import (
     LifecycleResponse,
     OauthCallbackRequest,
     OauthCallbackResponse,
+    SmartAppConfigManager,
     SmartAppDefinition,
     SmartAppDispatcherConfig,
     SmartAppError,
@@ -44,6 +41,40 @@ from .interface import (
     UpdateResponse,
 )
 from .signature import SignatureVerifier
+
+
+@frozen(kw_only=True)
+class StaticConfigManager(SmartAppConfigManager):
+
+    """
+    Configuration manager that operates on static data.
+
+    This is the configuration manager used by default in the dispatcher.  It operates on
+    a static set of config pages.  This sort of static definition is adequate for lots of
+    SmartApps, but it doesn't work for some types of complex configuration, where the responses
+    need to be generated dynamically.  In that case, you can implement your own configuration
+    manager with that specialized behavior.
+    """
+
+    def handle_page(self, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
+        """Handle a CONFIGURATION PAGE lifecycle request."""
+        if not definition.config_pages:
+            raise ValueError("Static configuration manager requires at least one configured page.")
+        previous_page_id = None if page_id == 1 else page_id - 1
+        next_page_id = None if page_id >= len(definition.config_pages) else page_id + 1
+        complete = page_id >= len(definition.config_pages)
+        try:
+            page = definition.config_pages[page_id - 1]  # page_id is 1-based, but we need 0-based for array
+            return self.build_page_response(
+                name=page.page_name,
+                page_id=page_id,
+                previous_page_id=previous_page_id,
+                next_page_id=next_page_id,
+                complete=complete,
+                sections=page.sections,
+            )
+        except IndexError as e:
+            raise ValueError("Page not found: %d" % page_id) from e
 
 
 @frozen(kw_only=True)
@@ -65,6 +96,7 @@ class SmartAppDispatcher:
     definition: SmartAppDefinition
     event_handler: SmartAppEventHandler
     config: SmartAppDispatcherConfig = field(factory=SmartAppDispatcherConfig)
+    manager: SmartAppConfigManager = field(factory=StaticConfigManager)
 
     def dispatch(self, context: SmartAppRequestContext) -> str:
         """
@@ -134,32 +166,7 @@ class SmartAppDispatcher:
     def _handle_config_request(self, request: ConfigurationRequest) -> Union[ConfigurationInitResponse, ConfigurationPageResponse]:
         """Handle a CONFIGURATION lifecycle request, returning an appropriate response."""
         if request.configuration_data.phase == ConfigPhase.INITIALIZE:
-            return ConfigurationInitResponse(
-                configuration_data=ConfigInitData(
-                    initialize=ConfigInit(
-                        id=self.definition.id,
-                        name=self.definition.name,
-                        description=self.definition.description,
-                        permissions=self.definition.permissions,
-                        first_page_id="1",
-                    )
-                )
-            )
+            return self.manager.handle_initialize(self.definition)
         else:  # if request.configuration_data.phase == ConfigPhase.PAGE:
             page_id = int(request.configuration_data.page_id)
-            previous_page_id = None if page_id == 1 else str(page_id - 1)
-            next_page_id = None if page_id >= len(self.definition.config_pages) else str(page_id + 1)
-            complete = page_id >= len(self.definition.config_pages)
-            pages = self.definition.config_pages[page_id - 1]  # page_id is 1-based
-            return ConfigurationPageResponse(
-                configuration_data=ConfigPageData(
-                    page=ConfigPage(
-                        name=pages.page_name,
-                        page_id=request.configuration_data.page_id,
-                        previous_page_id=previous_page_id,
-                        next_page_id=next_page_id,
-                        complete=complete,
-                        sections=pages.sections,
-                    )
-                )
-            )
+            return self.manager.handle_page(self.definition, page_id)
