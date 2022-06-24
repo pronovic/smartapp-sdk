@@ -1,3 +1,7 @@
+Version 0.5.0     unreleased
+
+	* Refactor out a SmartAppConfigManager that can be overridden.
+
 Version 0.4.1     19 Jun 2022
 
 	* Updates to published documentation.

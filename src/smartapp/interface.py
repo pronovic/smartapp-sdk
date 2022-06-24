@@ -999,7 +999,77 @@ class SmartAppDefinition:
     description: str
     target_url: str
     permissions: List[str]
-    config_pages: List[SmartAppConfigPage]
+    config_pages: Optional[List[SmartAppConfigPage]]
+
+
+# pylint: disable=redefined-builtin,unused-argument:
+# noinspection PyShadowingBuiltins,PyMethodMayBeStatic
+class SmartAppConfigManager(ABC):
+    """
+    Configuration manager, used by the dispatcher to respond to CONFIGURATION events.
+
+    The dispatcher has a default configuration manager.  However, you can implement your
+    own if that default behavior does not meet your needs.  For instance, a static config
+    definition is adequate for lots of SmartApps, but it doesn't work for some types of
+    complex configuration, where the responses need to be generated dynamically.  In that
+    case, you can implement your own configuration manager with that specialized behavior.
+
+    This abstract class also includes several convenience methods to make it easier to
+    build responses.
+    """
+
+    def handle_initialize(self, request: ConfigurationRequest, definition: SmartAppDefinition) -> ConfigurationInitResponse:
+        """Handle a CONFIGURATION INITIALIZE lifecycle request."""
+        return self.build_init_response(
+            id=definition.id,
+            name=definition.name,
+            description=definition.description,
+            permissions=definition.permissions,
+            first_page_id=1,
+        )
+
+    @abstractmethod
+    def handle_page(self, request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
+        """Handle a CONFIGURATION PAGE lifecycle request."""
+
+    def build_init_response(
+        self, id: str, name: str, description: str, permissions: List[str], first_page_id: int
+    ) -> ConfigurationInitResponse:
+        """Build a ConfigurationInitResponse."""
+        return ConfigurationInitResponse(
+            configuration_data=ConfigInitData(
+                initialize=ConfigInit(
+                    id=id,
+                    name=name,
+                    description=description,
+                    permissions=permissions,
+                    first_page_id=str(first_page_id),
+                )
+            )
+        )
+
+    def build_page_response(
+        self,
+        page_id: int,
+        name: str,
+        previous_page_id: Optional[int],
+        next_page_id: Optional[int],
+        complete: bool,
+        sections: List[ConfigSection],
+    ) -> ConfigurationPageResponse:
+        """Build a ConfigurationPageResponse."""
+        return ConfigurationPageResponse(
+            configuration_data=ConfigPageData(
+                page=ConfigPage(
+                    name=name,
+                    page_id=str(page_id),
+                    previous_page_id=str(previous_page_id) if previous_page_id else None,
+                    next_page_id=str(next_page_id) if next_page_id else None,
+                    complete=complete,
+                    sections=sections,
+                )
+            )
+        )
 
 
 # noinspection PyUnresolvedReferences
