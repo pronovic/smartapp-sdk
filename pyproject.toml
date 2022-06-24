@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "smartapp-sdk"
-version = "0.5.0a1"
+version = "0.5.0"
 description = "Framework to build a webhook-based SmartThings SmartApp"
 authors = ["Kenneth J. Pronovici <pronovic@ieee.org>"]
 license = "Apache-2.0"
