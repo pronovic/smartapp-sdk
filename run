@@ -50,6 +50,18 @@ run_requirements() {
       exit 1
    fi
 
+   # fix the Python version in requirements.txt, which causes readthedocs.io to blow up :( 
+   # annoyingly, BSD sed and GNU sed are not compatible on the syntax for -i
+   # I failed miserably in all attempts to put the sed command (with empty string) into a variable
+   sed --version 2>&1 | grep -iq "GNU sed"
+   if [ $? = 0 ]; then
+      # GNU sed accepts a bare -i and assumes no backup file
+      sed -i 's/python_version >= "3.9"/python_version >= "3.7"/g' docs/requirements.txt
+   else
+      # BSD sed requires you to set an empty backup file extension
+      sed -i "" 's/python_version >= "3.9"/python_version >= "3.7"/g' docs/requirements.txt
+   fi
+
    poetry run python utils/dos2unix.py docs/requirements.txt
    if [ $? != 0 ]; then
       echo "*** Failed to convert requirements.txt to UNIX line endings"
