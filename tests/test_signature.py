@@ -520,7 +520,7 @@ class TestRetrievePublicKey:
         assert key1 == "public-key"
         key2 = retrieve_public_key("https://whatever.com", "key-succeeds")  # this call is cached
         assert key2 == "public-key"
-        get.assert_called_once_with("https://whatever.com/key-succeeds")
+        get.assert_called_once_with("https://whatever.com/key-succeeds", timeout=5.0)
         response.raise_for_status.assert_called_once()
 
     def test_retrieve_public_key_retry(self, get):
@@ -534,6 +534,6 @@ class TestRetrievePublicKey:
         assert key1 == "public-key"
         key2 = retrieve_public_key("https://whatever.com", "/key-retry")  # this call is cached
         assert key2 == "public-key"
-        get.assert_has_calls([call("https://whatever.com/key-retry")] * 2)
+        get.assert_has_calls([call("https://whatever.com/key-retry", timeout=5.0)] * 2)
         response1.raise_for_status.assert_called_once()
         response2.raise_for_status.assert_called_once()
