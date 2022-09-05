@@ -4,7 +4,7 @@ repos:
     hooks:
       - id: system
         name: Requirements
-        entry: utils/requirements.sh
+        entry: sh utils/requirements.sh
         pass_filenames: false
         language: system
   - repo: local
