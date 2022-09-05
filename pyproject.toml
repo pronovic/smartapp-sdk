@@ -39,7 +39,7 @@ pycryptodomex = "^3.14.1"
 requests = "^2.28.0"
 tenacity = "^8.0.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.1.2"
 pytest-testdox = "^3.0.1"
 coverage = "^6.3.2"
