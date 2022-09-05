@@ -70,11 +70,9 @@ disable=fixme,
         missing-function-docstring,
         unused-wildcard-import,
         trailing-whitespace,
-        bad-continuation,
         too-few-public-methods,
         no-else-return,
         no-else-raise,
-        no-self-use,
         duplicate-code,
         consider-using-f-string,
         not-an-iterable, # gets confused with lists on attrs classes; MyPy covers this
@@ -273,13 +271,6 @@ max-line-length=132
 # Maximum number of lines in a module.
 max-module-lines=1000
 
-# List of optional constructs for which whitespace checking is disabled. `dict-
-# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
-# `trailing-comma` allows a space between comma and closing bracket: (a, ).
-# `empty-line` allows space-only lines.
-no-space-check=trailing-comma,
-               dict-separator
-
 # Allow the body of a class to be on the same line as the declaration if body
 # contains single statement.
 single-line-class-stmt=no
@@ -356,8 +347,7 @@ function-naming-style=snake_case
 #function-rgx=
 
 # Good variable names which should always be accepted, separated by a comma.
-good-names=d, 
-           e, 
+good-names=e, 
            f,
            i,
            j,
