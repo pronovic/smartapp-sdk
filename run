@@ -14,36 +14,39 @@ enable_keyring() {
 
 # Setup the virtual environment via Poetry and install pre-commit hooks
 run_install() {
-   utils/requirements.sh
+
+   # Install the poetry-plugin-export plugin, used to generate requirements.txt
+   poetry self add --quiet poetry-plugin-export
    if [ $? != 0 ]; then
-      exit $?
+      echo "*** Failed to install Poetry plugin: poetry-plugin-export"
+      exit 1
    fi
+
+   # Create and update the virtualenv, synchronizing it to versions in poetry.lock
+   poetry install --sync
+   if [ $? != 0 ]; then
+      echo "*** Failed to install dependencies"
+      exit 1
+   fi
+
+   # Upgrade embedded packages within the virtualenv
+   # This command sometimes returns $?=1 on Windows, even though it succeeds <sigh>
+   poetry run pip install --quiet --upgrade pip wheel setuptools 2>/dev/null
+
+   # Install the pre-commit hooks
+   poetry run pre-commit install 
+   if [ $? != 0 ]; then
+      echo "*** Failed to install pre-commit hooks"
+      exit 1
+   fi
+
 }
 
 # Regenerate the docs/requirements.txt file"
 run_requirements() {
-   poetry export --format=requirements.txt --without-hashes --with dev --output=docs/requirements.txt
+   sh utils/requirements.sh
    if [ $? != 0 ]; then
-      echo "*** Failed to export requirements.txt"
-      exit 1
-   fi
-
-   # fix the Python version in requirements.txt, which causes readthedocs.io to blow up :( 
-   # annoyingly, BSD sed and GNU sed are not compatible on the syntax for -i
-   # I failed miserably in all attempts to put the sed command (with empty string) into a variable
-   sed --version 2>&1 | grep -iq "GNU sed"
-   if [ $? = 0 ]; then
-      # GNU sed accepts a bare -i and assumes no backup file
-      sed -i 's/python_version >= "3.9"/python_version >= "3.7"/g' docs/requirements.txt
-   else
-      # BSD sed requires you to set an empty backup file extension
-      sed -i "" 's/python_version >= "3.9"/python_version >= "3.7"/g' docs/requirements.txt
-   fi
-
-   poetry run python utils/dos2unix.py docs/requirements.txt
-   if [ $? != 0 ]; then
-      echo "*** Failed to convert requirements.txt to UNIX line endings"
-      exit 1
+      exit $?
    fi
 }
 
