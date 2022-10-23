@@ -10,10 +10,6 @@ This project uses [Poetry](https://python-poetry.org/) to manage Python packagin
 
 A coding standard is enforced using [Black](https://github.com/psf/black), [isort](https://pypi.org/project/isort/) and [Pylint](https://www.pylint.org/).  Python 3 type hinting is validated using [MyPy](https://pypi.org/project/mypy/).
 
-## Continuous Integration (CI)
-
-We use [GitHub Actions](https://docs.github.com/en/actions/quickstart) for CI.  See [.github/workflows/tox.yml](.github/workflows/tox.yml) for the definition of the workflow, and go to the [Actions tab](https://github.com/pronovic/smartapp-sdk/actions) to see what actions have been executed.  
-
 ## Pre-Commit Hooks
 
 We rely on pre-commit hooks to ensure that the code is properly-formatted,
@@ -29,12 +25,12 @@ checks, so the build will fail.
 
 The [`.gitattributes`](.gitattributes) file controls line endings for the files
 in this repository.  Instead of relying on automatic behavior, the
-`.gitattributes` file forces most files to have UNIX line endings.  
+`.gitattributes` file forces most files to have UNIX line endings.
 
 ## Prerequisites
 
 Nearly all prerequisites are managed by Poetry.  All you need to do is make
-sure that you have a working Python 3 enviroment and install Poetry itself.  
+sure that you have a working Python 3 enviroment and install Poetry itself.
 
 ### Poetry Version
 
@@ -133,7 +129,7 @@ $ run
 Shortcuts for common developer tasks
 ------------------------------------
 
-Usage: run <command>
+Basic tasks:
 
 - run install: Setup the virtualenv via Poetry and install pre-commit hooks
 - run format: Run the code formatters
@@ -141,11 +137,15 @@ Usage: run <command>
 - run test: Run the unit tests
 - run test -c: Run the unit tests with coverage
 - run test -ch: Run the unit tests with coverage and open the HTML report
-- run docs: Build the Sphinx documentation for smartapp-sdk.readthedocs.io
+- run suite: Run the complete test suite, as for the GitHub Actions CI build
+
+Additional tasks:
+
+- run docs: Build the Sphinx documentation for readthedocs.io
 - run docs -o: Build the Sphinx documentation and open in a browser
-- run tox: Run the Tox test suite used by the GitHub CI action
-- run release: Release a specific version and tag the code
 - run publish: Publish the current code to PyPI and push to GitHub
+- run release: Release a specific version and tag the code
+- run requirements: Regenerate the docs/requirements.txt file
 ```
 
 ## Integration with PyCharm
@@ -169,7 +169,7 @@ order.  In particular, if you do not run the install step, there will be no
 virtualenv for PyCharm to use:
 
 ```
-run install && run checks && run test
+run install && run suite
 ```
 
 ### Open the Project
@@ -195,7 +195,7 @@ Structure**, mark both `src` and `tests` as source folders.  In the **Exclude
 Files** box, enter the following:
 
 ```
-LICENSE;NOTICE;PyPI.md;.coverage;.coveragerc;.github;.gitignore;.gitattributes;.htmlcov;.idea;.isort.cfg;.mypy.ini;.mypy_cache;.pre-commit-config.yaml;.pylintrc;.pytest_cache;.readthedocs.yml;.tox;.toxrc;.tabignore;build;dist;docs/_build;out;poetry.lock;poetry.toml;run;.runtime
+LICENSE;NOTICE;PyPI.md;.coverage;.coveragerc;.github;.gitignore;.gitattributes;.htmlcov;.idea;.isort.cfg;.mypy.ini;.mypy_cache;.pre-commit-config.yaml;.pylintrc;.pytest_cache;.readthedocs.yml;.tabignore;build;dist;docs/_build;out;poetry.lock;poetry.toml;run;.run;.venv;.runtime
 ```
 
 When you're done, click **Ok**.  Then, go to the gear icon in the project panel 
@@ -300,19 +300,21 @@ source ~/.bash_profile
 
 #### Windows
 
-On Windows, PyCharm has problems invoking the `run` script, even via the Git
-Bash interpreter.  I have created a Powershell script `utils/tools.ps1` that
-can be used instead.
+On Windows, PyCharm has problems invoking the `run` script.  The trick is to
+invoke the Bash interpreter and tell it to invoke the `run` script.  The
+examples below assume that you have installed Git Bash in its standard location
+under `C:\Program Files\Git`.  If it is somewhere else on your system, just
+change the path for `bash.exe`.
 
 ##### Format Code
 
 |Field|Value|
 |-----|-----|
 |Name|`Format Code`|
-|Description|`Run the Black and isort code formatters`|
+|Description|`Run the code formatters`|
 |Group|`Developer Tools`|
 |Program|`powershell.exe`|
-|Arguments|`-executionpolicy bypass -File utils\tools.ps1 format`|
+|Arguments|`& 'C:\Program Files\Git\bin\bash.exe' "./run" format | Out-String`|
 |Working directory|`$ProjectFileDir$`|
 |Synchronize files after execution|_Checked_|
 |Open console for tool outout|_Checked_|
@@ -328,7 +330,7 @@ can be used instead.
 |Description|`Run the MyPy code checks`|
 |Group|`Developer Tools`|
 |Program|`powershell.exe`|
-|Arguments|`-executionpolicy bypass -File utils\tools.ps1 mypy`|
+|Arguments|`& 'C:\Program Files\Git\bin\bash.exe' "./run" mypy | Out-String`|
 |Working directory|`$ProjectFileDir$`|
 |Synchronize files after execution|_Unchecked_|
 |Open console for tool outout|_Checked_|
@@ -344,7 +346,7 @@ can be used instead.
 |Description|`Run the Pylint code checks`|
 |Group|`Developer Tools`|
 |Program|`powershell.exe`|
-|Arguments|`-executionpolicy bypass -File utils\tools.ps1 pylint`|
+|Arguments|`& 'C:\Program Files\Git\bin\bash.exe' "./run" pylint | Out-String`|
 |Working directory|`$ProjectFileDir$`|
 |Synchronize files after execution|_Unchecked_|
 |Open console for tool outout|_Checked_|
@@ -363,7 +365,7 @@ is no formal release process for the documentation.
 ### Code
 
 Code is released to [PyPI](https://pypi.org/project/smartapp-sdk/).  There is a
-partially-automated process to publish a new release.  
+partially-automated process to publish a new release.
 
 > _Note:_ In order to publish code, you must must have push permissions to the
 > GitHub repo and be a collaborator on the PyPI project.  Before running this
