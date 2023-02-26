@@ -2,11 +2,15 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
 # pylint: disable=redefined-outer-name,line-too-long:
 from typing import Dict, Optional
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import patch
 
 import pendulum
 import pytest
+import responses
 from requests import HTTPError
+from responses import matchers
+from responses.registries import OrderedRegistry
+from tenacity import RetryError
 
 from smartapp.interface import SignatureError, SmartAppDefinition, SmartAppDispatcherConfig, SmartAppRequestContext
 from smartapp.signature import SignatureVerifier, retrieve_public_key
@@ -171,6 +175,8 @@ content-type: application/json
 digest: SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=
 content-length: 18
 """.strip()
+
+TIMEOUT_MATCHER = matchers.request_kwargs_matcher({"timeout": 5.0})
 
 
 def build_config(clock_skew_sec: Optional[int] = CLOCK_SKEW) -> SmartAppDispatcherConfig:
@@ -506,33 +512,49 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
 
-@patch("smartapp.signature.requests.get")
 class TestRetrievePublicKey:
     # This checks both the retry logic and the LRU cache.
     # Note that the LRU cache does not cache exceptions, only returned values.
 
-    def test_retrieve_public_key_succeeds(self, get):
-        response = MagicMock(text="public-key")
-        response.raise_for_status = MagicMock()
-        get.return_value = response
-        key1 = retrieve_public_key("https://whatever.com", "key-succeeds")  # note: no leading slash
-        assert key1 == "public-key"
-        key2 = retrieve_public_key("https://whatever.com", "key-succeeds")  # this call is cached
-        assert key2 == "public-key"
-        get.assert_called_once_with("https://whatever.com/key-succeeds", timeout=5.0)
-        response.raise_for_status.assert_called_once()
+    def test_retrieve_public_key_succeeds(self):
+        # Note that this test does not use a leading slash for the key id
+        with responses.RequestsMock() as r:
+            r.get(
+                url="https://whatever.com/key-succeeds",
+                status=200,
+                body="public-key",
+                match=[TIMEOUT_MATCHER],
+            )
+            assert retrieve_public_key("https://whatever.com", "key-succeeds") == "public-key"
+            assert retrieve_public_key("https://whatever.com", "key-succeeds") == "public-key"
+            assert len(r.calls) == 1  # only one call is made, because the first response is cached
 
-    def test_retrieve_public_key_retry(self, get):
-        response1 = MagicMock()
-        response1.raise_for_status = MagicMock()
-        response1.raise_for_status.side_effect = HTTPError("hello")
-        response2 = MagicMock(text="public-key")
-        response2.raise_for_status = MagicMock()
-        get.side_effect = [response1, response2]
-        key1 = retrieve_public_key("https://whatever.com", "/key-retry")  # note: leading slash
-        assert key1 == "public-key"
-        key2 = retrieve_public_key("https://whatever.com", "/key-retry")  # this call is cached
-        assert key2 == "public-key"
-        get.assert_has_calls([call("https://whatever.com/key-retry", timeout=5.0)] * 2)
-        response1.raise_for_status.assert_called_once()
-        response2.raise_for_status.assert_called_once()
+    def test_retrieve_public_key_fails(self):
+        # Note that this test does not use a leading slash for the key id
+        with responses.RequestsMock() as r:
+            r.get(
+                url="https://whatever.com/key-fails",
+                status=500,
+                match=[TIMEOUT_MATCHER],
+            )
+            with pytest.raises(RetryError):
+                retrieve_public_key("https://whatever.com", "key-fails")
+                assert len(r.calls) == 5  # five calls are made because failures are not cached
+
+    def test_retrieve_public_key_retry(self):
+        # Note that this test does use a leading slash for the key id
+        with responses.RequestsMock(registry=OrderedRegistry) as r:
+            r.get(
+                url="https://whatever.com/key-retry",
+                status=500,
+                match=[TIMEOUT_MATCHER],
+            )
+            r.get(
+                url="https://whatever.com/key-retry",
+                status=200,
+                body="public-key",
+                match=[TIMEOUT_MATCHER],
+            )
+            assert retrieve_public_key("https://whatever.com", "/key-retry") == "public-key"
+            assert retrieve_public_key("https://whatever.com", "/key-retry") == "public-key"
+            assert len(r.calls) == 2  # two calls are made because of the initial retry; the second attempt is cached
