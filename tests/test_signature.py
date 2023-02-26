@@ -508,7 +508,6 @@ class TestSignatureVerifier:
 
 @patch("smartapp.signature.requests.get")
 class TestRetrievePublicKey:
-
     # This checks both the retry logic and the LRU cache.
     # Note that the LRU cache does not cache exceptions, only returned values.
 

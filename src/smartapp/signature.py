@@ -73,6 +73,7 @@ def retrieve_public_key(key_server_url: str, key_id: str) -> str:
 
 DATE_FORMAT = "DD MMM YYYY HH:mm:ss z"  # like "05 Jan 2014 21:31:40 GMT"; we strip off the leading day of week
 
+
 # noinspection PyUnresolvedReferences
 @frozen(kw_only=True, repr=True)
 class SignatureVerifier:

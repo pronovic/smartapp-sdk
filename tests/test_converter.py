@@ -296,7 +296,6 @@ class TestConvertSettings:
 
 
 class TestStringSecrets:
-
     # Some requests contain secret tokens in the auth_token or refresh_token fields
     # These must not be included when turning the object into a string, which attrs handles with field(repr=False)
 

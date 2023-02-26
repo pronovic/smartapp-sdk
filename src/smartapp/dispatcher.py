@@ -79,7 +79,6 @@ class StaticConfigManager(SmartAppConfigManager):
 
 @frozen(kw_only=True)
 class SmartAppDispatcher:
-
     # noinspection PyUnresolvedReferences
     """
     Dispatcher to manage the requests and responses that are part of the SmartApp lifecycle.
