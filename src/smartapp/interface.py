@@ -876,7 +876,6 @@ class SignatureError(SmartAppError):
 
 @frozen(kw_only=True)
 class SmartAppDispatcherConfig:
-
     # noinspection PyUnresolvedReferences
     """
     Configuration for the SmartAppDispatcher.
@@ -974,7 +973,6 @@ class SmartAppConfigPage:
 
 @frozen(kw_only=True)
 class SmartAppDefinition:
-
     # noinspection PyUnresolvedReferences
     """
     The definition of the SmartApp.
