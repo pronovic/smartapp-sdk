@@ -1,4 +1,4 @@
-Version 0.5.4     unreleased
+Version 0.5.4     26 Feb 2023
 
 	* Upgrade all dependencies to the latest major version.
 	* Pull Sphinx fields from metadata rather than parsing pyproject.toml.
