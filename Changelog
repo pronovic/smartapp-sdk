@@ -1,5 +1,6 @@
-Version 0.5.5     unreleased
+Version 0.6.0     unreleased
 
+	* Add new SubscriptionType enumeration.
 	* Rewrite request-related tests to use the responses framework.
 
 Version 0.5.4     26 Feb 2023

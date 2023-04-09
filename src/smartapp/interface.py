@@ -98,6 +98,19 @@ class EventType(Enum):
     WEATHER_EVENT = "WEATHER_EVENT"
 
 
+class SubscriptionType(Enum):
+    """Supported subscription types."""
+
+    DEVICE = "DEVICE"
+    CAPABILITY = "CAPABILITY"
+    MODE = "MODE"
+    DEVICE_LIFECYCLE = "DEVICE_LIFECYCLE"
+    DEVICE_HEALTH = "DEVICE_HEALTH"
+    SECURITY_ARM_STATE = "SECURITY_ARM_STATE"
+    HUB_HEALTH = "HUB_HEALTH"
+    SCENE_LIFECYCLE = "SCENE_LIFECYCLE"
+
+
 class BooleanValue(str, Enum):
     """String boolean values."""
 
