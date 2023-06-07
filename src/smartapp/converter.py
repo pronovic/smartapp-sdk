@@ -89,7 +89,7 @@ class StandardConverter(GenConverter):
 
     def to_yaml(self, obj: Any) -> str:
         """Serialize an object to YAML."""
-        return yaml.safe_dump(self.unstructure(obj), sort_keys=False)  # type: ignore
+        return yaml.safe_dump(self.unstructure(obj), sort_keys=False)
 
     def from_yaml(self, data: str, cls: Type[T]) -> T:
         """Deserialize an object from YAML."""

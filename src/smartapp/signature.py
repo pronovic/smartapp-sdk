@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
+# pylint: disable=too-many-instance-attributes:
 
 """
 Verify HTTP signatures on SmartApp lifecycle event requests.
@@ -8,7 +9,7 @@ Verify HTTP signatures on SmartApp lifecycle event requests.
 # This implements HTTP signature verification for the SmartApp lifecycle events.
 # See: https://developer-preview.smartthings.com/docs/connected-services/hosting/webhook-smartapp/
 #
-# SmartThings uses Joyent's HTTP signature scheme to signal all lifecycle events.
+# SmartThings uses Joyent's HTTP signature scheme to sign all lifecycle events.
 # See: https://github.com/TritonDataCenter/node-http-signature/blob/master/http_signing.md
 #
 # Note that only the rsa-sha256 algorithm is supported in this code.  As far as I can
