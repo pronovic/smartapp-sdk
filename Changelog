@@ -1,4 +1,4 @@
-Version 0.6.1     unreleased
+Version 0.6.1     06 Jun 2023
 
 	* Fix checktabs to be safe for file named '-'.
 	* Update requests dependency for CVE-2023-32681.
