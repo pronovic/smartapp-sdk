@@ -42,7 +42,7 @@ T = TypeVar("T")  # pylint: disable=invalid-name:
 def serialize_datetime(datetime: DateTime) -> str:
     """Serialize a DateTime to a string."""
     # Note that we always use the full millisecond timestamp here and always convert to UTC
-    return datetime.in_timezone(DATETIME_ZONE).format(DATETIME_MS_FORMAT)  # type: ignore
+    return datetime.in_timezone(DATETIME_ZONE).format(DATETIME_MS_FORMAT)  # type: ignore[unused-ignore]
 
 
 def deserialize_datetime(datetime: str) -> DateTime:
