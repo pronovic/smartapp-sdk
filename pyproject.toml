@@ -40,7 +40,7 @@ format-jinja = "{% if distance == 0 and not dirty %}{{ base }}{% else %}{{ base 
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
-pendulum = "^2.1.2"
+pendulum = [ {version = "^2.1.2", python = "<3.12"}, {version = "^3.0.0b1", python = ">=3.12"} ]
 attrs = "^23.1.0"
 cattrs = "^23.1.2"
 PyYAML = "^6.0.1"
