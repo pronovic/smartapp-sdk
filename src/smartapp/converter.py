@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
+# pylint: disable=line-too-long:
 
 """
 Converter to serialize and deserialize lifecycle objects to various formats.
@@ -42,7 +43,7 @@ T = TypeVar("T")  # pylint: disable=invalid-name:
 def serialize_datetime(datetime: DateTime) -> str:
     """Serialize a DateTime to a string."""
     # Note that we always use the full millisecond timestamp here and always convert to UTC
-    return datetime.in_timezone(DATETIME_ZONE).format(DATETIME_MS_FORMAT)  # type: ignore
+    return datetime.in_timezone(DATETIME_ZONE).format(DATETIME_MS_FORMAT)  # type: ignore[no-untyped-call,no-any-return,unused-ignore]
 
 
 def deserialize_datetime(datetime: str) -> DateTime:
