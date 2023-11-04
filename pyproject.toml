@@ -50,6 +50,7 @@ tenacity = "^8.2.3"
 importlib-metadata = { version="^6.8.0", optional=true }
 sphinx = { version="^7.2.6", optional=true }
 sphinx-autoapi = { version="^3.0.0", optional=true }
+poetry = "^1.7.0"
 
 [tool.poetry.extras]
 docs = [ "importlib-metadata", "sphinx", "sphinx-autoapi" ]
