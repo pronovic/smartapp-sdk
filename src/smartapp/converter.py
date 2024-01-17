@@ -103,11 +103,11 @@ class StandardConverter(GenConverter):
 
     def _unstructure_camel_case(self, cls):  # type: ignore
         """Automatic snake_case to camelCase conversion when serializing any class."""
-        return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})
+        return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
 
     def _structure_camel_case(self, cls):  # type: ignore
         """Automatic snake_case to camelCase conversion when deserializing any class."""
-        return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})
+        return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
 
 
 # noinspection PyMethodMayBeStatic
