@@ -45,7 +45,6 @@ from .signature import SignatureVerifier
 
 @frozen(kw_only=True)
 class StaticConfigManager(SmartAppConfigManager):
-
     """
     Configuration manager that operates on static data.
 

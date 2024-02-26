@@ -40,35 +40,34 @@ format-jinja = "{% if distance == 0 and not dirty %}{{ base }}{% else %}{{ base 
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
-pendulum = [ {version = "^2.1.2", python = "<3.12"}, {version = "^3.0.0b1", python = ">=3.12"} ]
+pendulum = "^3.0.0"
 attrs = "^23.1.0"
 cattrs = "^23.1.2"
 PyYAML = "^6.0.1"
 pycryptodomex = "^3.19.0"
 requests = "^2.31.0"
 tenacity = "^8.2.3"
-importlib-metadata = { version="^6.8.0", optional=true }
+importlib-metadata = { version="^7.0.1", optional=true }
 sphinx = { version="^7.2.6", optional=true }
 sphinx-autoapi = { version="^3.0.0", optional=true }
-poetry = "^1.7.0"
 
 [tool.poetry.extras]
 docs = [ "importlib-metadata", "sphinx", "sphinx-autoapi" ]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.2"
+pytest = "^8.0.2"
 pytest-testdox = "^3.0.1"
-coverage = "^6.5.0"
-pylint = "^3.0.1"
-pre-commit = "^3.4.0"
-black = "^23.9.1"
+coverage = "^6.5.0"  # coveralls needs v6
+pylint = "^3.0.3"
+pre-commit = "^3.6.0"
+black = "^24.2.0"
 mypy = "^1.6.0"
 isort = "^5.12.0"
 coveralls = "^3.3.1"
 types-PyYAML = "^6.0.12.12"
 types-requests = "^2.31.0.8"
 colorama = "~0, >=0.4.6"
-responses = "~0, >=0.22.3"
+responses = "~0, >=0.24.1"
 
 [tool.black]
 line-length = 132

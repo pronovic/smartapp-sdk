@@ -5,6 +5,8 @@ Version 0.6.7     unreleased
 	* Update Poetry install instructions in DEVELOPER.md.
 	* Pull in latest version of run-script-framework.
 	* Update GHA workflows to use Poetry v1.8.0.
+	* Add support for 'run outdated' and update dependencies.
+	* Remove mistaken dependency on Poetry itself.
 
 Version 0.6.7     unreleased
 

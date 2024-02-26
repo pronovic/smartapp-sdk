@@ -78,7 +78,6 @@ DATE_FORMAT = "DD MMM YYYY HH:mm:ss z"  # like "05 Jan 2014 21:31:40 GMT"; we st
 # noinspection PyUnresolvedReferences
 @frozen(kw_only=True, repr=True)
 class SignatureVerifier:
-
     """Signature verifier for Joyent HTTP signatures."""
 
     context: SmartAppRequestContext = field(repr=False)  # because context.body may contain secrets

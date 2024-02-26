@@ -1086,7 +1086,6 @@ class SmartAppConfigManager(ABC):
 # noinspection PyUnresolvedReferences
 @frozen(kw_only=True)
 class SmartAppRequestContext:
-
     """
     The context for a SmartApp lifecycle request.
 
