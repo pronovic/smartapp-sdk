@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=line-too-long,too-many-lines:
+# pylint: disable=line-too-long,too-many-lines,too-many-positional-arguments,too-many-instance-attributes:
 
 """
 Classes that are part of the SmartApp interface.
