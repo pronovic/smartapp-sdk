@@ -7,7 +7,7 @@ Release v\ |version|
     :target: https://pypi.org/project/smartapp-sdk/
 
 .. image:: https://img.shields.io/pypi/l/smartapp-sdk.svg
-    :target: https://github.com/pronovic/smartapp-sdk/blob/master/LICENSE
+    :target: https://github.com/pronovic/smartapp-sdk/blob/main/LICENSE
 
 .. image:: https://img.shields.io/pypi/wheel/smartapp-sdk.svg
     :target: https://pypi.org/project/smartapp-sdk/
@@ -21,8 +21,8 @@ Release v\ |version|
 .. image:: https://readthedocs.org/projects/smartapp-sdk/badge/?version=stable&style=flat
     :target: https://smartapp-sdk.readthedocs.io/en/stable/
 
-.. image:: https://coveralls.io/repos/github/pronovic/smartapp-sdk/badge.svg?branch=master
-    :target: https://coveralls.io/github/pronovic/smartapp-sdk?branch=master
+.. image:: https://coveralls.io/repos/github/pronovic/smartapp-sdk/badge.svg?branch=main
+    :target: https://coveralls.io/github/pronovic/smartapp-sdk?branch=main
 
 smartapp-sdk is a Python library to build a `webhook-based SmartApp <https://developer-preview.smartthings.com/docs/connected-servic
 es/smartapp-basics/>`_ for the `SmartThings platform <https://www.smartthings.com/>`_.
