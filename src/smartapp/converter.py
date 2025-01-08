@@ -9,11 +9,12 @@ import json
 from typing import Any, Dict, Type, TypeVar
 
 import yaml
+from arrow import Arrow
+from arrow import get as arrow_get
+from arrow import now as arrow_now
 from attrs import fields, has
 from cattrs import GenConverter
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
-from pendulum import from_format, now
-from pendulum.datetime import DateTime
 
 from .interface import (
     CONFIG_SETTING_BY_TYPE,
@@ -29,36 +30,36 @@ from .interface import (
 
 DATETIME_ZONE = "UTC"
 
-DATETIME_SEC_EPOCH = "1970-01-01T00:00:00Z"  # date of the UNIX epoch, which sometimes seem to mean "no date"
+DATETIME_SEC_EPOCH = "1970-01-01T00:00:00Z"  # date of the UNIX epoch, which sometimes seems to mean "no date"
 DATETIME_SEC_LEN = len("YYYY-MM-DDTHH:MM:SSZ")  # like "2017-09-13T04:18:12Z"
 DATETIME_SEC_FORMAT = "YYYY-MM-DD[T]HH:mm:ss[Z]"
 
-DATETIME_MS_EPOCH = "1970-01-01T00:00:00.000Z"  # date of the UNIX epoch, which sometimes seem to mean "no date"
+DATETIME_MS_EPOCH = "1970-01-01T00:00:00.000Z"  # date of the UNIX epoch, which sometimes seems to mean "no date"
 DATETIME_MS_LEN = len("YYYY-MM-DDTHH:MM:SS.SSSZ")  # like "2017-09-13T04:18:12.992Z"
 DATETIME_MS_FORMAT = "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]"
 
 T = TypeVar("T")  # pylint: disable=invalid-name:
 
 
-def serialize_datetime(datetime: DateTime) -> str:
-    """Serialize a DateTime to a string."""
+def serialize_datetime(datetime: Arrow) -> str:
+    """Serialize an Arrow datetime to a string."""
     # Note that we always use the full millisecond timestamp here and always convert to UTC
-    return datetime.in_timezone(DATETIME_ZONE).format(DATETIME_MS_FORMAT)  # type: ignore[no-untyped-call,no-any-return,unused-ignore]
+    return datetime.to(DATETIME_ZONE).format(DATETIME_MS_FORMAT)
 
 
-def deserialize_datetime(datetime: str) -> DateTime:
-    """Deserialize a string into a DateTime."""
+def deserialize_datetime(datetime: str) -> Arrow:
+    """Deserialize a string into an Arrow datetime."""
     # Dates from SmartThings are not as reliable as I had hoped.  The samples show a
     # format including milliseconds.  Actual data (at least sometimes) comes without
     # milliseconds.  Further, some requests come with a UNIX epoch date (1970-01-01) which
     # I guess is probably what happens when no date was set by the device.  I'm choosing
     # to interpret that as "now".
     if datetime in (DATETIME_MS_EPOCH, DATETIME_SEC_EPOCH):
-        return now()
+        return arrow_now()
     elif len(datetime) == DATETIME_MS_LEN:
-        return from_format(datetime, DATETIME_MS_FORMAT, tz=DATETIME_ZONE)
+        return arrow_get(datetime, DATETIME_MS_FORMAT, tzinfo=DATETIME_ZONE)
     elif len(datetime) == DATETIME_SEC_LEN:
-        return from_format(datetime, DATETIME_SEC_FORMAT, tz=DATETIME_ZONE)
+        return arrow_get(datetime, DATETIME_SEC_FORMAT, tzinfo=DATETIME_ZONE)
     else:
         raise ValueError("Unknown datetime format: %s" % datetime)
 
@@ -118,18 +119,18 @@ class SmartAppConverter(StandardConverter):
 
     def __init__(self) -> None:
         super().__init__()
-        self.register_unstructure_hook(DateTime, self._unstructure_datetime)
-        self.register_structure_hook(DateTime, self._structure_datetime)
+        self.register_unstructure_hook(Arrow, self._unstructure_datetime)
+        self.register_structure_hook(Arrow, self._structure_datetime)
         self.register_structure_hook(ConfigValue, self._structure_config_value)
         self.register_structure_hook(ConfigSetting, self._structure_config_setting)
         self.register_structure_hook(LifecycleRequest, self._structure_request)
 
-    def _unstructure_datetime(self, datetime: DateTime) -> str:
-        """Serialize a DateTime to a string."""
+    def _unstructure_datetime(self, datetime: Arrow) -> str:
+        """Serialize an Arrow datetime to a string."""
         return serialize_datetime(datetime)
 
-    def _structure_datetime(self, datetime: str, _: Type[DateTime]) -> DateTime:
-        """Deserialize a string into a DateTime."""
+    def _structure_datetime(self, datetime: str, _: Type[Arrow]) -> Arrow:
+        """Deserialize a string into an Arrow datetime."""
         return deserialize_datetime(datetime)
 
     def _structure_config_value(self, data: Dict[str, Any], _: Type[ConfigValue]) -> ConfigValue:

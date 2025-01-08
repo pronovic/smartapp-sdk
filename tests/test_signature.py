@@ -4,9 +4,9 @@
 from typing import Dict, Optional
 from unittest.mock import patch
 
-import pendulum
 import pytest
 import responses
+from arrow import Arrow
 from requests import HTTPError
 from responses import matchers
 from responses.registries import OrderedRegistry
@@ -76,7 +76,7 @@ HOST = "example.com"
 PATH = "/foo?param=value&pet=dog"
 REQUEST_TARGET = "post /foo?param=value&pet=dog"
 DATE_STR = "Thu, 05 Jan 2014 21:31:40 GMT"
-DATE_OBJ = pendulum.datetime(2014, 1, 5, 21, 31, 40, tz="GMT")
+DATE_OBJ = Arrow(2014, 1, 5, 21, 31, 40, tzinfo="GMT")
 BODY = '{"hello": "world"}'
 CONTENT_TYPE = "application/json"
 CONTENT_LENGTH = str(len(BODY))  # should be 18
@@ -268,17 +268,17 @@ class TestSignatureVerifier:
             with pytest.raises(SignatureError, match="Header not found: %s" % header):
                 verifier.header(header)
 
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     @pytest.mark.parametrize(
         "date",
         [
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).add(seconds=1),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).add(seconds=2),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=1),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=2),
             DATE_OBJ,
-            DATE_OBJ.add(seconds=CLOCK_SKEW).subtract(seconds=2),
-            DATE_OBJ.add(seconds=CLOCK_SKEW).subtract(seconds=1),
-            DATE_OBJ.add(seconds=CLOCK_SKEW),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=-2),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=-1),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW),
         ],
     )
     def test_verify_date_valid(self, now, date):
@@ -290,14 +290,14 @@ class TestSignatureVerifier:
         verifier = SignatureVerifier(context=context, config=config, definition=definition)
         verifier.verify_date()
 
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     @pytest.mark.parametrize(
         "date",
         [
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).subtract(seconds=2),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).subtract(seconds=1),
-            DATE_OBJ.add(seconds=CLOCK_SKEW).add(seconds=1),
-            DATE_OBJ.add(seconds=CLOCK_SKEW).add(seconds=2),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=-2),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=-1),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=1),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=2),
         ],
     )
     def test_verify_date_invalid(self, now, date):
@@ -311,21 +311,21 @@ class TestSignatureVerifier:
             verifier.verify_date()
         assert e.value.correlation_id == context.correlation_id
 
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     @pytest.mark.parametrize(
         "date",
         [
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).subtract(seconds=2),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).subtract(seconds=1),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).add(seconds=1),
-            DATE_OBJ.subtract(seconds=CLOCK_SKEW).add(seconds=2),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=-2),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=-1),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=1),
+            DATE_OBJ.shift(seconds=-CLOCK_SKEW).shift(seconds=2),
             DATE_OBJ,
-            DATE_OBJ.add(seconds=CLOCK_SKEW).subtract(seconds=2),
-            DATE_OBJ.add(seconds=CLOCK_SKEW).subtract(seconds=1),
-            DATE_OBJ.add(seconds=CLOCK_SKEW),
-            DATE_OBJ.add(seconds=CLOCK_SKEW).add(seconds=1),
-            DATE_OBJ.add(seconds=CLOCK_SKEW).add(seconds=2),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=-2),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=-1),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=1),
+            DATE_OBJ.shift(seconds=CLOCK_SKEW).shift(seconds=2),
         ],
     )
     def test_verify_date_no_skew(self, now, date):
@@ -338,7 +338,7 @@ class TestSignatureVerifier:
         verifier.verify_date()
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_default_verify_valid(self, now, retrieve):
         # with a valid key from the Joyent sample data, everything should line up and we should have a valid signature
         context = build_context(headers=DEFAULT_ORIGINAL_HEADERS)
@@ -351,7 +351,7 @@ class TestSignatureVerifier:
         retrieve.assert_called_once_with(KEYSERVER_URL, KEY_ID)
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_all_headers_verify_valid(self, now, retrieve):
         # with a valid key from the Joyent sample data, everything should line up and we should have a valid signature
         context = build_context(headers=DEFAULT_ORIGINAL_HEADERS)
@@ -364,7 +364,7 @@ class TestSignatureVerifier:
         retrieve.assert_called_once_with(KEYSERVER_URL, KEY_ID)
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_default_verify_key_download_failure(self, now, retrieve):
         # if we fail to download the key, the signature can never be valid
         context = build_context(headers=DEFAULT_ORIGINAL_HEADERS)
@@ -378,7 +378,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_all_headers_verify_download_failure(self, now, retrieve):
         # if we fail to download the key, the signature can never be valid
         context = build_context(headers=ALL_HEADERS_ORIGINAL_HEADERS)
@@ -392,7 +392,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_default_verify_invalid_key(self, now, retrieve):
         # with an invalid key, the signature can never be valid
         context = build_context(headers=DEFAULT_ORIGINAL_HEADERS)
@@ -406,7 +406,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_all_headers_verify_invalid_key(self, now, retrieve):
         # with an invalid key, the signature can never be valid
         context = build_context(headers=ALL_HEADERS_ORIGINAL_HEADERS)
@@ -420,7 +420,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_default_verify_wrong_key(self, now, retrieve):
         # with the wrong key, the signature can never be valid
         context = build_context(headers=DEFAULT_ORIGINAL_HEADERS)
@@ -434,7 +434,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_all_headers_verify_wrong_key(self, now, retrieve):
         # with the wrong key, the signature can never be valid
         context = build_context(headers=ALL_HEADERS_ORIGINAL_HEADERS)
@@ -448,7 +448,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_default_verify_mismatch(self, now, retrieve):
         # this has a Date header that does not match the Joyent sample, causing an invalid signature
         headers = DEFAULT_ORIGINAL_HEADERS.copy()
@@ -465,7 +465,7 @@ class TestSignatureVerifier:
         assert e.value.correlation_id == context.correlation_id
 
     @patch("smartapp.signature.retrieve_public_key")
-    @patch("smartapp.signature.now")
+    @patch("smartapp.signature.arrow_now")
     def test_all_headers_verify_mismatch(self, now, retrieve):
         # the bad_definition contains a URL that doesn't match the Joyent sample
         # we will generate a bad signing string and hence the signature is invalid
