@@ -6,6 +6,7 @@
 Converter to serialize and deserialize lifecycle objects to various formats.
 """
 import json
+from enum import Enum
 from typing import Any, Dict, Type, TypeVar
 
 import yaml
@@ -15,6 +16,7 @@ from arrow import now as arrow_now
 from attrs import fields, has
 from cattrs import GenConverter
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
+from yaml import SafeDumper
 
 from .interface import (
     CONFIG_SETTING_BY_TYPE,
@@ -39,6 +41,10 @@ DATETIME_MS_LEN = len("YYYY-MM-DDTHH:MM:SS.SSSZ")  # like "2017-09-13T04:18:12.9
 DATETIME_MS_FORMAT = "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]"
 
 T = TypeVar("T")  # pylint: disable=invalid-name:
+
+
+# Configure SafeDumper to handle Enum values
+yaml.add_multi_representer(Enum, lambda d, e: d.represent_str(e.value), Dumper=SafeDumper)
 
 
 def serialize_datetime(datetime: Arrow) -> str:

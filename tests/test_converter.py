@@ -106,7 +106,7 @@ class TestConvertSettings:
             name="True or false?",
             description="Tap to set",
             required=True,
-            default_value="true",
+            default_value=BooleanValue.TRUE,
         )
         validate_json_roundtrip(json, expected, BooleanSetting)
         validate_yaml_roundtrip(None, expected, BooleanSetting)
