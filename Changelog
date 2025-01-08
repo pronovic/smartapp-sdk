@@ -4,6 +4,7 @@ Version 0.7.0     unreleased
 	* Move configuration into pyproject.toml for pytest, mypy & coverage.
 	* Upgrade to gha-shared-workflows@v8 for Poetry v2 support.
 	* Migrate from pendulum to arrow for dates (interface change).
+	* Fix bug in serializing BooleanSetting to and from YAML.
 	* Update all dependencies and outdated constraints.
 
 Version 0.6.9     02 Jan 2025
