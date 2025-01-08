@@ -41,12 +41,13 @@ from functools import lru_cache
 from typing import List, Mapping, Optional
 
 import requests
+from arrow import Arrow
+from arrow import get as arrow_get
+from arrow import now as arrow_now
 from attrs import field, frozen
 from Cryptodome.Hash import SHA256
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Signature import pkcs1_15
-from pendulum import from_format, now
-from pendulum.datetime import DateTime
 from requests import ConnectionError as RequestsConnectionError
 from requests import HTTPError, RequestException
 from tenacity import retry
@@ -72,7 +73,7 @@ def retrieve_public_key(key_server_url: str, key_id: str) -> str:
     return response.text
 
 
-DATE_FORMAT = "DD MMM YYYY HH:mm:ss z"  # like "05 Jan 2014 21:31:40 GMT"; we strip off the leading day of week
+DATE_FORMAT = "DD MMM YYYY HH:mm:ss ZZZ"  # like "05 Jan 2014 21:31:40 GMT"; we strip off the leading day of week
 
 
 # noinspection PyUnresolvedReferences
@@ -89,7 +90,7 @@ class SignatureVerifier:
     method: str = field(init=False)
     path: str = field(init=False)
     request_target: str = field(init=False)
-    date: DateTime = field(init=False)
+    date: Arrow = field(init=False)
     authorization: str = field(init=False)
     signing_attributes: Mapping[str, str] = field(init=False)
     signing_headers: str = field(init=False)
@@ -129,8 +130,8 @@ class SignatureVerifier:
         return self.header("authorization")
 
     @date.default
-    def _default_date(self) -> DateTime:
-        return from_format(self.header("date")[5:], DATE_FORMAT)  # remove the day ("Thu, ") from front
+    def _default_date(self) -> Arrow:
+        return arrow_get(self.header("date")[5:], DATE_FORMAT)  # remove the day ("Thu, ") from front
 
     @signing_attributes.default
     def _default_signing_attributes(self) -> Mapping[str, str]:
@@ -206,7 +207,7 @@ class SignatureVerifier:
     def verify_date(self) -> None:
         """Verify the date, ensuring that it is current per skew configuration."""
         if self.config.clock_skew_sec is not None:
-            skew = abs(now() - self.date)
+            skew = abs(arrow_now() - self.date)
             if skew.seconds > self.config.clock_skew_sec:
                 raise SignatureError("Request date is not current, skew of %d seconds" % skew.seconds, self.correlation_id)
 

@@ -28,8 +28,8 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
+from arrow import Arrow
 from attrs import field, frozen
-from pendulum.datetime import DateTime
 
 AUTHORIZATION_HEADER = "authorization"
 CORRELATION_ID_HEADER = "x-st-correlation"
@@ -362,7 +362,7 @@ class InstalledApp:
 class Event:
     """Holds the triggered event, one of several different attributes depending on event type."""
 
-    event_time: Optional[DateTime] = None
+    event_time: Optional[Arrow] = None
     event_type: EventType
     device_event: Optional[Dict[str, Any]] = None
     device_lifecycle_event: Optional[Dict[str, Any]] = None
