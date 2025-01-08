@@ -64,7 +64,7 @@ class TestDatetime:
             (arrow.Arrow(1970, 1, 1, 0, 0, 0, microsecond=0, tzinfo="UTC"), "1970-01-01T00:00:00.000Z"),
         ],
     )
-    def test_serialize_datetime_ms(self, datetime, expected):
+    def test_serialize_datetime(self, datetime, expected):
         assert serialize_datetime(datetime) == expected
 
     @patch("smartapp.converter.arrow_now")
