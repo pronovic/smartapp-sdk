@@ -1,5 +1,9 @@
 Version 0.7.1     unreleased
 
+	* Pull in latest version of run-script-framework.
+
+Version 0.7.1     unreleased
+
 	* Adjust pyproject.toml comments to fix pip build at readthedocs.
 
 Version 0.7.0     08 Jan 2025
