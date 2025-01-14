@@ -51,7 +51,7 @@ API Documentation
 Using the SDK
 -------------
 
-Below are some notes on how to use the SDK.  The `smartapp-sensortrack <https://github.com/pronovic/smartapp-sensortrack>`_ repo on GitHub is also a good example of how to use the SDK to build a traditional Python webapp.
+Below are some notes on how to use the SDK.
 
 Event Handler
 ~~~~~~~~~~~~~
@@ -236,4 +236,4 @@ for the installed application.  So, if your SmartApp is built around event
 handling and scheduled actions triggered by SmartThings, your handler can
 probably be stateless.  There is probably is not any need to persist any of the
 data returned in the ``INSTALL`` or ``UPDATE`` lifecycle events into your own
-data store.  This is the model folowed in the `smartapp-sensortrack <https://github.com/pronovic/smartapp-sensortrack>`_ example.
+data store.
