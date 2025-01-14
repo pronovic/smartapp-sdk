@@ -32,6 +32,8 @@ The SDK is intended to be easy to use no matter how you choose to structure your
 The SDK handles all the mechanics of the `webhook lifecycle interface <https://developer-preview.smartthings.com/docs/connected-serv
 ices/lifecycles/>`_ on your behalf.  You just implement a single endpoint to accept the SmartApp webhook requests, and a single callba ck class where you define specialized behavior for the webhook events.  A clean `attrs <https://www.attrs.org/en/stable/>`_ object interface is exposed for use by your callback.
 
+*Note: As of January 2025, I have migrated my home automation infrastructure from SmartThings to Home Assistant, so I no longer actively use this software. I will continue to maintain the library, keeping dependencies up-to-date and supporting new Python versions, etc.  Time permitting, I will also continue to accept GitHub issues for bug fixes and enhancement requests.  If you submit an issue, please keep in mind that I no longer have a SmartThings environment to test with, so I will expect you to coordinate with me on testing before I release any changes.*
+
 
 Installation
 ------------
@@ -51,7 +53,7 @@ API Documentation
 Using the SDK
 -------------
 
-Below are some notes on how to use the SDK.  The `smartapp-sensortrack <https://github.com/pronovic/smartapp-sensortrack>`_ repo on GitHub is also a good example of how to use the SDK to build a traditional Python webapp.
+Below are some notes on how to use the SDK.
 
 Event Handler
 ~~~~~~~~~~~~~
@@ -236,4 +238,4 @@ for the installed application.  So, if your SmartApp is built around event
 handling and scheduled actions triggered by SmartThings, your handler can
 probably be stateless.  There is probably is not any need to persist any of the
 data returned in the ``INSTALL`` or ``UPDATE`` lifecycle events into your own
-data store.  This is the model folowed in the `smartapp-sensortrack <https://github.com/pronovic/smartapp-sensortrack>`_ example.
+data store.
