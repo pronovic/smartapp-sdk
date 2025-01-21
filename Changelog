@@ -1,3 +1,8 @@
+Version 0.7.2     unreleased
+
+	* Add Sphinx configuration path to .readthedocs.yml.
+	* Pull in latest version of run-script-framework.
+
 Version 0.7.1     14 Jan 2025
 
 	* Pull in latest version of run-script-framework.
@@ -5,6 +10,7 @@ Version 0.7.1     14 Jan 2025
 	* Add .python-version in preferred order to support pyenv.
 	* Adjust pyproject.toml comments to fix pip build at readthedocs.
 	* Add notes in documentation that I no longer use SmartThings.
+	* Add Sphinx configuration path to .readthedocs.yml.
 
 Version 0.7.0     08 Jan 2025
 
