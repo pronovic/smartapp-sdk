@@ -2,6 +2,7 @@ Version 0.7.2     unreleased
 
 	* Add Sphinx configuration path to .readthedocs.yml.
 	* Pull in latest version of run-script-framework.
+	* Update the jinja2 transitive dependency to address CVE-2025-27516.
 
 Version 0.7.1     14 Jan 2025
 
