@@ -1029,7 +1029,7 @@ class SmartAppConfigManager(ABC):
     build responses.
     """
 
-    def handle_initialize(self, request: ConfigurationRequest, definition: SmartAppDefinition) -> ConfigurationInitResponse:
+    def handle_initialize(self, _request: ConfigurationRequest, definition: SmartAppDefinition) -> ConfigurationInitResponse:
         """Handle a CONFIGURATION INITIALIZE lifecycle request."""
         return self.build_init_response(
             id=definition.id,

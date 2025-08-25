@@ -56,7 +56,9 @@ class StaticConfigManager(SmartAppConfigManager):
     manager with that specialized behavior.
     """
 
-    def handle_page(self, request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
+    def handle_page(
+        self, _request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int
+    ) -> ConfigurationPageResponse:
         """Handle a CONFIGURATION PAGE lifecycle request."""
         if not definition.config_pages:
             raise ValueError("Static configuration manager requires at least one configured page.")
