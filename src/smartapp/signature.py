@@ -35,8 +35,9 @@ import logging
 import re
 import urllib.parse
 from base64 import b64decode
+from collections.abc import Mapping
 from functools import lru_cache
-from typing import Mapping, Optional
+from typing import Optional
 
 import requests
 from arrow import Arrow

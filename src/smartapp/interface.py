@@ -23,8 +23,9 @@ Classes that are part of the SmartApp interface.
 # dicts rather than true objects.  See further discussion below by the Event class.
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Mapping
 from enum import Enum
-from typing import Any, Callable, Mapping, Optional
+from typing import Any, Optional
 
 from arrow import Arrow
 from attrs import field, frozen
