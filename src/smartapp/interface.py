@@ -1044,7 +1044,12 @@ class SmartAppConfigManager(ABC):
         """Handle a CONFIGURATION PAGE lifecycle request."""
 
     def build_init_response(
-        self, id: str, name: str, description: str, permissions: List[str], first_page_id: int
+        self,
+        id: str,  # noqa: A002
+        name: str,
+        description: str,
+        permissions: List[str],
+        first_page_id: int,
     ) -> ConfigurationInitResponse:
         """Build a ConfigurationInitResponse."""
         return ConfigurationInitResponse(
