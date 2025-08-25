@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=redefined-outer-name,line-too-long:
 from typing import Dict, Optional
 from unittest.mock import patch
 
