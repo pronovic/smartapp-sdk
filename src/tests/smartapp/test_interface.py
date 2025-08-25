@@ -7,7 +7,7 @@ import pytest
 
 from smartapp.converter import CONVERTER
 from smartapp.interface import *
-from tests.testutil import load_file
+from tests.smartapp.testutil import load_file
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 

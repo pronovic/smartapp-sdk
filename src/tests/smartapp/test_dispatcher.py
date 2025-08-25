@@ -10,7 +10,7 @@ import pytest
 from smartapp.converter import CONVERTER
 from smartapp.dispatcher import SmartAppDispatcher
 from smartapp.interface import *
-from tests.testutil import load_dir
+from tests.smartapp.testutil import load_dir
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures/samples")
 REQUEST_DIR = os.path.join(FIXTURE_DIR, "request")
