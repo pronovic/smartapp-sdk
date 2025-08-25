@@ -108,11 +108,13 @@ class StandardConverter(GenConverter):
         components = name.split("_")
         return components[0] + "".join(x.title() for x in components[1:])
 
-    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore
+    # I can't figure out any way to declare this so MyPy is happy, but it does function properly
+    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore # noqa: ANN202
         """Automatic snake_case to camelCase conversion when serializing any class."""
         return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
 
-    def _structure_camel_case(self, cls: type[T]):  # type: ignore
+    # I can't figure out any way to declare this so MyPy is happy, but it does function properly
+    def _structure_camel_case(self, cls: type[T]):  # type: ignore # noqa: ANN202
         """Automatic snake_case to camelCase conversion when deserializing any class."""
         return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
 
