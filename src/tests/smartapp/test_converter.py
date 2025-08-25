@@ -615,8 +615,8 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             install_data=InstallData(
-                auth_token="authTokenValue",
-                refresh_token="refreshTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
+                refresh_token="refreshTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -669,8 +669,8 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             update_data=UpdateData(
-                auth_token="authTokenValue",
-                refresh_token="refreshTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
+                refresh_token="refreshTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -814,7 +814,7 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             event_data=EventData(
-                auth_token="authTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -883,7 +883,7 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             event_data=EventData(
-                auth_token="authTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
