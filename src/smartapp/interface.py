@@ -1064,7 +1064,7 @@ class SmartAppConfigManager(ABC):
             )
         )
 
-    def build_page_response(
+    def build_page_response(  # noqa: PLR0913
         self,
         page_id: int,
         name: str,
