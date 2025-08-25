@@ -1,5 +1,4 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
-# ruff: noqa: UP031  # allow format specifiers rather than f-strings
 
 """
 Verify HTTP signatures on SmartApp lifecycle event requests.
