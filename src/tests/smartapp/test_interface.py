@@ -1,5 +1,5 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
-import os
+from pathlib import Path
 
 import pytest
 
@@ -19,7 +19,7 @@ from smartapp.interface import (
 )
 from tests.smartapp.testutil import load_file
 
-FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
+FIXTURE_DIR = Path(__file__).parent / "fixtures"
 
 DEVICE_EVENT = {
     "subscriptionName": "motion_sensors",
@@ -113,8 +113,7 @@ class TestEvent:
 
 class TestInstallRequest:
     def test_config_convenience_methods(self):
-        path = os.path.join("live", "request", "INSTALL.1.json")
-        data = load_file(os.path.join(FIXTURE_DIR, path))
+        data = load_file(FIXTURE_DIR / "live" / "request" / "INSTALL.1.json")
         request = CONVERTER.from_json(data, InstallRequest)
         assert request.as_str("retrieve-weather-enabled") == "true"
         assert request.as_bool("retrieve-weather-enabled") is True
@@ -129,8 +128,7 @@ class TestInstallRequest:
 
 class TestUpdateRequest:
     def test_config_convenience_methods(self):
-        path = os.path.join("samples", "request", "UPDATE.json")
-        data = load_file(os.path.join(FIXTURE_DIR, path))
+        data = load_file(FIXTURE_DIR / "samples" / "request" / "UPDATE.json")
         request = CONVERTER.from_json(data, UpdateRequest)
         assert request.as_str("minutes") == "5"
         assert request.as_bool("minutes") is True
@@ -143,24 +141,21 @@ class TestUpdateRequest:
 
 class TestEventRequest:
     def test_for_type_device(self):
-        path = os.path.join("samples", "request", "EVENT-DEVICE.json")
-        data = load_file(os.path.join(FIXTURE_DIR, path))
+        data = load_file(FIXTURE_DIR / "samples" / "request" / "EVENT-DEVICE.json")
         request = CONVERTER.from_json(data, EventRequest)
         for event_type in [event_type for event_type in EventType if event_type != EventType.DEVICE_EVENT]:
             assert request.event_data.for_type(event_type) == []
         assert request.event_data.for_type(EventType.DEVICE_EVENT) == [DEVICE_EVENT]
 
     def test_for_type_timer(self):
-        path = os.path.join("samples", "request", "EVENT-TIMER.json")
-        data = load_file(os.path.join(FIXTURE_DIR, path))
+        data = load_file(FIXTURE_DIR / "samples" / "request" / "EVENT-TIMER.json")
         request = CONVERTER.from_json(data, EventRequest)
         for event_type in [event_type for event_type in EventType if event_type != EventType.TIMER_EVENT]:
             assert request.event_data.for_type(event_type) == []
         assert request.event_data.for_type(EventType.TIMER_EVENT) == [TIMER_EVENT]
 
     def test_filter_device(self):
-        path = os.path.join("samples", "request", "EVENT-DEVICE.json")
-        data = load_file(os.path.join(FIXTURE_DIR, path))
+        data = load_file(FIXTURE_DIR / "samples" / "request" / "EVENT-DEVICE.json")
         request = CONVERTER.from_json(data, EventRequest)
         for event_type in [event_type for event_type in EventType if event_type != EventType.DEVICE_EVENT]:
             assert request.event_data.filter(event_type) == []
@@ -174,8 +169,7 @@ class TestEventRequest:
         ) == [DEVICE_EVENT]
 
     def test_filter_timer(self):
-        path = os.path.join("samples", "request", "EVENT-TIMER.json")
-        data = load_file(os.path.join(FIXTURE_DIR, path))
+        data = load_file(FIXTURE_DIR / "samples" / "request" / "EVENT-TIMER.json")
         request = CONVERTER.from_json(data, EventRequest)
         for event_type in [event_type for event_type in EventType if event_type != EventType.TIMER_EVENT]:
             assert request.event_data.filter(event_type) == []

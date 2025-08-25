@@ -1,7 +1,7 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
 
-import os
 from json import JSONDecodeError
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -70,10 +70,10 @@ from smartapp.interface import (
 )
 from tests.smartapp.testutil import load_dir
 
-FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures/samples")
-REQUEST_DIR = os.path.join(FIXTURE_DIR, "request")
-RESPONSE_DIR = os.path.join(FIXTURE_DIR, "response")
-SETTINGS_DIR = os.path.join(FIXTURE_DIR, "settings")
+FIXTURE_DIR = Path(__file__).parent / "fixtures" / "samples"
+REQUEST_DIR = FIXTURE_DIR / "request"
+RESPONSE_DIR = FIXTURE_DIR / "response"
+SETTINGS_DIR = FIXTURE_DIR / "settings"
 
 NOW = arrow.Arrow(2022, 6, 1, 2, 3, 4, microsecond=5, tzinfo="UTC")
 
