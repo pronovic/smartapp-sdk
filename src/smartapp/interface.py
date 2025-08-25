@@ -378,7 +378,7 @@ class Event:
     weather_data: Optional[Dict[str, Any]] = None
     air_quality_data: Optional[Dict[str, Any]] = None
 
-    def for_type(self, event_type: EventType) -> Optional[Dict[str, Any]]:
+    def for_type(self, event_type: EventType) -> Optional[Dict[str, Any]]:  # noqa: PLR0911
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
             return self.device_commands_event
