@@ -30,6 +30,7 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
 from arrow import Arrow
 from attrs import field, frozen
+from typing_extensions import assert_never
 
 AUTHORIZATION_HEADER = "authorization"
 CORRELATION_ID_HEADER = "x-st-correlation"
@@ -402,7 +403,7 @@ class Event:
             return self.timer_event
         elif event_type == EventType.WEATHER_EVENT:
             return self.weather_event
-        return None
+        assert_never(event_type)
 
 
 @frozen(kw_only=True)
