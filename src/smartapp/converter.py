@@ -62,12 +62,11 @@ def deserialize_datetime(datetime: str) -> Arrow:
     # to interpret that as "now".
     if datetime in {DATETIME_MS_EPOCH, DATETIME_SEC_EPOCH}:
         return arrow_now()
-    elif len(datetime) == DATETIME_MS_LEN:
+    if len(datetime) == DATETIME_MS_LEN:
         return arrow_get(datetime, DATETIME_MS_FORMAT, tzinfo=DATETIME_ZONE)
-    elif len(datetime) == DATETIME_SEC_LEN:
+    if len(datetime) == DATETIME_SEC_LEN:
         return arrow_get(datetime, DATETIME_SEC_FORMAT, tzinfo=DATETIME_ZONE)
-    else:
-        raise ValueError("Unknown datetime format: %s" % datetime)
+    raise ValueError("Unknown datetime format: %s" % datetime)
 
 
 # noinspection PyMethodMayBeStatic

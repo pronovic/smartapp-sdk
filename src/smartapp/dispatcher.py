@@ -138,26 +138,25 @@ class SmartAppDispatcher:
         if isinstance(request, ConfirmationRequest):
             self.event_handler.handle_confirmation(correlation_id, request)
             return self._handle_confirmation_request(request)
-        elif isinstance(request, ConfigurationRequest):
+        if isinstance(request, ConfigurationRequest):
             self.event_handler.handle_configuration(correlation_id, request)
             return self._handle_config_request(request)
-        elif isinstance(request, InstallRequest):
+        if isinstance(request, InstallRequest):
             self.event_handler.handle_install(correlation_id, request)
             return InstallResponse()
-        elif isinstance(request, UpdateRequest):
+        if isinstance(request, UpdateRequest):
             self.event_handler.handle_update(correlation_id, request)
             return UpdateResponse()
-        elif isinstance(request, UninstallRequest):
+        if isinstance(request, UninstallRequest):
             self.event_handler.handle_uninstall(correlation_id, request)
             return UninstallResponse()
-        elif isinstance(request, OauthCallbackRequest):
+        if isinstance(request, OauthCallbackRequest):
             self.event_handler.handle_oauth_callback(correlation_id, request)
             return OauthCallbackResponse()
-        elif isinstance(request, EventRequest):
+        if isinstance(request, EventRequest):
             self.event_handler.handle_event(correlation_id, request)
             return EventResponse()
-        else:
-            raise ValueError("Unknown lifecycle event")
+        raise ValueError("Unknown lifecycle event")
 
     def _handle_confirmation_request(self, request: ConfirmationRequest) -> ConfirmationResponse:
         """Handle a CONFIRMATION lifecycle request, logging data and returning an appropriate response."""
@@ -168,6 +167,6 @@ class SmartAppDispatcher:
         """Handle a CONFIGURATION lifecycle request, returning an appropriate response."""
         if request.configuration_data.phase == ConfigPhase.INITIALIZE:
             return self.manager.handle_initialize(request, self.definition)
-        else:  # if request.configuration_data.phase == ConfigPhase.PAGE:
-            page_id = int(request.configuration_data.page_id)
-            return self.manager.handle_page(request, self.definition, page_id)
+        # if request.configuration_data.phase == ConfigPhase.PAGE:
+        page_id = int(request.configuration_data.page_id)
+        return self.manager.handle_page(request, self.definition, page_id)

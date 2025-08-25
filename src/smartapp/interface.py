@@ -382,25 +382,25 @@ class Event:
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
             return self.device_commands_event
-        elif event_type == EventType.DEVICE_EVENT:
+        if event_type == EventType.DEVICE_EVENT:
             return self.device_event
-        elif event_type == EventType.DEVICE_HEALTH_EVENT:
+        if event_type == EventType.DEVICE_HEALTH_EVENT:
             return self.device_health_event
-        elif event_type == EventType.DEVICE_LIFECYCLE_EVENT:
+        if event_type == EventType.DEVICE_LIFECYCLE_EVENT:
             return self.device_lifecycle_event
-        elif event_type == EventType.HUB_HEALTH_EVENT:
+        if event_type == EventType.HUB_HEALTH_EVENT:
             return self.hub_health_event
-        elif event_type == EventType.INSTALLED_APP_LIFECYCLE_EVENT:
+        if event_type == EventType.INSTALLED_APP_LIFECYCLE_EVENT:
             return self.installed_app_lifecycle_event
-        elif event_type == EventType.MODE_EVENT:
+        if event_type == EventType.MODE_EVENT:
             return self.mode_event
-        elif event_type == EventType.SCENE_LIFECYCLE_EVENT:
+        if event_type == EventType.SCENE_LIFECYCLE_EVENT:
             return self.scene_lifecycle_event
-        elif event_type == EventType.SECURITY_ARM_STATE_EVENT:
+        if event_type == EventType.SECURITY_ARM_STATE_EVENT:
             return self.security_arm_state_event
-        elif event_type == EventType.TIMER_EVENT:
+        if event_type == EventType.TIMER_EVENT:
             return self.timer_event
-        elif event_type == EventType.WEATHER_EVENT:
+        if event_type == EventType.WEATHER_EVENT:
             return self.weather_event
         assert_never(event_type)
 
