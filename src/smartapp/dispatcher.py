@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
 
 """
@@ -7,12 +6,11 @@ Manage the requests and responses that are part of the SmartApp lifecycle.
 
 import logging
 from json import JSONDecodeError
-from typing import Optional, Union
 
 from attr import field, frozen
 
-from .converter import CONVERTER
-from .interface import (
+from smartapp.converter import CONVERTER
+from smartapp.interface import (
     AbstractRequest,
     BadRequestError,
     ConfigPhase,
@@ -41,7 +39,9 @@ from .interface import (
     UpdateRequest,
     UpdateResponse,
 )
-from .signature import SignatureVerifier
+from smartapp.signature import SignatureVerifier
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @frozen(kw_only=True)
@@ -56,7 +56,9 @@ class StaticConfigManager(SmartAppConfigManager):
     manager with that specialized behavior.
     """
 
-    def handle_page(self, request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
+    def handle_page(
+        self, _request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int
+    ) -> ConfigurationPageResponse:
         """Handle a CONFIGURATION PAGE lifecycle request."""
         if not definition.config_pages:
             raise ValueError("Static configuration manager requires at least one configured page.")
@@ -112,18 +114,18 @@ class SmartAppDispatcher:
         """
         try:
             if self.config.log_json:  # put this right at the top, so we've got an opportunity to debug unexpected data
-                logging.debug("[%s] Raw JSON: \n%s", context.correlation_id, context.body)  # note: may contain secrets!
-            request: LifecycleRequest = CONVERTER.from_json(context.body, LifecycleRequest)  # type: ignore
-            logging.info("[%s] Handling %s request", context.correlation_id, request.lifecycle)
-            logging.debug("[%s] Date: %s", context.correlation_id, context.date)
-            logging.debug("[%s] Signature: %s", context.correlation_id, context.signature)  # note: signature not confidential
-            logging.debug("[%s] Request: %s", context.correlation_id, request)  # note: secrets are not serialized in repr()
+                _LOGGER.debug("[%s] Raw JSON: \n%s", context.correlation_id, context.body)  # note: may contain secrets!
+            request: LifecycleRequest = CONVERTER.from_json(context.body, LifecycleRequest)  # type: ignore[arg-type]
+            _LOGGER.info("[%s] Handling %s request", context.correlation_id, request.lifecycle)
+            _LOGGER.debug("[%s] Date: %s", context.correlation_id, context.date)
+            _LOGGER.debug("[%s] Signature: %s", context.correlation_id, context.signature)  # note: signature not confidential
+            _LOGGER.debug("[%s] Request: %s", context.correlation_id, request)  # note: secrets are not serialized in repr()
             if self.config.check_signatures:
                 SignatureVerifier(context=context, config=self.config, definition=self.definition).verify()
             response = self._handle_request(context.correlation_id, request)
             return CONVERTER.to_json(response)
-        except SmartAppError as e:
-            raise e
+        except SmartAppError:
+            raise
         except JSONDecodeError as e:
             raise BadRequestError("Invalid JSON", context.correlation_id) from e
         except ValueError as e:
@@ -131,41 +133,40 @@ class SmartAppDispatcher:
         except Exception as e:
             raise InternalError("%s" % e, context.correlation_id) from e
 
-    def _handle_request(self, correlation_id: Optional[str], request: AbstractRequest) -> LifecycleResponse:
+    def _handle_request(self, correlation_id: str | None, request: AbstractRequest) -> LifecycleResponse:  # noqa: PLR0911
         """Handle a lifecycle request, returning the appropriate response."""
         if isinstance(request, ConfirmationRequest):
             self.event_handler.handle_confirmation(correlation_id, request)
             return self._handle_confirmation_request(request)
-        elif isinstance(request, ConfigurationRequest):
+        if isinstance(request, ConfigurationRequest):
             self.event_handler.handle_configuration(correlation_id, request)
             return self._handle_config_request(request)
-        elif isinstance(request, InstallRequest):
+        if isinstance(request, InstallRequest):
             self.event_handler.handle_install(correlation_id, request)
             return InstallResponse()
-        elif isinstance(request, UpdateRequest):
+        if isinstance(request, UpdateRequest):
             self.event_handler.handle_update(correlation_id, request)
             return UpdateResponse()
-        elif isinstance(request, UninstallRequest):
+        if isinstance(request, UninstallRequest):
             self.event_handler.handle_uninstall(correlation_id, request)
             return UninstallResponse()
-        elif isinstance(request, OauthCallbackRequest):
+        if isinstance(request, OauthCallbackRequest):
             self.event_handler.handle_oauth_callback(correlation_id, request)
             return OauthCallbackResponse()
-        elif isinstance(request, EventRequest):
+        if isinstance(request, EventRequest):
             self.event_handler.handle_event(correlation_id, request)
             return EventResponse()
-        else:
-            raise ValueError("Unknown lifecycle event")
+        raise ValueError("Unknown lifecycle event")
 
     def _handle_confirmation_request(self, request: ConfirmationRequest) -> ConfirmationResponse:
         """Handle a CONFIRMATION lifecycle request, logging data and returning an appropriate response."""
-        logging.info("CONFIRMATION [%s]: [%s]", request.app_id, request.confirmation_data.confirmation_url)
+        _LOGGER.info("CONFIRMATION [%s]: [%s]", request.app_id, request.confirmation_data.confirmation_url)
         return ConfirmationResponse(target_url=self.definition.target_url)
 
-    def _handle_config_request(self, request: ConfigurationRequest) -> Union[ConfigurationInitResponse, ConfigurationPageResponse]:
+    def _handle_config_request(self, request: ConfigurationRequest) -> ConfigurationInitResponse | ConfigurationPageResponse:
         """Handle a CONFIGURATION lifecycle request, returning an appropriate response."""
         if request.configuration_data.phase == ConfigPhase.INITIALIZE:
             return self.manager.handle_initialize(request, self.definition)
-        else:  # if request.configuration_data.phase == ConfigPhase.PAGE:
-            page_id = int(request.configuration_data.page_id)
-            return self.manager.handle_page(request, self.definition, page_id)
+        # if request.configuration_data.phase == ConfigPhase.PAGE:
+        page_id = int(request.configuration_data.page_id)
+        return self.manager.handle_page(request, self.definition, page_id)

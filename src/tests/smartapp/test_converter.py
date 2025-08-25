@@ -1,21 +1,79 @@
-# -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
 
-import os
 from json import JSONDecodeError
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 from arrow import arrow
 
 from smartapp.converter import CONVERTER, deserialize_datetime, serialize_datetime
-from smartapp.interface import *
+from smartapp.interface import (
+    BooleanSetting,
+    BooleanValue,
+    ConfigInit,
+    ConfigInitData,
+    ConfigPage,
+    ConfigPageData,
+    ConfigPhase,
+    ConfigRequestData,
+    ConfigSection,
+    ConfigurationInitResponse,
+    ConfigurationPageResponse,
+    ConfigurationRequest,
+    ConfirmationData,
+    ConfirmationRequest,
+    ConfirmationResponse,
+    DecimalSetting,
+    DeviceConfigValue,
+    DeviceSetting,
+    DeviceValue,
+    EmailSetting,
+    EnumOption,
+    EnumOptionGroup,
+    EnumSetting,
+    Event,
+    EventData,
+    EventRequest,
+    EventResponse,
+    EventType,
+    IconSetting,
+    ImageSetting,
+    InstallData,
+    InstalledApp,
+    InstallRequest,
+    InstallResponse,
+    LifecyclePhase,
+    LifecycleRequest,
+    LinkSetting,
+    NumberSetting,
+    OauthCallbackData,
+    OauthCallbackRequest,
+    OauthCallbackResponse,
+    OauthSetting,
+    PageSetting,
+    ParagraphSetting,
+    PhoneSetting,
+    SmartAppConfigPage,
+    SmartAppDefinition,
+    SmartAppDispatcherConfig,
+    StringConfigValue,
+    StringValue,
+    TextSetting,
+    TimeSetting,
+    UninstallData,
+    UninstallRequest,
+    UninstallResponse,
+    UpdateData,
+    UpdateRequest,
+    UpdateResponse,
+)
 from tests.smartapp.testutil import load_dir
 
-FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures/samples")
-REQUEST_DIR = os.path.join(FIXTURE_DIR, "request")
-RESPONSE_DIR = os.path.join(FIXTURE_DIR, "response")
-SETTINGS_DIR = os.path.join(FIXTURE_DIR, "settings")
+FIXTURE_DIR = Path(__file__).parent / "fixtures" / "samples"
+REQUEST_DIR = FIXTURE_DIR / "request"
+RESPONSE_DIR = FIXTURE_DIR / "response"
+SETTINGS_DIR = FIXTURE_DIR / "settings"
 
 NOW = arrow.Arrow(2022, 6, 1, 2, 3, 4, microsecond=5, tzinfo="UTC")
 
@@ -57,10 +115,10 @@ class TestDatetime:
     @pytest.mark.parametrize(
         "datetime,expected",
         [
-            (arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=469000, tzinfo="UTC"), "2017-09-13T04:18:12.469Z"),
-            (arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=469123, tzinfo="UTC"), "2017-09-13T04:18:12.469Z"),
-            (arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=0, tzinfo="UTC"), "2017-09-13T04:18:12.000Z"),
-            (arrow.Arrow(1970, 1, 1, 0, 0, 0, microsecond=0, tzinfo="UTC"), "1970-01-01T00:00:00.000Z"),
+            [arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=469000, tzinfo="UTC"), "2017-09-13T04:18:12.469Z"],
+            [arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=469123, tzinfo="UTC"), "2017-09-13T04:18:12.469Z"],
+            [arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=0, tzinfo="UTC"), "2017-09-13T04:18:12.000Z"],
+            [arrow.Arrow(1970, 1, 1, 0, 0, 0, microsecond=0, tzinfo="UTC"), "1970-01-01T00:00:00.000Z"],
         ],
     )
     def test_serialize_datetime(self, datetime, expected):
@@ -70,14 +128,14 @@ class TestDatetime:
     @pytest.mark.parametrize(
         "datetime,expected",
         [
-            ("2017-09-13T04:18:12.469Z", arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=469000, tzinfo="UTC")),
-            ("2017-09-13T04:18:12.000Z", arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=0, tzinfo="UTC")),
-            ("2017-09-13T04:18:12Z", arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=0, tzinfo="UTC")),
-            ("2022-06-16T15:17:24.883Z", arrow.Arrow(2022, 6, 16, 10, 17, 24, microsecond=883000, tzinfo="America/Chicago")),
-            ("2022-06-16T15:17:24.000Z", arrow.Arrow(2022, 6, 16, 10, 17, 24, microsecond=0, tzinfo="America/Chicago")),
-            ("2022-06-16T15:16:24Z", arrow.Arrow(2022, 6, 16, 10, 16, 24, microsecond=0, tzinfo="America/Chicago")),
-            ("1970-01-01T00:00:00.000Z", NOW),
-            ("1970-01-01T00:00:00Z", NOW),
+            ["2017-09-13T04:18:12.469Z", arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=469000, tzinfo="UTC")],
+            ["2017-09-13T04:18:12.000Z", arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=0, tzinfo="UTC")],
+            ["2017-09-13T04:18:12Z", arrow.Arrow(2017, 9, 13, 4, 18, 12, microsecond=0, tzinfo="UTC")],
+            ["2022-06-16T15:17:24.883Z", arrow.Arrow(2022, 6, 16, 10, 17, 24, microsecond=883000, tzinfo="America/Chicago")],
+            ["2022-06-16T15:17:24.000Z", arrow.Arrow(2022, 6, 16, 10, 17, 24, microsecond=0, tzinfo="America/Chicago")],
+            ["2022-06-16T15:16:24Z", arrow.Arrow(2022, 6, 16, 10, 16, 24, microsecond=0, tzinfo="America/Chicago")],
+            ["1970-01-01T00:00:00.000Z", NOW],
+            ["1970-01-01T00:00:00Z", NOW],
         ],
     )
     def test_deserialize_datetime(self, now, datetime, expected):
@@ -311,7 +369,6 @@ class TestStringSecrets:
         json = requests[source]
         request = CONVERTER.from_json(json, LifecycleRequest)
         for string in ["%s" % request, str(request), repr(request)]:
-            print(string)
             assert "auth_token" not in string and "authTokenValue" not in string
             assert "refresh_token" not in string and "refreshTokenValue" not in string
 
@@ -556,8 +613,8 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             install_data=InstallData(
-                auth_token="authTokenValue",
-                refresh_token="refreshTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
+                refresh_token="refreshTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -610,8 +667,8 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             update_data=UpdateData(
-                auth_token="authTokenValue",
-                refresh_token="refreshTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
+                refresh_token="refreshTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -755,7 +812,7 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             event_data=EventData(
-                auth_token="authTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -824,7 +881,7 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             event_data=EventData(
-                auth_token="authTokenValue",
+                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",

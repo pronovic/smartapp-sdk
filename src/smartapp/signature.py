@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
 
 """
@@ -36,8 +35,8 @@ import logging
 import re
 import urllib.parse
 from base64 import b64decode
+from collections.abc import Mapping
 from functools import lru_cache
-from typing import List, Mapping, Optional
 
 import requests
 from arrow import Arrow
@@ -54,7 +53,9 @@ from tenacity.retry import retry_if_exception_type
 from tenacity.stop import stop_after_attempt
 from tenacity.wait import wait_exponential
 
-from .interface import SignatureError, SmartAppDefinition, SmartAppDispatcherConfig, SmartAppRequestContext
+from smartapp.interface import SignatureError, SmartAppDefinition, SmartAppDispatcherConfig, SmartAppRequestContext
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @lru_cache(maxsize=32)
@@ -83,7 +84,7 @@ class SignatureVerifier:
     context: SmartAppRequestContext = field(repr=False)  # because context.body may contain secrets
     config: SmartAppDispatcherConfig = field()
     definition: SmartAppDefinition = field()
-    correlation_id: Optional[str] = field(init=False)
+    correlation_id: str | None = field(init=False)
     body: str = field(init=False)
     content_length: int = field(init=False)
     method: str = field(init=False)
@@ -100,7 +101,7 @@ class SignatureVerifier:
     signing_string: str = field(init=False)
 
     @correlation_id.default
-    def _default_correlation_id(self) -> Optional[str]:
+    def _default_correlation_id(self) -> str | None:
         return self.context.correlation_id
 
     @body.default
@@ -108,7 +109,7 @@ class SignatureVerifier:
         return self.context.body
 
     @method.default
-    def _default_method(self) -> str:
+    def _default_method(self) -> str:  # noqa: PLR6301
         return "POST"  # this is the only method ever used by the SmartApp interface
 
     @path.default
@@ -135,7 +136,7 @@ class SignatureVerifier:
     @signing_attributes.default
     def _default_signing_attributes(self) -> Mapping[str, str]:
         # We're parsing a string like: 'Signature keyId="key",algorithm="rsa-sha256",headers="date",signature="xxx"'
-        def attribute(name: str, default: Optional[str] = None) -> str:
+        def attribute(name: str, default: str | None = None) -> str:
             if not self.authorization.startswith("Signature "):
                 raise SignatureError("Authorization header is not a signature", self.correlation_id)
             pattern = r"(%s=\")([^\"]+?)(\")" % name
@@ -154,7 +155,7 @@ class SignatureVerifier:
         }
 
     @signing_headers.default
-    def _default_signing_headers(self) -> List[str]:
+    def _default_signing_headers(self) -> list[str]:
         # We're parsing a string like "(request-target) date content-type digest" into a list
         return self.signing_attributes["headers"].strip().split(" ")
 
@@ -214,7 +215,7 @@ class SignatureVerifier:
         """Verify the RSA-SHA256 signature of the signing string."""
         # See: https://www.pycryptodome.org/en/latest/src/signature/pkcs1_v1_5.html
         try:
-            logging.debug("[%s] Signing string: \n%s", self.correlation_id, self.signing_string)
+            _LOGGER.debug("[%s] Signing string: \n%s", self.correlation_id, self.signing_string)
             signature = b64decode(self.signature)
             sha256 = SHA256.new(self.signing_string.encode())
             key = RSA.import_key(self.retrieve_public_key())

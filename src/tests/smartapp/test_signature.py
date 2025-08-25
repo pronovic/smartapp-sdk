@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-from typing import Dict, Optional
+# ruff: noqa: ERA001
 from unittest.mock import patch
 
 import pytest
@@ -178,7 +177,7 @@ content-length: 18
 TIMEOUT_MATCHER = matchers.request_kwargs_matcher({"timeout": 5.0})
 
 
-def build_config(clock_skew_sec: Optional[int] = CLOCK_SKEW) -> SmartAppDispatcherConfig:
+def build_config(clock_skew_sec: int | None = CLOCK_SKEW) -> SmartAppDispatcherConfig:
     """Build configuration to test with."""
     return SmartAppDispatcherConfig(
         check_signatures=True,
@@ -199,7 +198,7 @@ def build_definition(target_url: str = SMARTAPP_URL) -> SmartAppDefinition:
     )
 
 
-def build_context(headers: Dict[str, str]) -> SmartAppRequestContext:
+def build_context(headers: dict[str, str]) -> SmartAppRequestContext:
     """Build a request context to test with."""
     return SmartAppRequestContext(body=BODY, headers=headers)
 
@@ -538,7 +537,7 @@ class TestRetrievePublicKey:
             )
             with pytest.raises(RetryError):
                 retrieve_public_key("https://whatever.com", "key-fails")
-                assert len(r.calls) == 5  # five calls are made because failures are not cached
+            assert len(r.calls) == 5  # five calls are made because failures are not cached
 
     def test_retrieve_public_key_retry(self):
         # Note that this test does use a leading slash for the key id

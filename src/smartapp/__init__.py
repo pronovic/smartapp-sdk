@@ -1,1 +1,1 @@
-__all__ = []  # type: ignore
+__all__ = []  # type: ignore[var-annotated]

@@ -1,18 +1,51 @@
-# -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
 
-import os
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from smartapp.converter import CONVERTER
 from smartapp.dispatcher import SmartAppDispatcher
-from smartapp.interface import *
+from smartapp.interface import (
+    BadRequestError,
+    ConfigInit,
+    ConfigInitData,
+    ConfigPage,
+    ConfigPageData,
+    ConfigPhase,
+    ConfigRequestData,
+    ConfigSection,
+    ConfigurationInitResponse,
+    ConfigurationPageResponse,
+    ConfigurationRequest,
+    ConfirmationRequest,
+    ConfirmationResponse,
+    DecimalSetting,
+    EventRequest,
+    EventResponse,
+    InstallRequest,
+    InstallResponse,
+    InternalError,
+    LifecyclePhase,
+    OauthCallbackRequest,
+    OauthCallbackResponse,
+    ParagraphSetting,
+    SignatureError,
+    SmartAppConfigPage,
+    SmartAppDefinition,
+    SmartAppDispatcherConfig,
+    SmartAppEventHandler,
+    SmartAppRequestContext,
+    UninstallRequest,
+    UninstallResponse,
+    UpdateRequest,
+    UpdateResponse,
+)
 from tests.smartapp.testutil import load_dir
 
-FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures/samples")
-REQUEST_DIR = os.path.join(FIXTURE_DIR, "request")
+FIXTURE_DIR = Path(__file__).parent / "fixtures" / "samples"
+REQUEST_DIR = FIXTURE_DIR / "request"
 
 CLOCK_SKEW_SEC = 555
 CORRELATION = "AAAA"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
 
 """
@@ -7,7 +6,7 @@ Converter to serialize and deserialize lifecycle objects to various formats.
 
 import json
 from enum import Enum
-from typing import Any, Dict, Type, TypeVar
+from typing import Any, TypeVar
 
 import yaml
 from arrow import Arrow
@@ -18,7 +17,7 @@ from cattrs import GenConverter
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 from yaml import SafeDumper
 
-from .interface import (
+from smartapp.interface import (
     CONFIG_SETTING_BY_TYPE,
     CONFIG_VALUE_BY_TYPE,
     REQUEST_BY_PHASE,
@@ -60,14 +59,13 @@ def deserialize_datetime(datetime: str) -> Arrow:
     # milliseconds.  Further, some requests come with a UNIX epoch date (1970-01-01) which
     # I guess is probably what happens when no date was set by the device.  I'm choosing
     # to interpret that as "now".
-    if datetime in (DATETIME_MS_EPOCH, DATETIME_SEC_EPOCH):
+    if datetime in {DATETIME_MS_EPOCH, DATETIME_SEC_EPOCH}:
         return arrow_now()
-    elif len(datetime) == DATETIME_MS_LEN:
+    if len(datetime) == DATETIME_MS_LEN:
         return arrow_get(datetime, DATETIME_MS_FORMAT, tzinfo=DATETIME_ZONE)
-    elif len(datetime) == DATETIME_SEC_LEN:
+    if len(datetime) == DATETIME_SEC_LEN:
         return arrow_get(datetime, DATETIME_SEC_FORMAT, tzinfo=DATETIME_ZONE)
-    else:
-        raise ValueError("Unknown datetime format: %s" % datetime)
+    raise ValueError("Unknown datetime format: %s" % datetime)
 
 
 # noinspection PyMethodMayBeStatic
@@ -91,7 +89,7 @@ class StandardConverter(GenConverter):
         """Serialize an object to JSON."""
         return json.dumps(self.unstructure(obj), indent="  ")
 
-    def from_json(self, data: str, cls: Type[T]) -> T:
+    def from_json(self, data: str, cls: type[T]) -> T:
         """Deserialize an object from JSON."""
         return self.structure(json.loads(data), cls)
 
@@ -99,22 +97,24 @@ class StandardConverter(GenConverter):
         """Serialize an object to YAML."""
         return yaml.safe_dump(self.unstructure(obj), sort_keys=False)
 
-    def from_yaml(self, data: str, cls: Type[T]) -> T:
+    def from_yaml(self, data: str, cls: type[T]) -> T:
         """Deserialize an object from YAML."""
         return self.structure(yaml.safe_load(data), cls)
 
-    def _to_camel_case(self, name: str) -> str:
+    def _to_camel_case(self, name: str) -> str:  # noqa: PLR6301
         """Convert a snake_case attribute name to camelCase instead."""
         components = name.split("_")
         return components[0] + "".join(x.title() for x in components[1:])
 
-    def _unstructure_camel_case(self, cls):  # type: ignore
+    # I can't figure out any way to declare this so MyPy is happy, but it does function properly
+    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # noqa: ANN202
         """Automatic snake_case to camelCase conversion when serializing any class."""
-        return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
+        return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore[arg-type]
 
-    def _structure_camel_case(self, cls):  # type: ignore
+    # I can't figure out any way to declare this so MyPy is happy, but it does function properly
+    def _structure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # noqa: ANN202
         """Automatic snake_case to camelCase conversion when deserializing any class."""
-        return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
+        return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore[arg-type]
 
 
 # noinspection PyMethodMayBeStatic
@@ -131,15 +131,15 @@ class SmartAppConverter(StandardConverter):
         self.register_structure_hook(ConfigSetting, self._structure_config_setting)
         self.register_structure_hook(LifecycleRequest, self._structure_request)
 
-    def _unstructure_datetime(self, datetime: Arrow) -> str:
+    def _unstructure_datetime(self, datetime: Arrow) -> str:  # noqa: PLR6301
         """Serialize an Arrow datetime to a string."""
         return serialize_datetime(datetime)
 
-    def _structure_datetime(self, datetime: str, _: Type[Arrow]) -> Arrow:
+    def _structure_datetime(self, datetime: str, _: type[Arrow]) -> Arrow:  # noqa: PLR6301
         """Deserialize a string into an Arrow datetime."""
         return deserialize_datetime(datetime)
 
-    def _structure_config_value(self, data: Dict[str, Any], _: Type[ConfigValue]) -> ConfigValue:
+    def _structure_config_value(self, data: dict[str, Any], _: type[ConfigValue]) -> ConfigValue:
         """Deserialize input data into a ConfigValue of the proper type."""
         try:
             value_type = ConfigValueType[data["valueType"]]
@@ -147,19 +147,19 @@ class SmartAppConverter(StandardConverter):
         except KeyError as e:
             raise ValueError("Unknown config value type") from e
 
-    def _structure_config_setting(self, data: Dict[str, Any], _: Type[ConfigSetting]) -> ConfigSetting:
+    def _structure_config_setting(self, data: dict[str, Any], _: type[ConfigSetting]) -> ConfigSetting:
         """Deserialize input data into a ConfigSetting of the proper type."""
         try:
             value_type = ConfigSettingType[data["type"]]
-            return self.structure(data, CONFIG_SETTING_BY_TYPE[value_type])  # type: ignore
+            return self.structure(data, CONFIG_SETTING_BY_TYPE[value_type])  # type: ignore[arg-type]
         except KeyError as e:
             raise ValueError("Unknown config setting type") from e
 
-    def _structure_request(self, data: Dict[str, Any], _: Type[LifecycleRequest]) -> LifecycleRequest:
+    def _structure_request(self, data: dict[str, Any], _: type[LifecycleRequest]) -> LifecycleRequest:
         """Deserialize input data into a LifecycleRequest of the proper type."""
         try:
             phase = LifecyclePhase[data["lifecycle"]]
-            return self.structure(data, REQUEST_BY_PHASE[phase])  # type: ignore
+            return self.structure(data, REQUEST_BY_PHASE[phase])  # type: ignore[arg-type]
         except KeyError as e:
             raise ValueError("Unknown lifecycle phase") from e
 
