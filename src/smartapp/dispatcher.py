@@ -124,8 +124,8 @@ class SmartAppDispatcher:
                 SignatureVerifier(context=context, config=self.config, definition=self.definition).verify()
             response = self._handle_request(context.correlation_id, request)
             return CONVERTER.to_json(response)
-        except SmartAppError as e:
-            raise e
+        except SmartAppError:
+            raise
         except JSONDecodeError as e:
             raise BadRequestError("Invalid JSON", context.correlation_id) from e
         except ValueError as e:
