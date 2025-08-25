@@ -1070,7 +1070,7 @@ class SmartAppConfigManager(ABC):
         name: str,
         previous_page_id: Optional[int],
         next_page_id: Optional[int],
-        complete: bool,
+        complete: bool,  # noqa: FBT001
         sections: List[ConfigSection],
     ) -> ConfigurationPageResponse:
         """Build a ConfigurationPageResponse."""
