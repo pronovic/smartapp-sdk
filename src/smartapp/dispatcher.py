@@ -7,7 +7,7 @@ Manage the requests and responses that are part of the SmartApp lifecycle.
 
 import logging
 from json import JSONDecodeError
-from typing import Optional, Union
+from typing import Optional
 
 from attr import field, frozen
 
@@ -163,7 +163,7 @@ class SmartAppDispatcher:
         logging.info("CONFIRMATION [%s]: [%s]", request.app_id, request.confirmation_data.confirmation_url)
         return ConfirmationResponse(target_url=self.definition.target_url)
 
-    def _handle_config_request(self, request: ConfigurationRequest) -> Union[ConfigurationInitResponse, ConfigurationPageResponse]:
+    def _handle_config_request(self, request: ConfigurationRequest) -> ConfigurationInitResponse | ConfigurationPageResponse:
         """Handle a CONFIGURATION lifecycle request, returning an appropriate response."""
         if request.configuration_data.phase == ConfigPhase.INITIALIZE:
             return self.manager.handle_initialize(request, self.definition)

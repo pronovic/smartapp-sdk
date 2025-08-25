@@ -25,7 +25,7 @@ Classes that are part of the SmartApp interface.
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Callable, Mapping, Optional, Union
+from typing import Any, Callable, Mapping, Optional
 
 from arrow import Arrow
 from attrs import field, frozen
@@ -276,23 +276,23 @@ class OauthSetting(AbstractSetting):
     url_template: str
 
 
-ConfigSetting = Union[
-    DeviceSetting,
-    TextSetting,
-    BooleanSetting,
-    EnumSetting,
-    LinkSetting,
-    PageSetting,
-    ImageSetting,
-    IconSetting,
-    TimeSetting,
-    ParagraphSetting,
-    EmailSetting,
-    DecimalSetting,
-    NumberSetting,
-    PhoneSetting,
-    OauthSetting,
-]
+ConfigSetting = (
+    DeviceSetting
+    | TextSetting
+    | BooleanSetting
+    | EnumSetting
+    | LinkSetting
+    | PageSetting
+    | ImageSetting
+    | IconSetting
+    | TimeSetting
+    | ParagraphSetting
+    | EmailSetting
+    | DecimalSetting
+    | NumberSetting
+    | PhoneSetting
+    | OauthSetting
+)
 
 
 @frozen(kw_only=True)
@@ -322,10 +322,7 @@ class StringConfigValue:
     value_type: ConfigValueType = ConfigValueType.STRING
 
 
-ConfigValue = Union[
-    DeviceConfigValue,
-    StringConfigValue,
-]
+ConfigValue = DeviceConfigValue | StringConfigValue
 
 
 @frozen(kw_only=True)
@@ -809,26 +806,28 @@ class EventResponse:
     event_data: dict[str, Any] = field(factory=dict)  # always empty in the response
 
 
-LifecycleRequest = Union[
-    ConfigurationRequest,
-    ConfirmationRequest,
-    InstallRequest,
-    UpdateRequest,
-    UninstallRequest,
-    OauthCallbackRequest,
-    EventRequest,
-]
+LifecycleRequest = (
+    ConfigurationRequest
+    | ConfirmationRequest
+    | InstallRequest
+    | UpdateRequest
+    | UninstallRequest
+    | OauthCallbackRequest
+    | EventRequest
+)
 
-LifecycleResponse = Union[
-    ConfigurationInitResponse,
-    ConfigurationPageResponse,
-    ConfirmationResponse,
-    InstallResponse,
-    UpdateResponse,
-    UninstallResponse,
-    OauthCallbackResponse,
-    EventResponse,
-]
+
+LifecycleResponse = (
+    ConfigurationInitResponse
+    | ConfigurationPageResponse
+    | ConfirmationResponse
+    | InstallResponse
+    | UpdateResponse
+    | UninstallResponse
+    | OauthCallbackResponse
+    | EventResponse
+)
+
 
 REQUEST_BY_PHASE = {
     LifecyclePhase.CONFIGURATION: ConfigurationRequest,
