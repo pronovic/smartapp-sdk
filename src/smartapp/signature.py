@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=too-many-instance-attributes:
 
 """
 Verify HTTP signatures on SmartApp lifecycle event requests.

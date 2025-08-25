@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=redefined-outer-name,invalid-name,wildcard-import:
 
 import os
 from json import JSONDecodeError
@@ -227,7 +226,6 @@ class TestConvertSettings:
         validate_json_roundtrip(json, expected, NumberSetting)
         validate_yaml_roundtrip(None, expected, NumberSetting)
 
-    # pylint: disable=line-too-long:
     def test_oauth(self, settings):
         json = settings["OAUTH.json"]
         expected = OauthSetting(
