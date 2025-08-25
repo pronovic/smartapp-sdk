@@ -55,6 +55,8 @@ from tenacity.wait import wait_exponential
 
 from smartapp.interface import SignatureError, SmartAppDefinition, SmartAppDispatcherConfig, SmartAppRequestContext
 
+_LOGGER = logging.getLogger(__name__)
+
 
 @lru_cache(maxsize=32)
 @retry(
@@ -213,7 +215,7 @@ class SignatureVerifier:
         """Verify the RSA-SHA256 signature of the signing string."""
         # See: https://www.pycryptodome.org/en/latest/src/signature/pkcs1_v1_5.html
         try:
-            logging.debug("[%s] Signing string: \n%s", self.correlation_id, self.signing_string)
+            _LOGGER.debug("[%s] Signing string: \n%s", self.correlation_id, self.signing_string)
             signature = b64decode(self.signature)
             sha256 = SHA256.new(self.signing_string.encode())
             key = RSA.import_key(self.retrieve_public_key())

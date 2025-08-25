@@ -41,6 +41,8 @@ from smartapp.interface import (
 )
 from smartapp.signature import SignatureVerifier
 
+_LOGGER = logging.getLogger(__name__)
+
 
 @frozen(kw_only=True)
 class StaticConfigManager(SmartAppConfigManager):
@@ -112,12 +114,12 @@ class SmartAppDispatcher:
         """
         try:
             if self.config.log_json:  # put this right at the top, so we've got an opportunity to debug unexpected data
-                logging.debug("[%s] Raw JSON: \n%s", context.correlation_id, context.body)  # note: may contain secrets!
+                _LOGGER.debug("[%s] Raw JSON: \n%s", context.correlation_id, context.body)  # note: may contain secrets!
             request: LifecycleRequest = CONVERTER.from_json(context.body, LifecycleRequest)  # type: ignore[arg-type]
-            logging.info("[%s] Handling %s request", context.correlation_id, request.lifecycle)
-            logging.debug("[%s] Date: %s", context.correlation_id, context.date)
-            logging.debug("[%s] Signature: %s", context.correlation_id, context.signature)  # note: signature not confidential
-            logging.debug("[%s] Request: %s", context.correlation_id, request)  # note: secrets are not serialized in repr()
+            _LOGGER.info("[%s] Handling %s request", context.correlation_id, request.lifecycle)
+            _LOGGER.debug("[%s] Date: %s", context.correlation_id, context.date)
+            _LOGGER.debug("[%s] Signature: %s", context.correlation_id, context.signature)  # note: signature not confidential
+            _LOGGER.debug("[%s] Request: %s", context.correlation_id, request)  # note: secrets are not serialized in repr()
             if self.config.check_signatures:
                 SignatureVerifier(context=context, config=self.config, definition=self.definition).verify()
             response = self._handle_request(context.correlation_id, request)
@@ -158,7 +160,7 @@ class SmartAppDispatcher:
 
     def _handle_confirmation_request(self, request: ConfirmationRequest) -> ConfirmationResponse:
         """Handle a CONFIRMATION lifecycle request, logging data and returning an appropriate response."""
-        logging.info("CONFIRMATION [%s]: [%s]", request.app_id, request.confirmation_data.confirmation_url)
+        _LOGGER.info("CONFIRMATION [%s]: [%s]", request.app_id, request.confirmation_data.confirmation_url)
         return ConfirmationResponse(target_url=self.definition.target_url)
 
     def _handle_config_request(self, request: ConfigurationRequest) -> ConfigurationInitResponse | ConfigurationPageResponse:
