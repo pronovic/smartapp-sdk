@@ -65,7 +65,7 @@ def deserialize_datetime(datetime: str) -> Arrow:
         return arrow_get(datetime, DATETIME_MS_FORMAT, tzinfo=DATETIME_ZONE)
     if len(datetime) == DATETIME_SEC_LEN:
         return arrow_get(datetime, DATETIME_SEC_FORMAT, tzinfo=DATETIME_ZONE)
-    raise ValueError("Unknown datetime format: %s" % datetime)
+    raise ValueError(f"Unknown datetime format: {datetime}")
 
 
 # noinspection PyMethodMayBeStatic

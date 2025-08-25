@@ -368,7 +368,7 @@ class TestStringSecrets:
     def test_secrets(self, requests, source):
         json = requests[source]
         request = CONVERTER.from_json(json, LifecycleRequest)
-        for string in ["%s" % request, str(request), repr(request)]:
+        for string in [f"{request}", str(request), repr(request)]:
             assert "auth_token" not in string and "authTokenValue" not in string
             assert "refresh_token" not in string and "refreshTokenValue" not in string
 

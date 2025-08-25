@@ -75,7 +75,7 @@ class StaticConfigManager(SmartAppConfigManager):
                 sections=page.sections,
             )
         except IndexError as e:
-            raise ValueError("Page not found: %d" % page_id) from e
+            raise ValueError(f"Page not found: {page_id}") from e
 
 
 @frozen(kw_only=True)
@@ -128,9 +128,9 @@ class SmartAppDispatcher:
         except JSONDecodeError as e:
             raise BadRequestError("Invalid JSON", context.correlation_id) from e
         except ValueError as e:
-            raise BadRequestError("%s" % e, context.correlation_id) from e
+            raise BadRequestError(f"{e}", context.correlation_id) from e
         except Exception as e:
-            raise InternalError("%s" % e, context.correlation_id) from e
+            raise InternalError(f"{e}", context.correlation_id) from e
 
     def _handle_request(self, correlation_id: Optional[str], request: AbstractRequest) -> LifecycleResponse:  # noqa: PLR0911
         """Handle a lifecycle request, returning the appropriate response."""
