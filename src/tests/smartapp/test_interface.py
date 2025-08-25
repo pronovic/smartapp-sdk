@@ -93,17 +93,17 @@ class TestEvent:
     @pytest.mark.parametrize(
         "event_type,attribute",
         [
-            (EventType.DEVICE_COMMANDS_EVENT, "device_commands_event"),
-            (EventType.DEVICE_EVENT, "device_event"),
-            (EventType.DEVICE_HEALTH_EVENT, "device_health_event"),
-            (EventType.DEVICE_LIFECYCLE_EVENT, "device_lifecycle_event"),
-            (EventType.HUB_HEALTH_EVENT, "hub_health_event"),
-            (EventType.INSTALLED_APP_LIFECYCLE_EVENT, "installed_app_lifecycle_event"),
-            (EventType.MODE_EVENT, "mode_event"),
-            (EventType.SCENE_LIFECYCLE_EVENT, "scene_lifecycle_event"),
-            (EventType.SECURITY_ARM_STATE_EVENT, "security_arm_state_event"),
-            (EventType.TIMER_EVENT, "timer_event"),
-            (EventType.WEATHER_EVENT, "weather_event"),
+            [EventType.DEVICE_COMMANDS_EVENT, "device_commands_event"],
+            [EventType.DEVICE_EVENT, "device_event"],
+            [EventType.DEVICE_HEALTH_EVENT, "device_health_event"],
+            [EventType.DEVICE_LIFECYCLE_EVENT, "device_lifecycle_event"],
+            [EventType.HUB_HEALTH_EVENT, "hub_health_event"],
+            [EventType.INSTALLED_APP_LIFECYCLE_EVENT, "installed_app_lifecycle_event"],
+            [EventType.MODE_EVENT, "mode_event"],
+            [EventType.SCENE_LIFECYCLE_EVENT, "scene_lifecycle_event"],
+            [EventType.SECURITY_ARM_STATE_EVENT, "security_arm_state_event"],
+            [EventType.TIMER_EVENT, "timer_event"],
+            [EventType.WEATHER_EVENT, "weather_event"],
         ],
     )
     def test_for_type(self, event_type, attribute):
