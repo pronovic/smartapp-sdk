@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=line-too-long,too-many-lines,too-many-positional-arguments,too-many-instance-attributes:
 
 """
 Classes that are part of the SmartApp interface.
@@ -379,7 +378,7 @@ class Event:
     weather_data: Optional[Dict[str, Any]] = None
     air_quality_data: Optional[Dict[str, Any]] = None
 
-    def for_type(self, event_type: EventType) -> Optional[Dict[str, Any]]:  # pylint: disable=too-many-return-statements
+    def for_type(self, event_type: EventType) -> Optional[Dict[str, Any]]:
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
             return self.device_commands_event
@@ -1015,7 +1014,6 @@ class SmartAppDefinition:
     config_pages: Optional[List[SmartAppConfigPage]]
 
 
-# pylint: disable=redefined-builtin,unused-argument:
 # noinspection PyShadowingBuiltins,PyMethodMayBeStatic
 class SmartAppConfigManager(ABC):
     """

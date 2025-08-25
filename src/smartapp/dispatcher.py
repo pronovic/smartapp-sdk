@@ -128,7 +128,7 @@ class SmartAppDispatcher:
             raise BadRequestError("Invalid JSON", context.correlation_id) from e
         except ValueError as e:
             raise BadRequestError("%s" % e, context.correlation_id) from e
-        except Exception as e:  # pylint: disable=broad-except:
+        except Exception as e:
             raise InternalError("%s" % e, context.correlation_id) from e
 
     def _handle_request(self, correlation_id: Optional[str], request: AbstractRequest) -> LifecycleResponse:

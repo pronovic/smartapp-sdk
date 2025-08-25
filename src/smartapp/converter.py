@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-# pylint: disable=line-too-long:
 
 """
 Converter to serialize and deserialize lifecycle objects to various formats.
@@ -41,7 +40,7 @@ DATETIME_MS_EPOCH = "1970-01-01T00:00:00.000Z"  # date of the UNIX epoch, which 
 DATETIME_MS_LEN = len("YYYY-MM-DDTHH:MM:SS.SSSZ")  # like "2017-09-13T04:18:12.992Z"
 DATETIME_MS_FORMAT = "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]"
 
-T = TypeVar("T")  # pylint: disable=invalid-name:
+T = TypeVar("T")
 
 
 # Configure SafeDumper to handle Enum values
