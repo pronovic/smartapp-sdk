@@ -4,6 +4,7 @@
 """
 Manage the requests and responses that are part of the SmartApp lifecycle.
 """
+
 import logging
 from json import JSONDecodeError
 from typing import Optional, Union

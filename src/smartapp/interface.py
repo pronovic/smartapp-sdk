@@ -1006,6 +1006,7 @@ class SmartAppDefinition:
         permissions(List[str]): Permissions that the SmartApp requires
         config_pages(List[SmartAppConfigPage]): Configuration pages that the SmartApp will offer users
     """
+
     id: str
     name: str
     description: str
