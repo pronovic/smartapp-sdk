@@ -108,7 +108,7 @@ class SignatureVerifier:
         return self.context.body
 
     @method.default
-    def _default_method(self) -> str:
+    def _default_method(self) -> str:  # noqa: PLR6301
         return "POST"  # this is the only method ever used by the SmartApp interface
 
     @path.default

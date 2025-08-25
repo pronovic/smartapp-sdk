@@ -103,7 +103,7 @@ class StandardConverter(GenConverter):
         """Deserialize an object from YAML."""
         return self.structure(yaml.safe_load(data), cls)
 
-    def _to_camel_case(self, name: str) -> str:
+    def _to_camel_case(self, name: str) -> str:  # noqa: PLR6301
         """Convert a snake_case attribute name to camelCase instead."""
         components = name.split("_")
         return components[0] + "".join(x.title() for x in components[1:])
@@ -133,11 +133,11 @@ class SmartAppConverter(StandardConverter):
         self.register_structure_hook(ConfigSetting, self._structure_config_setting)
         self.register_structure_hook(LifecycleRequest, self._structure_request)
 
-    def _unstructure_datetime(self, datetime: Arrow) -> str:
+    def _unstructure_datetime(self, datetime: Arrow) -> str:  # noqa: PLR6301
         """Serialize an Arrow datetime to a string."""
         return serialize_datetime(datetime)
 
-    def _structure_datetime(self, datetime: str, _: Type[Arrow]) -> Arrow:
+    def _structure_datetime(self, datetime: str, _: Type[Arrow]) -> Arrow:  # noqa: PLR6301
         """Deserialize a string into an Arrow datetime."""
         return deserialize_datetime(datetime)
 

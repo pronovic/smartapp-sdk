@@ -1043,7 +1043,7 @@ class SmartAppConfigManager(ABC):
     def handle_page(self, request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
         """Handle a CONFIGURATION PAGE lifecycle request."""
 
-    def build_init_response(
+    def build_init_response(  # noqa: PLR6301
         self,
         id: str,  # noqa: A002
         name: str,
@@ -1064,7 +1064,7 @@ class SmartAppConfigManager(ABC):
             )
         )
 
-    def build_page_response(  # noqa: PLR0913,PLR0917
+    def build_page_response(  # noqa: PLR0913,PLR0917,PLR6301
         self,
         page_id: int,
         name: str,
