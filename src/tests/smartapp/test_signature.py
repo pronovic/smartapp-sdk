@@ -1,5 +1,4 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
-from typing import Optional
 from unittest.mock import patch
 
 import pytest
@@ -177,7 +176,7 @@ content-length: 18
 TIMEOUT_MATCHER = matchers.request_kwargs_matcher({"timeout": 5.0})
 
 
-def build_config(clock_skew_sec: Optional[int] = CLOCK_SKEW) -> SmartAppDispatcherConfig:
+def build_config(clock_skew_sec: int | None = CLOCK_SKEW) -> SmartAppDispatcherConfig:
     """Build configuration to test with."""
     return SmartAppDispatcherConfig(
         check_signatures=True,

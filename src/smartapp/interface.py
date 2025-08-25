@@ -25,7 +25,7 @@ Classes that are part of the SmartApp interface.
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Mapping
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from arrow import Arrow
 from attrs import field, frozen
@@ -135,7 +135,7 @@ class AbstractSetting(ABC):
     id: str
     name: str
     description: str
-    required: Optional[bool] = False
+    required: bool | None = False
 
 
 @frozen(kw_only=True)
@@ -186,8 +186,8 @@ class EnumSetting(AbstractSetting):
 
     type: ConfigSettingType = ConfigSettingType.ENUM
     multiple: bool
-    options: Optional[list[EnumOption]] = None
-    grouped_options: Optional[list[EnumOptionGroup]] = None
+    options: list[EnumOption] | None = None
+    grouped_options: list[EnumOptionGroup] | None = None
 
 
 @frozen(kw_only=True)
@@ -359,23 +359,23 @@ class InstalledApp:
 class Event:
     """Holds the triggered event, one of several different attributes depending on event type."""
 
-    event_time: Optional[Arrow] = None
+    event_time: Arrow | None = None
     event_type: EventType
-    device_event: Optional[dict[str, Any]] = None
-    device_lifecycle_event: Optional[dict[str, Any]] = None
-    device_health_event: Optional[dict[str, Any]] = None
-    device_commands_event: Optional[dict[str, Any]] = None
-    mode_event: Optional[dict[str, Any]] = None
-    timer_event: Optional[dict[str, Any]] = None
-    scene_lifecycle_event: Optional[dict[str, Any]] = None
-    security_arm_state_event: Optional[dict[str, Any]] = None
-    hub_health_event: Optional[dict[str, Any]] = None
-    installed_app_lifecycle_event: Optional[dict[str, Any]] = None
-    weather_event: Optional[dict[str, Any]] = None
-    weather_data: Optional[dict[str, Any]] = None
-    air_quality_data: Optional[dict[str, Any]] = None
+    device_event: dict[str, Any] | None = None
+    device_lifecycle_event: dict[str, Any] | None = None
+    device_health_event: dict[str, Any] | None = None
+    device_commands_event: dict[str, Any] | None = None
+    mode_event: dict[str, Any] | None = None
+    timer_event: dict[str, Any] | None = None
+    scene_lifecycle_event: dict[str, Any] | None = None
+    security_arm_state_event: dict[str, Any] | None = None
+    hub_health_event: dict[str, Any] | None = None
+    installed_app_lifecycle_event: dict[str, Any] | None = None
+    weather_event: dict[str, Any] | None = None
+    weather_data: dict[str, Any] | None = None
+    air_quality_data: dict[str, Any] | None = None
 
-    def for_type(self, event_type: EventType) -> Optional[dict[str, Any]]:  # noqa: PLR0911
+    def for_type(self, event_type: EventType) -> dict[str, Any] | None:  # noqa: PLR0911
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
             return self.device_commands_event
@@ -453,8 +453,8 @@ class ConfigPage:
 
     page_id: str
     name: str
-    previous_page_id: Optional[str]
-    next_page_id: Optional[str]
+    previous_page_id: str | None
+    next_page_id: str | None
     complete: bool
     sections: list[ConfigSection]
 
@@ -518,7 +518,7 @@ class UpdateData:
     auth_token: str = field(repr=False)
     refresh_token: str = field(repr=False)
     installed_app: InstalledApp
-    previous_config: Optional[dict[str, list[ConfigValue]]] = None
+    previous_config: dict[str, list[ConfigValue]] | None = None
     previous_permissions: list[str] = field(factory=list)
 
     def token(self) -> str:
@@ -605,7 +605,7 @@ class EventData:
             if event.event_type == event_type and event.for_type(event_type) is not None
         ]
 
-    def filter(self, event_type: EventType, predicate: Optional[Callable[[dict[str, Any]], bool]] = None) -> list[dict[str, Any]]:
+    def filter(self, event_type: EventType, predicate: Callable[[dict[str, Any]], bool] | None = None) -> list[dict[str, Any]]:
         """Apply a filter to a set of events with a particular event type."""
         return list(filter(predicate, self.for_type(event_type)))
 
@@ -868,7 +868,7 @@ class SmartAppError(Exception):
     """An error tied to the SmartApp implementation."""
 
     message: str
-    correlation_id: Optional[str] = None
+    correlation_id: str | None = None
 
 
 @frozen
@@ -906,7 +906,7 @@ class SmartAppDispatcherConfig:
     """
 
     check_signatures: bool = True
-    clock_skew_sec: Optional[int] = 300
+    clock_skew_sec: int | None = 300
     keyserver_url: str = "https://key.smartthings.com"
     log_json: bool = False
 
@@ -945,31 +945,31 @@ class SmartAppEventHandler(ABC):
     """
 
     @abstractmethod
-    def handle_confirmation(self, correlation_id: Optional[str], request: ConfirmationRequest) -> None:
+    def handle_confirmation(self, correlation_id: str | None, request: ConfirmationRequest) -> None:
         """Handle a CONFIRMATION lifecycle request"""
 
     @abstractmethod
-    def handle_configuration(self, correlation_id: Optional[str], request: ConfigurationRequest) -> None:
+    def handle_configuration(self, correlation_id: str | None, request: ConfigurationRequest) -> None:
         """Handle a CONFIGURATION lifecycle request."""
 
     @abstractmethod
-    def handle_install(self, correlation_id: Optional[str], request: InstallRequest) -> None:
+    def handle_install(self, correlation_id: str | None, request: InstallRequest) -> None:
         """Handle an INSTALL lifecycle request."""
 
     @abstractmethod
-    def handle_update(self, correlation_id: Optional[str], request: UpdateRequest) -> None:
+    def handle_update(self, correlation_id: str | None, request: UpdateRequest) -> None:
         """Handle an UPDATE lifecycle request."""
 
     @abstractmethod
-    def handle_uninstall(self, correlation_id: Optional[str], request: UninstallRequest) -> None:
+    def handle_uninstall(self, correlation_id: str | None, request: UninstallRequest) -> None:
         """Handle an UNINSTALL lifecycle request."""
 
     @abstractmethod
-    def handle_oauth_callback(self, correlation_id: Optional[str], request: OauthCallbackRequest) -> None:
+    def handle_oauth_callback(self, correlation_id: str | None, request: OauthCallbackRequest) -> None:
         """Handle an OAUTH_CALLBACK lifecycle request."""
 
     @abstractmethod
-    def handle_event(self, correlation_id: Optional[str], request: EventRequest) -> None:
+    def handle_event(self, correlation_id: str | None, request: EventRequest) -> None:
         """Handle an EVENT lifecycle request."""
 
 
@@ -1010,7 +1010,7 @@ class SmartAppDefinition:
     description: str
     target_url: str
     permissions: list[str]
-    config_pages: Optional[list[SmartAppConfigPage]]
+    config_pages: list[SmartAppConfigPage] | None
 
 
 # noinspection PyShadowingBuiltins,PyMethodMayBeStatic
@@ -1067,8 +1067,8 @@ class SmartAppConfigManager(ABC):
         self,
         page_id: int,
         name: str,
-        previous_page_id: Optional[int],
-        next_page_id: Optional[int],
+        previous_page_id: int | None,
+        next_page_id: int | None,
         complete: bool,  # noqa: FBT001
         sections: list[ConfigSection],
     ) -> ConfigurationPageResponse:
@@ -1115,18 +1115,18 @@ class SmartAppRequestContext:
         return {key.lower(): value for (key, value) in self.headers.items()} if self.headers else {}
 
     @correlation_id.default
-    def _default_correlation_id(self) -> Optional[str]:
+    def _default_correlation_id(self) -> str | None:
         return self.header(CORRELATION_ID_HEADER)
 
     @signature.default
-    def _default_signature(self) -> Optional[str]:
+    def _default_signature(self) -> str | None:
         return self.header(AUTHORIZATION_HEADER)
 
     @date.default
-    def _default_date(self) -> Optional[str]:
+    def _default_date(self) -> str | None:
         return self.header(DATE_HEADER)
 
-    def header(self, name: str) -> Optional[str]:
+    def header(self, name: str) -> str | None:
         """Return the named header case-insensitively, or None if not found."""
         if name.lower() not in self.normalized:
             return None

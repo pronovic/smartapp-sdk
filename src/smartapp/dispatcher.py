@@ -6,7 +6,6 @@ Manage the requests and responses that are part of the SmartApp lifecycle.
 
 import logging
 from json import JSONDecodeError
-from typing import Optional
 
 from attr import field, frozen
 
@@ -132,7 +131,7 @@ class SmartAppDispatcher:
         except Exception as e:
             raise InternalError(f"{e}", context.correlation_id) from e
 
-    def _handle_request(self, correlation_id: Optional[str], request: AbstractRequest) -> LifecycleResponse:  # noqa: PLR0911
+    def _handle_request(self, correlation_id: str | None, request: AbstractRequest) -> LifecycleResponse:  # noqa: PLR0911
         """Handle a lifecycle request, returning the appropriate response."""
         if isinstance(request, ConfirmationRequest):
             self.event_handler.handle_confirmation(correlation_id, request)

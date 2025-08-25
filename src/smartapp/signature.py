@@ -37,7 +37,6 @@ import urllib.parse
 from base64 import b64decode
 from collections.abc import Mapping
 from functools import lru_cache
-from typing import Optional
 
 import requests
 from arrow import Arrow
@@ -83,7 +82,7 @@ class SignatureVerifier:
     context: SmartAppRequestContext = field(repr=False)  # because context.body may contain secrets
     config: SmartAppDispatcherConfig = field()
     definition: SmartAppDefinition = field()
-    correlation_id: Optional[str] = field(init=False)
+    correlation_id: str | None = field(init=False)
     body: str = field(init=False)
     content_length: int = field(init=False)
     method: str = field(init=False)
@@ -100,7 +99,7 @@ class SignatureVerifier:
     signing_string: str = field(init=False)
 
     @correlation_id.default
-    def _default_correlation_id(self) -> Optional[str]:
+    def _default_correlation_id(self) -> str | None:
         return self.context.correlation_id
 
     @body.default
@@ -135,7 +134,7 @@ class SignatureVerifier:
     @signing_attributes.default
     def _default_signing_attributes(self) -> Mapping[str, str]:
         # We're parsing a string like: 'Signature keyId="key",algorithm="rsa-sha256",headers="date",signature="xxx"'
-        def attribute(name: str, default: Optional[str] = None) -> str:
+        def attribute(name: str, default: str | None = None) -> str:
             if not self.authorization.startswith("Signature "):
                 raise SignatureError("Authorization header is not a signature", self.correlation_id)
             pattern = rf"({name}=\")([^\"]+?)(\")"
