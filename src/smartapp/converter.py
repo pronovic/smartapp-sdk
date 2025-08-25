@@ -60,7 +60,7 @@ def deserialize_datetime(datetime: str) -> Arrow:
     # milliseconds.  Further, some requests come with a UNIX epoch date (1970-01-01) which
     # I guess is probably what happens when no date was set by the device.  I'm choosing
     # to interpret that as "now".
-    if datetime in (DATETIME_MS_EPOCH, DATETIME_SEC_EPOCH):
+    if datetime in {DATETIME_MS_EPOCH, DATETIME_SEC_EPOCH}:
         return arrow_now()
     elif len(datetime) == DATETIME_MS_LEN:
         return arrow_get(datetime, DATETIME_MS_FORMAT, tzinfo=DATETIME_ZONE)
