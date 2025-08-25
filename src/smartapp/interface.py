@@ -1129,7 +1129,7 @@ class SmartAppRequestContext:
 
     def header(self, name: str) -> Optional[str]:
         """Return the named header case-insensitively, or None if not found."""
-        if not name.lower() in self.normalized:
+        if name.lower() not in self.normalized:
             return None
         value = self.normalized[name.lower()]
         if not value or not value.strip():

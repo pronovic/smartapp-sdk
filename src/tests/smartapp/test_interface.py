@@ -153,11 +153,11 @@ class TestEventRequest:
         request = CONVERTER.from_json(data, EventRequest)
         for event_type in [event_type for event_type in EventType if event_type != EventType.DEVICE_EVENT]:
             assert request.event_data.filter(event_type) == []
-            assert request.event_data.filter(event_type, predicate=lambda x: False) == []
-            assert request.event_data.filter(event_type, predicate=lambda x: True) == []
+            assert request.event_data.filter(event_type, predicate=lambda _: False) == []
+            assert request.event_data.filter(event_type, predicate=lambda _: True) == []
         assert request.event_data.filter(EventType.DEVICE_EVENT) == [DEVICE_EVENT]
-        assert request.event_data.filter(EventType.DEVICE_EVENT, predicate=lambda x: False) == []
-        assert request.event_data.filter(EventType.DEVICE_EVENT, predicate=lambda x: True) == [DEVICE_EVENT]
+        assert request.event_data.filter(EventType.DEVICE_EVENT, predicate=lambda _: False) == []
+        assert request.event_data.filter(EventType.DEVICE_EVENT, predicate=lambda _: True) == [DEVICE_EVENT]
         assert request.event_data.filter(
             EventType.DEVICE_EVENT, predicate=lambda x: x["deviceId"] == "6f5ea629-4c05-4a90-a244-cc129b0a80c3"
         ) == [DEVICE_EVENT]
@@ -168,11 +168,11 @@ class TestEventRequest:
         request = CONVERTER.from_json(data, EventRequest)
         for event_type in [event_type for event_type in EventType if event_type != EventType.TIMER_EVENT]:
             assert request.event_data.filter(event_type) == []
-            assert request.event_data.filter(event_type, predicate=lambda x: False) == []
-            assert request.event_data.filter(event_type, predicate=lambda x: True) == []
+            assert request.event_data.filter(event_type, predicate=lambda _: False) == []
+            assert request.event_data.filter(event_type, predicate=lambda _: True) == []
         assert request.event_data.filter(EventType.TIMER_EVENT) == [TIMER_EVENT]
-        assert request.event_data.filter(EventType.TIMER_EVENT, predicate=lambda x: False) == []
-        assert request.event_data.filter(EventType.TIMER_EVENT, predicate=lambda x: True) == [TIMER_EVENT]
+        assert request.event_data.filter(EventType.TIMER_EVENT, predicate=lambda _: False) == []
+        assert request.event_data.filter(EventType.TIMER_EVENT, predicate=lambda _: True) == [TIMER_EVENT]
         assert request.event_data.filter(EventType.TIMER_EVENT, predicate=lambda x: x["name"] == "lights_off_timeout") == [
             TIMER_EVENT
         ]
