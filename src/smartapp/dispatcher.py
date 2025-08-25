@@ -11,8 +11,8 @@ from typing import Optional, Union
 
 from attr import field, frozen
 
-from .converter import CONVERTER
-from .interface import (
+from smartapp.converter import CONVERTER
+from smartapp.interface import (
     AbstractRequest,
     BadRequestError,
     ConfigPhase,
@@ -41,7 +41,7 @@ from .interface import (
     UpdateRequest,
     UpdateResponse,
 )
-from .signature import SignatureVerifier
+from smartapp.signature import SignatureVerifier
 
 
 @frozen(kw_only=True)

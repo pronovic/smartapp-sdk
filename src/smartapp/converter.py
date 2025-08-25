@@ -18,7 +18,7 @@ from cattrs import GenConverter
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 from yaml import SafeDumper
 
-from .interface import (
+from smartapp.interface import (
     CONFIG_SETTING_BY_TYPE,
     CONFIG_VALUE_BY_TYPE,
     REQUEST_BY_PHASE,
