@@ -171,7 +171,6 @@ ignore = [
   # Exclusions of specific rules that we want to work toward being compliant with
   "FURB101",
   "LOG015",
-  "PGH003",
 ]
 
 [tool.ruff.lint.per-file-ignores]

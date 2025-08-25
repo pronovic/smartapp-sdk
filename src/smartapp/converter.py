@@ -107,14 +107,14 @@ class StandardConverter(GenConverter):
         return components[0] + "".join(x.title() for x in components[1:])
 
     # I can't figure out any way to declare this so MyPy is happy, but it does function properly
-    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore # noqa: ANN202
+    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # noqa: ANN202
         """Automatic snake_case to camelCase conversion when serializing any class."""
-        return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
+        return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore[arg-type]
 
     # I can't figure out any way to declare this so MyPy is happy, but it does function properly
-    def _structure_camel_case(self, cls: type[T]):  # type: ignore # noqa: ANN202
+    def _structure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # noqa: ANN202
         """Automatic snake_case to camelCase conversion when deserializing any class."""
-        return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore
+        return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore[arg-type]
 
 
 # noinspection PyMethodMayBeStatic
@@ -151,7 +151,7 @@ class SmartAppConverter(StandardConverter):
         """Deserialize input data into a ConfigSetting of the proper type."""
         try:
             value_type = ConfigSettingType[data["type"]]
-            return self.structure(data, CONFIG_SETTING_BY_TYPE[value_type])  # type: ignore
+            return self.structure(data, CONFIG_SETTING_BY_TYPE[value_type])  # type: ignore[arg-type]
         except KeyError as e:
             raise ValueError("Unknown config setting type") from e
 
@@ -159,7 +159,7 @@ class SmartAppConverter(StandardConverter):
         """Deserialize input data into a LifecycleRequest of the proper type."""
         try:
             phase = LifecyclePhase[data["lifecycle"]]
-            return self.structure(data, REQUEST_BY_PHASE[phase])  # type: ignore
+            return self.structure(data, REQUEST_BY_PHASE[phase])  # type: ignore[arg-type]
         except KeyError as e:
             raise ValueError("Unknown lifecycle phase") from e
 

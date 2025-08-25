@@ -336,11 +336,11 @@ class InstalledApp:
 
     def as_devices(self, key: str) -> list[DeviceValue]:
         """Return a list of devices for a named configuration value."""
-        return [item.device_config for item in self.config[key]]  # type: ignore
+        return [item.device_config for item in self.config[key]]  # type: ignore[union-attr]
 
     def as_str(self, key: str) -> str:
         """Return a named configuration value, interpreted as a string"""
-        return self.config[key][0].string_config.value  # type: ignore
+        return self.config[key][0].string_config.value  # type: ignore[union-attr]
 
     def as_bool(self, key: str) -> bool:
         """Return a named configuration value, interpreted as a boolean"""
@@ -600,7 +600,7 @@ class EventData:
     def for_type(self, event_type: EventType) -> list[dict[str, Any]]:
         """Get all events for a particular event type, possibly empty."""
         return [
-            event.for_type(event_type)  # type: ignore
+            event.for_type(event_type)  # type: ignore[misc]
             for event in self.events
             if event.event_type == event_type and event.for_type(event_type) is not None
         ]

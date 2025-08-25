@@ -113,7 +113,7 @@ class SmartAppDispatcher:
         try:
             if self.config.log_json:  # put this right at the top, so we've got an opportunity to debug unexpected data
                 logging.debug("[%s] Raw JSON: \n%s", context.correlation_id, context.body)  # note: may contain secrets!
-            request: LifecycleRequest = CONVERTER.from_json(context.body, LifecycleRequest)  # type: ignore
+            request: LifecycleRequest = CONVERTER.from_json(context.body, LifecycleRequest)  # type: ignore[arg-type]
             logging.info("[%s] Handling %s request", context.correlation_id, request.lifecycle)
             logging.debug("[%s] Date: %s", context.correlation_id, context.date)
             logging.debug("[%s] Signature: %s", context.correlation_id, context.signature)  # note: signature not confidential
