@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: set ft=python ts=4 sw=4 expandtab:
-from typing import Dict, Optional
+from typing import Optional
 from unittest.mock import patch
 
 import pytest
@@ -199,7 +199,7 @@ def build_definition(target_url: str = SMARTAPP_URL) -> SmartAppDefinition:
     )
 
 
-def build_context(headers: Dict[str, str]) -> SmartAppRequestContext:
+def build_context(headers: dict[str, str]) -> SmartAppRequestContext:
     """Build a request context to test with."""
     return SmartAppRequestContext(body=BODY, headers=headers)
 

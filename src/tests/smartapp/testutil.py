@@ -6,7 +6,6 @@ Unit test utilities.
 """
 
 import os
-from typing import Dict
 
 
 def load_file(path: str) -> str:
@@ -15,7 +14,7 @@ def load_file(path: str) -> str:
         return r.read()
 
 
-def load_dir(path: str) -> Dict[str, str]:
+def load_dir(path: str) -> dict[str, str]:
     """Load text of all files in a directory into a dict."""
     data = {}
     for f in os.listdir(path):

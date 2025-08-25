@@ -25,7 +25,7 @@ Classes that are part of the SmartApp interface.
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Callable, Dict, List, Mapping, Optional, Union
+from typing import Any, Callable, Mapping, Optional, Union
 
 from arrow import Arrow
 from attrs import field, frozen
@@ -144,8 +144,8 @@ class DeviceSetting(AbstractSetting):
 
     type: ConfigSettingType = ConfigSettingType.DEVICE
     multiple: bool
-    capabilities: List[str]  # note that this is treated as AND - you'll get devices that have all capabilities
-    permissions: List[str]
+    capabilities: list[str]  # note that this is treated as AND - you'll get devices that have all capabilities
+    permissions: list[str]
 
 
 @frozen(kw_only=True)
@@ -177,7 +177,7 @@ class EnumOptionGroup:
     """A group of options within an ENUM setting"""
 
     name: str
-    options: List[EnumOption]
+    options: list[EnumOption]
 
 
 @frozen(kw_only=True)
@@ -186,8 +186,8 @@ class EnumSetting(AbstractSetting):
 
     type: ConfigSettingType = ConfigSettingType.ENUM
     multiple: bool
-    options: Optional[List[EnumOption]] = None
-    grouped_options: Optional[List[EnumOptionGroup]] = None
+    options: Optional[list[EnumOption]] = None
+    grouped_options: Optional[list[EnumOptionGroup]] = None
 
 
 @frozen(kw_only=True)
@@ -334,10 +334,10 @@ class InstalledApp:
 
     installed_app_id: str
     location_id: str
-    config: Dict[str, List[ConfigValue]]
-    permissions: List[str] = field(factory=list)
+    config: dict[str, list[ConfigValue]]
+    permissions: list[str] = field(factory=list)
 
-    def as_devices(self, key: str) -> List[DeviceValue]:
+    def as_devices(self, key: str) -> list[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return [item.device_config for item in self.config[key]]  # type: ignore
 
@@ -364,21 +364,21 @@ class Event:
 
     event_time: Optional[Arrow] = None
     event_type: EventType
-    device_event: Optional[Dict[str, Any]] = None
-    device_lifecycle_event: Optional[Dict[str, Any]] = None
-    device_health_event: Optional[Dict[str, Any]] = None
-    device_commands_event: Optional[Dict[str, Any]] = None
-    mode_event: Optional[Dict[str, Any]] = None
-    timer_event: Optional[Dict[str, Any]] = None
-    scene_lifecycle_event: Optional[Dict[str, Any]] = None
-    security_arm_state_event: Optional[Dict[str, Any]] = None
-    hub_health_event: Optional[Dict[str, Any]] = None
-    installed_app_lifecycle_event: Optional[Dict[str, Any]] = None
-    weather_event: Optional[Dict[str, Any]] = None
-    weather_data: Optional[Dict[str, Any]] = None
-    air_quality_data: Optional[Dict[str, Any]] = None
+    device_event: Optional[dict[str, Any]] = None
+    device_lifecycle_event: Optional[dict[str, Any]] = None
+    device_health_event: Optional[dict[str, Any]] = None
+    device_commands_event: Optional[dict[str, Any]] = None
+    mode_event: Optional[dict[str, Any]] = None
+    timer_event: Optional[dict[str, Any]] = None
+    scene_lifecycle_event: Optional[dict[str, Any]] = None
+    security_arm_state_event: Optional[dict[str, Any]] = None
+    hub_health_event: Optional[dict[str, Any]] = None
+    installed_app_lifecycle_event: Optional[dict[str, Any]] = None
+    weather_event: Optional[dict[str, Any]] = None
+    weather_data: Optional[dict[str, Any]] = None
+    air_quality_data: Optional[dict[str, Any]] = None
 
-    def for_type(self, event_type: EventType) -> Optional[Dict[str, Any]]:  # noqa: PLR0911
+    def for_type(self, event_type: EventType) -> Optional[dict[str, Any]]:  # noqa: PLR0911
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
             return self.device_commands_event
@@ -420,7 +420,7 @@ class ConfigInit:
     id: str
     name: str
     description: str
-    permissions: List[str]
+    permissions: list[str]
     first_page_id: str
 
 
@@ -432,7 +432,7 @@ class ConfigRequestData:
     phase: ConfigPhase
     page_id: str
     previous_page_id: str
-    config: Dict[str, List[ConfigValue]]
+    config: dict[str, list[ConfigValue]]
 
 
 @frozen(kw_only=True)
@@ -447,7 +447,7 @@ class ConfigSection:
     """A section within a configuration page."""
 
     name: str
-    settings: List[ConfigSetting]
+    settings: list[ConfigSetting]
 
 
 @frozen(kw_only=True)
@@ -459,7 +459,7 @@ class ConfigPage:
     previous_page_id: Optional[str]
     next_page_id: Optional[str]
     complete: bool
-    sections: List[ConfigSection]
+    sections: list[ConfigSection]
 
 
 @frozen(kw_only=True)
@@ -491,7 +491,7 @@ class InstallData:
         """Return the installed location id associated with this request."""
         return self.installed_app.location_id
 
-    def as_devices(self, key: str) -> List[DeviceValue]:
+    def as_devices(self, key: str) -> list[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return self.installed_app.as_devices(key)
 
@@ -521,8 +521,8 @@ class UpdateData:
     auth_token: str = field(repr=False)
     refresh_token: str = field(repr=False)
     installed_app: InstalledApp
-    previous_config: Optional[Dict[str, List[ConfigValue]]] = None
-    previous_permissions: List[str] = field(factory=list)
+    previous_config: Optional[dict[str, list[ConfigValue]]] = None
+    previous_permissions: list[str] = field(factory=list)
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
@@ -536,7 +536,7 @@ class UpdateData:
         """Return the installed location id associated with this request."""
         return self.installed_app.location_id
 
-    def as_devices(self, key: str) -> List[DeviceValue]:
+    def as_devices(self, key: str) -> list[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return self.installed_app.as_devices(key)
 
@@ -586,7 +586,7 @@ class EventData:
 
     auth_token: str = field(repr=False)
     installed_app: InstalledApp
-    events: List[Event]
+    events: list[Event]
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
@@ -600,7 +600,7 @@ class EventData:
         """Return the installed location id associated with this request."""
         return self.installed_app.location_id
 
-    def for_type(self, event_type: EventType) -> List[Dict[str, Any]]:
+    def for_type(self, event_type: EventType) -> list[dict[str, Any]]:
         """Get all events for a particular event type, possibly empty."""
         return [
             event.for_type(event_type)  # type: ignore
@@ -608,7 +608,7 @@ class EventData:
             if event.event_type == event_type and event.for_type(event_type) is not None
         ]
 
-    def filter(self, event_type: EventType, predicate: Optional[Callable[[Dict[str, Any]], bool]] = None) -> List[Dict[str, Any]]:
+    def filter(self, event_type: EventType, predicate: Optional[Callable[[dict[str, Any]], bool]] = None) -> list[dict[str, Any]]:
         """Apply a filter to a set of events with a particular event type."""
         return list(filter(predicate, self.for_type(event_type)))
 
@@ -619,7 +619,7 @@ class ConfirmationRequest(AbstractRequest):
 
     app_id: str
     confirmation_data: ConfirmationData
-    settings: Dict[str, Any] = field(factory=dict)
+    settings: dict[str, Any] = field(factory=dict)
 
 
 @frozen(kw_only=True)
@@ -634,7 +634,7 @@ class ConfigurationRequest(AbstractRequest):
     """Request for CONFIGURATION phase"""
 
     configuration_data: ConfigRequestData
-    settings: Dict[str, Any] = field(factory=dict)
+    settings: dict[str, Any] = field(factory=dict)
 
 
 @frozen(kw_only=True)
@@ -656,7 +656,7 @@ class InstallRequest(AbstractRequest):
     """Request for INSTALL phase"""
 
     install_data: InstallData
-    settings: Dict[str, Any] = field(factory=dict)
+    settings: dict[str, Any] = field(factory=dict)
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
@@ -670,7 +670,7 @@ class InstallRequest(AbstractRequest):
         """Return the installed location id associated with this request."""
         return self.install_data.location_id()
 
-    def as_devices(self, key: str) -> List[DeviceValue]:
+    def as_devices(self, key: str) -> list[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return self.install_data.as_devices(key)
 
@@ -695,7 +695,7 @@ class InstallRequest(AbstractRequest):
 class InstallResponse:
     """Response for INSTALL phase"""
 
-    install_data: Dict[str, Any] = field(factory=dict)  # always empty in the response
+    install_data: dict[str, Any] = field(factory=dict)  # always empty in the response
 
 
 @frozen(kw_only=True)
@@ -703,7 +703,7 @@ class UpdateRequest(AbstractRequest):
     """Request for UPDATE phase"""
 
     update_data: UpdateData
-    settings: Dict[str, Any] = field(factory=dict)
+    settings: dict[str, Any] = field(factory=dict)
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
@@ -717,7 +717,7 @@ class UpdateRequest(AbstractRequest):
         """Return the installed location id associated with this request."""
         return self.update_data.location_id()
 
-    def as_devices(self, key: str) -> List[DeviceValue]:
+    def as_devices(self, key: str) -> list[DeviceValue]:
         """Return a list of devices for a named configuration value."""
         return self.update_data.as_devices(key)
 
@@ -742,7 +742,7 @@ class UpdateRequest(AbstractRequest):
 class UpdateResponse:
     """Response for UPDATE phase"""
 
-    update_data: Dict[str, Any] = field(factory=dict)  # always empty in the response
+    update_data: dict[str, Any] = field(factory=dict)  # always empty in the response
 
 
 @frozen(kw_only=True)
@@ -750,7 +750,7 @@ class UninstallRequest(AbstractRequest):
     """Request for UNINSTALL phase"""
 
     uninstall_data: UninstallData
-    settings: Dict[str, Any] = field(factory=dict)
+    settings: dict[str, Any] = field(factory=dict)
 
     def app_id(self) -> str:
         """Return the installed application id associated with this request."""
@@ -765,7 +765,7 @@ class UninstallRequest(AbstractRequest):
 class UninstallResponse:
     """Response for UNINSTALL phase"""
 
-    uninstall_data: Dict[str, Any] = field(factory=dict)  # always empty in the response
+    uninstall_data: dict[str, Any] = field(factory=dict)  # always empty in the response
 
 
 @frozen(kw_only=True)
@@ -779,7 +779,7 @@ class OauthCallbackRequest(AbstractRequest):
 class OauthCallbackResponse:
     """Response for OAUTH_CALLBACK phase"""
 
-    o_auth_callback_data: Dict[str, Any] = field(factory=dict)  # always empty in the response
+    o_auth_callback_data: dict[str, Any] = field(factory=dict)  # always empty in the response
 
 
 @frozen(kw_only=True)
@@ -787,7 +787,7 @@ class EventRequest(AbstractRequest):
     """Request for EVENT phase"""
 
     event_data: EventData
-    settings: Dict[str, Any] = field(factory=dict)
+    settings: dict[str, Any] = field(factory=dict)
 
     def token(self) -> str:
         """Return the auth token associated with this request."""
@@ -806,7 +806,7 @@ class EventRequest(AbstractRequest):
 class EventResponse:
     """Response for EVENT phase"""
 
-    event_data: Dict[str, Any] = field(factory=dict)  # always empty in the response
+    event_data: dict[str, Any] = field(factory=dict)  # always empty in the response
 
 
 LifecycleRequest = Union[
@@ -981,7 +981,7 @@ class SmartAppConfigPage:
     """
 
     page_name: str
-    sections: List[ConfigSection]
+    sections: list[ConfigSection]
 
 
 @frozen(kw_only=True)
@@ -1010,8 +1010,8 @@ class SmartAppDefinition:
     name: str
     description: str
     target_url: str
-    permissions: List[str]
-    config_pages: Optional[List[SmartAppConfigPage]]
+    permissions: list[str]
+    config_pages: Optional[list[SmartAppConfigPage]]
 
 
 # noinspection PyShadowingBuiltins,PyMethodMayBeStatic
@@ -1048,7 +1048,7 @@ class SmartAppConfigManager(ABC):
         id: str,  # noqa: A002
         name: str,
         description: str,
-        permissions: List[str],
+        permissions: list[str],
         first_page_id: int,
     ) -> ConfigurationInitResponse:
         """Build a ConfigurationInitResponse."""
@@ -1071,7 +1071,7 @@ class SmartAppConfigManager(ABC):
         previous_page_id: Optional[int],
         next_page_id: Optional[int],
         complete: bool,  # noqa: FBT001
-        sections: List[ConfigSection],
+        sections: list[ConfigSection],
     ) -> ConfigurationPageResponse:
         """Build a ConfigurationPageResponse."""
         return ConfigurationPageResponse(

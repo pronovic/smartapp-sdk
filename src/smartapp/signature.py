@@ -37,7 +37,7 @@ import re
 import urllib.parse
 from base64 import b64decode
 from functools import lru_cache
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 
 import requests
 from arrow import Arrow
@@ -154,7 +154,7 @@ class SignatureVerifier:
         }
 
     @signing_headers.default
-    def _default_signing_headers(self) -> List[str]:
+    def _default_signing_headers(self) -> list[str]:
         # We're parsing a string like "(request-target) date content-type digest" into a list
         return self.signing_attributes["headers"].strip().split(" ")
 

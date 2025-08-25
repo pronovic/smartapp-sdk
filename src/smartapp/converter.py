@@ -7,7 +7,7 @@ Converter to serialize and deserialize lifecycle objects to various formats.
 
 import json
 from enum import Enum
-from typing import Any, Dict, Type, TypeVar
+from typing import Any, TypeVar
 
 import yaml
 from arrow import Arrow
@@ -90,7 +90,7 @@ class StandardConverter(GenConverter):
         """Serialize an object to JSON."""
         return json.dumps(self.unstructure(obj), indent="  ")
 
-    def from_json(self, data: str, cls: Type[T]) -> T:
+    def from_json(self, data: str, cls: type[T]) -> T:
         """Deserialize an object from JSON."""
         return self.structure(json.loads(data), cls)
 
@@ -98,7 +98,7 @@ class StandardConverter(GenConverter):
         """Serialize an object to YAML."""
         return yaml.safe_dump(self.unstructure(obj), sort_keys=False)
 
-    def from_yaml(self, data: str, cls: Type[T]) -> T:
+    def from_yaml(self, data: str, cls: type[T]) -> T:
         """Deserialize an object from YAML."""
         return self.structure(yaml.safe_load(data), cls)
 
@@ -136,11 +136,11 @@ class SmartAppConverter(StandardConverter):
         """Serialize an Arrow datetime to a string."""
         return serialize_datetime(datetime)
 
-    def _structure_datetime(self, datetime: str, _: Type[Arrow]) -> Arrow:  # noqa: PLR6301
+    def _structure_datetime(self, datetime: str, _: type[Arrow]) -> Arrow:  # noqa: PLR6301
         """Deserialize a string into an Arrow datetime."""
         return deserialize_datetime(datetime)
 
-    def _structure_config_value(self, data: Dict[str, Any], _: Type[ConfigValue]) -> ConfigValue:
+    def _structure_config_value(self, data: dict[str, Any], _: type[ConfigValue]) -> ConfigValue:
         """Deserialize input data into a ConfigValue of the proper type."""
         try:
             value_type = ConfigValueType[data["valueType"]]
@@ -148,7 +148,7 @@ class SmartAppConverter(StandardConverter):
         except KeyError as e:
             raise ValueError("Unknown config value type") from e
 
-    def _structure_config_setting(self, data: Dict[str, Any], _: Type[ConfigSetting]) -> ConfigSetting:
+    def _structure_config_setting(self, data: dict[str, Any], _: type[ConfigSetting]) -> ConfigSetting:
         """Deserialize input data into a ConfigSetting of the proper type."""
         try:
             value_type = ConfigSettingType[data["type"]]
@@ -156,7 +156,7 @@ class SmartAppConverter(StandardConverter):
         except KeyError as e:
             raise ValueError("Unknown config setting type") from e
 
-    def _structure_request(self, data: Dict[str, Any], _: Type[LifecycleRequest]) -> LifecycleRequest:
+    def _structure_request(self, data: dict[str, Any], _: type[LifecycleRequest]) -> LifecycleRequest:
         """Deserialize input data into a LifecycleRequest of the proper type."""
         try:
             phase = LifecyclePhase[data["lifecycle"]]
