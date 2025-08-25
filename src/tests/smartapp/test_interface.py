@@ -5,7 +5,19 @@ import os
 import pytest
 
 from smartapp.converter import CONVERTER
-from smartapp.interface import *
+from smartapp.interface import (
+    BadRequestError,
+    DeviceValue,
+    Event,
+    EventRequest,
+    EventType,
+    InstallRequest,
+    InternalError,
+    SignatureError,
+    SmartAppError,
+    SmartAppRequestContext,
+    UpdateRequest,
+)
 from tests.smartapp.testutil import load_file
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
