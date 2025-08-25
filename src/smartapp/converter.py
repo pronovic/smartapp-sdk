@@ -5,6 +5,7 @@
 """
 Converter to serialize and deserialize lifecycle objects to various formats.
 """
+
 import json
 from enum import Enum
 from typing import Any, Dict, Type, TypeVar
