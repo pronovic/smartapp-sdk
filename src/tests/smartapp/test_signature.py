@@ -538,7 +538,7 @@ class TestRetrievePublicKey:
             )
             with pytest.raises(RetryError):
                 retrieve_public_key("https://whatever.com", "key-fails")
-                assert len(r.calls) == 5  # five calls are made because failures are not cached
+            assert len(r.calls) == 5  # five calls are made because failures are not cached
 
     def test_retrieve_public_key_retry(self):
         # Note that this test does use a leading slash for the key id
