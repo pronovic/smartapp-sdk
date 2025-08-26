@@ -43,8 +43,8 @@ license = "Apache-2.0"
 readme = "PyPI.md"
 dynamic = [ "classifiers", "version" ]
 dependencies = [
-   "attrs (>=24.2.0,<25.0.0)",
-   "cattrs (>=24.1.2,<25.0.0)",
+   "attrs (>=24.2.0)", # open-ended due to backwards-compatibility guarantee
+   "cattrs (>=24.1.2)", # open-ended due to backwards-compatibility guarantee
    "PyYAML (>=6.0.1,<7.0.0)",
    "pycryptodomex (>=3.19.0,<4.0.0)",
    "requests (>=2.31.0,<3.0.0)",
@@ -64,6 +64,7 @@ docs = [
 ]
 
 [tool.poetry.group.dev.dependencies]
+ruff = ">=0.12.10,<1.0.0"
 pytest = ">=8.0.2,<9.0.0"
 pytest-testdox = ">=3.1.0,<4.0.0"
 coverage = ">=7.4.4,<8.0.0"
@@ -73,7 +74,6 @@ colorama = ">=0.4.6,<1.0.0"
 types-PyYAML = ">=6.0.12.12,<7.0.0.0"
 types-requests = ">=2.31.0.8,<3.0.0.0"
 responses = ">=0.24.1,<1.0.0"
-ruff = "^0.12.10"
 
 [tool.coverage.paths]
 source = [ "src" ]
