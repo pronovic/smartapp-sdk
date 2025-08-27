@@ -172,7 +172,7 @@ class SignatureVerifier:
     def _default_algorithm(self) -> str:
         algorithm = self.signing_attributes["algorithm"]
         if algorithm != "rsa-sha256":
-            raise SignatureError("Algorithm not supported: %s" % algorithm, self.correlation_id)
+            raise SignatureError(f"Algorithm not supported: {algorithm}", self.correlation_id)
         return algorithm
 
     @signature.default
