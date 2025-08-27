@@ -119,7 +119,7 @@ class SignatureVerifier:
         parts = urllib.parse.urlsplit(self.definition.target_url)
         path = parts.path
         if parts.query:
-            path = "%s?%s" % (path, parts.query)
+            path = f"{path}?{parts.query}"
         return path
 
     @request_target.default
