@@ -150,8 +150,8 @@ class TestDatetime:
             "2017-09-13T04:18:12",  # no trailing Z
         ],
     )
-    def test_deserialize_datetim_invalid(self, datetime):
-        with pytest.raises(ValueError, match="Unknown datetime format"):
+    def test_deserialize_datetime_invalid(self, datetime):
+        with pytest.raises(ValueError, match=f"Unknown datetime format: {datetime}"):
             deserialize_datetime(datetime)
 
 
@@ -368,7 +368,7 @@ class TestStringSecrets:
     def test_secrets(self, requests, source):
         json = requests[source]
         request = CONVERTER.from_json(json, LifecycleRequest)
-        for string in ["%s" % request, str(request), repr(request)]:
+        for string in ["%s" % request, f"{request}", str(request), repr(request)]:  # noqa: UP031
             assert "auth_token" not in string and "authTokenValue" not in string
             assert "refresh_token" not in string and "refreshTokenValue" not in string
 

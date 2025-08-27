@@ -85,8 +85,8 @@ KEY_ID = "Test"
 ALGORITHM = "rsa-sha256"
 CLOCK_SKEW = 300
 KEYSERVER_URL = "https://key.smartthings.com"
-KEY_DOWNLOAD_URL = "%s/%s" % (KEYSERVER_URL, KEY_ID)
-SMARTAPP_URL = "https://%s%s" % (HOST, PATH)
+KEY_DOWNLOAD_URL = f"{KEYSERVER_URL}/{KEY_ID}"
+SMARTAPP_URL = f"https://{HOST}{PATH}"
 
 # public key used for the sample Joyent signatures
 PUBLIC_SIGNING_KEY = """
@@ -263,7 +263,7 @@ class TestSignatureVerifier:
         for header in ["AUTHORIZATION", "Authorization", "authorization"]:
             assert verifier.header(header) == DEFAULT_AUTHORIZATION
         for header in ["missing", "empty", "whitespace", "none"]:
-            with pytest.raises(SignatureError, match="Header not found: %s" % header):
+            with pytest.raises(SignatureError, match=f"Header not found: {header}"):
                 verifier.header(header)
 
     @patch("smartapp.signature.arrow_now")
@@ -371,7 +371,7 @@ class TestSignatureVerifier:
         now.return_value = DATE_OBJ
         retrieve.side_effect = HTTPError("failed to download")
         verifier = SignatureVerifier(context=context, config=config, definition=definition)
-        with pytest.raises(SignatureError, match=r"Failed to retrieve key \[%s\]" % KEY_ID) as e:
+        with pytest.raises(SignatureError, match=rf"Failed to retrieve key \[{KEY_ID}\]") as e:
             verifier.verify()
         assert e.value.correlation_id == context.correlation_id
 
@@ -385,7 +385,7 @@ class TestSignatureVerifier:
         now.return_value = DATE_OBJ
         retrieve.side_effect = HTTPError("failed to download")
         verifier = SignatureVerifier(context=context, config=config, definition=definition)
-        with pytest.raises(SignatureError, match=r"Failed to retrieve key \[%s\]" % KEY_ID) as e:
+        with pytest.raises(SignatureError, match=rf"Failed to retrieve key \[{KEY_ID}\]") as e:
             verifier.verify()
         assert e.value.correlation_id == context.correlation_id
 
@@ -495,7 +495,7 @@ class TestSignatureVerifier:
         context = build_context(headers)
         config = build_config()
         definition = build_definition()
-        with pytest.raises(SignatureError, match="Signature does not contain: %s" % attribute) as e:
+        with pytest.raises(SignatureError, match=f"Signature does not contain: {attribute}") as e:
             SignatureVerifier(context=context, config=config, definition=definition)
         assert e.value.correlation_id == context.correlation_id
 
