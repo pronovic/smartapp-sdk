@@ -129,9 +129,9 @@ class SmartAppDispatcher:
         except JSONDecodeError as e:
             raise BadRequestError("Invalid JSON", context.correlation_id) from e
         except ValueError as e:
-            raise BadRequestError("%s" % e, context.correlation_id) from e
+            raise BadRequestError(f"{e}", context.correlation_id) from e
         except Exception as e:
-            raise InternalError("%s" % e, context.correlation_id) from e
+            raise InternalError(f"{e}", context.correlation_id) from e
 
     def _handle_request(self, correlation_id: str | None, request: AbstractRequest) -> LifecycleResponse:  # noqa: PLR0911
         """Handle a lifecycle request, returning the appropriate response."""
