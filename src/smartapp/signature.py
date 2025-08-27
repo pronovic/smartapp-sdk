@@ -210,7 +210,7 @@ class SignatureVerifier:
         if self.config.clock_skew_sec is not None:
             skew = abs(arrow_now() - self.date)
             if skew.seconds > self.config.clock_skew_sec:
-                raise SignatureError("Request date is not current, skew of %d seconds" % skew.seconds, self.correlation_id)
+                raise SignatureError(f"Request date is not current, skew of {skew.seconds} seconds", self.correlation_id)
 
     def verify_signature(self) -> None:
         """Verify the RSA-SHA256 signature of the signing string."""
