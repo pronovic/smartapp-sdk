@@ -124,7 +124,7 @@ class SignatureVerifier:
 
     @request_target.default
     def _default_request_target(self) -> str:
-        return "%s %s" % (self.method.lower(), self.path)
+        return f"{self.method.lower()} {self.path}"
 
     @authorization.default
     def _default_authorization(self) -> str:
