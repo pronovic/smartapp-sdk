@@ -203,7 +203,7 @@ class SignatureVerifier:
         try:
             return retrieve_public_key(self.keyserver_url, self.key_id)  # will retry automatically
         except RequestException as e:
-            raise SignatureError("Failed to retrieve key [%s]" % self.key_id, self.correlation_id) from e
+            raise SignatureError(f"Failed to retrieve key [{self.key_id}]", self.correlation_id) from e
 
     def verify_date(self) -> None:
         """Verify the date, ensuring that it is current per skew configuration."""
