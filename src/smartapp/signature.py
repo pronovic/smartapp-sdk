@@ -67,7 +67,8 @@ _LOGGER = logging.getLogger(__name__)
 def retrieve_public_key(key_server_url: str, key_id: str) -> str:
     """Retrieve a public key, caching the result."""
     # Note that the key ID is assumed to be URL-safe per notes in the SmartThings spec, so we don't encode it
-    url = "%s/%s" % (key_server_url, key_id.lstrip("/"))
+    stripped = key_id.lstrip("/")
+    url = f"{key_server_url}/{stripped}"
     response = requests.get(url, timeout=5.0)  # excessively long timeout, just in case
     response.raise_for_status()
     return response.text
