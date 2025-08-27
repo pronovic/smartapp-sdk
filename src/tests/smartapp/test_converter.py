@@ -150,8 +150,8 @@ class TestDatetime:
             "2017-09-13T04:18:12",  # no trailing Z
         ],
     )
-    def test_deserialize_datetim_invalid(self, datetime):
-        with pytest.raises(ValueError, match="Unknown datetime format"):
+    def test_deserialize_datetime_invalid(self, datetime):
+        with pytest.raises(ValueError, match=f"Unknown datetime format: {datetime}"):
             deserialize_datetime(datetime)
 
 
