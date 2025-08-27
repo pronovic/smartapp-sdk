@@ -186,9 +186,9 @@ class SignatureVerifier:
         components = []
         for name in self.signing_headers:
             if name == "(request-target)":
-                components.append("(request-target): %s" % self.request_target)
+                components.append(f"(request-target): {self.request_target}")
             else:
-                components.append("%s: %s" % (name.lower(), self.header(name)))
+                components.append(f"{name.lower()}: {self.header(name)}")
         return "\n".join(components).rstrip("\n")
 
     def header(self, name: str) -> str:
