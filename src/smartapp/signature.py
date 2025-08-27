@@ -130,6 +130,7 @@ class SignatureVerifier:
     def _default_authorization(self) -> str:
         return self.header("authorization")
 
+    # noinspection PyCallingNonCallable
     @date.default
     def _default_date(self) -> Arrow:
         return arrow_get(self.header("date")[5:], DATE_FORMAT)  # remove the day ("Thu, ") from front

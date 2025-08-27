@@ -375,6 +375,7 @@ class Event:
     weather_data: dict[str, Any] | None = None
     air_quality_data: dict[str, Any] | None = None
 
+    # noinspection PyUnreachableCode
     def for_type(self, event_type: EventType) -> dict[str, Any] | None:  # noqa: PLR0911
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
