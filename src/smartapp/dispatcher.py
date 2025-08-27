@@ -76,7 +76,7 @@ class StaticConfigManager(SmartAppConfigManager):
                 sections=page.sections,
             )
         except IndexError as e:
-            raise ValueError("Page not found: %d" % page_id) from e
+            raise ValueError(f"Page not found: {page_id}") from e
 
 
 @frozen(kw_only=True)
