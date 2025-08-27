@@ -164,9 +164,6 @@ ignore = [
   "SIM102",     # allow nested `if` clauses; ruff suggestions often make the code less legible
   "SIM117",     # allow nested `with` clauses; ruff suggestions often make the code less legible
   "TRY003",     # allow long messages in exceptions; this is often a false-positive that has little benefit
-
-  # Exclusions of rule categories and specific rules, customized for this repository
-  "UP031",      # allow format-specifiers in addition to modern f-strings
 ]
 
 [tool.ruff.lint.per-file-ignores]
