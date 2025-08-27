@@ -195,7 +195,7 @@ class SignatureVerifier:
         """Return the named header case-insensitively, raising SignatureError if it is not found or is empty"""
         value = self.context.header(name)
         if not value:
-            raise SignatureError("Header not found: %s" % name, self.correlation_id)
+            raise SignatureError(f"Header not found: {name}", self.correlation_id)
         return value
 
     def retrieve_public_key(self) -> str:
