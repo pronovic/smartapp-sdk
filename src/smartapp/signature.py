@@ -140,12 +140,12 @@ class SignatureVerifier:
         def attribute(name: str, default: str | None = None) -> str:
             if not self.authorization.startswith("Signature "):
                 raise SignatureError("Authorization header is not a signature", self.correlation_id)
-            pattern = r"(%s=\")([^\"]+?)(\")" % name
+            pattern = rf"({name}=\")([^\"]+?)(\")"
             match = re.search(pattern=pattern, string=self.authorization)
             if not match:
                 if default:
                     return default
-                raise SignatureError("Signature does not contain: %s" % name, self.correlation_id)
+                raise SignatureError(f"Signature does not contain: {name}", self.correlation_id)
             return match.group(2)
 
         return {
