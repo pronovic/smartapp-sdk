@@ -32,7 +32,7 @@ GITHUB_REPO = "smartapp-sdk"
 _METADATA = metadata("smartapp-sdk")
 PROJECT = _METADATA["Name"]
 SUMMARY = _METADATA["Summary"]
-AUTHOR = _METADATA["Author"]
+AUTHOR = _METADATA["Author-email"]
 VERSION = _METADATA["Version"]
 
 # Dump metadata so it's obvious in the build log
