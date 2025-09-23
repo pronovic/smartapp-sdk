@@ -24,12 +24,11 @@ Classes that are part of the SmartApp interface.
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Mapping
-from enum import Enum
-from typing import Any
+from enum import Enum, StrEnum
+from typing import Any, assert_never
 
 from arrow import Arrow
 from attrs import field, frozen
-from typing_extensions import assert_never
 
 AUTHORIZATION_HEADER = "authorization"
 CORRELATION_ID_HEADER = "x-st-correlation"
@@ -111,7 +110,7 @@ class SubscriptionType(Enum):
     SCENE_LIFECYCLE = "SCENE_LIFECYCLE"
 
 
-class BooleanValue(str, Enum):
+class BooleanValue(StrEnum):
     """String boolean values."""
 
     TRUE = "true"
