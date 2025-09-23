@@ -6,7 +6,7 @@ Release v\ |version|
 .. image:: https://img.shields.io/pypi/v/smartapp-sdk.svg
     :target: https://pypi.org/project/smartapp-sdk/
 
-.. image:: https://img.shields.io/pypi/l/smartapp-sdk.svg
+.. image:: https://img.shields.io/github/license/pronovic/smartapp-sdk
     :target: https://github.com/pronovic/smartapp-sdk/blob/main/LICENSE
 
 .. image:: https://img.shields.io/pypi/wheel/smartapp-sdk.svg
