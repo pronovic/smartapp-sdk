@@ -11,7 +11,7 @@ exclude = [ "docs/_build" ]
 
 [project]
 name = "smartapp-sdk"
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 description = "Framework to build a webhook-based SmartThings SmartApp"
 authors = [ { name="Kenneth J. Pronovici", email="pronovic@ieee.org" } ]
 license = "Apache-2.0"
@@ -20,10 +20,10 @@ readme = "PyPI.md"
 dynamic = [ "version" ]
 classifiers = [
    "Programming Language :: Python :: 3",
-   "Programming Language :: Python :: 3.10",
    "Programming Language :: Python :: 3.11",
    "Programming Language :: Python :: 3.12",
    "Programming Language :: Python :: 3.13",
+   "Programming Language :: Python :: 3.14",
    "Operating System :: OS Independent",
    "Environment :: Console",
    "Intended Audience :: Developers",
@@ -97,6 +97,7 @@ precision = 1
 [tool.pytest.ini_options]
 filterwarnings = [
     'error',  # turn all Python warnings into test failures, so they're hard to miss
+    "ignore:'_UnionGenericAlias' is deprecated and slated for removal in Python 3.17:DeprecationWarning", # SmartAppConverter
 ]
 
 [tool.ruff]
