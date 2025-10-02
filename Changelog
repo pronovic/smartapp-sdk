@@ -1,4 +1,4 @@
-Version 0.9.1     unreleased
+Version 0.9.1     02 Oct 2025
 
 	* Fix broken URLs to use correct hostname `developer.smartthings.com`.
 
