@@ -6,8 +6,8 @@ Classes that are part of the SmartApp interface.
 
 # For lifecycle class definitions, see:
 #
-#   https://developer-preview.smartthings.com/docs/connected-services/lifecycles/
-#   https://developer-preview.smartthings.com/docs/connected-services/configuration/
+#   https://developer.smartthings.com/docs/connected-services/lifecycles/
+#   https://developer.smartthings.com/docs/connected-services/configuration/
 #
 # There is not any public documentation about event structure, only the Javascript
 # reference implementation here:
@@ -17,10 +17,11 @@ Classes that are part of the SmartApp interface.
 # However, as of this writitng, even that reference implementation is not fully up-to-date
 # with the JSON that is being returned for some events I have examined in my testing.
 #
-# I have access to private documentation that shows all of the attributes.  However, that
-# documentation doesn't always make it clear which attributes will always be included and
-# which are optional.  As compromise, I have decided to maintain the actual events as
-# dicts rather than true objects.  See further discussion below by the Event class.
+# I previously had some access to private documentation showing all of the attributes.
+# However, that documentation did not always make it clear which attributes would always
+# be included and which were optional.  As compromise, I have decided to maintain the
+# actual events as dicts rather than true objects.  See further discussion below by
+# the Event class.
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Mapping

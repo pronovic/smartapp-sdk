@@ -5,7 +5,7 @@ Verify HTTP signatures on SmartApp lifecycle event requests.
 """
 
 # This implements HTTP signature verification for the SmartApp lifecycle events.
-# See: https://developer-preview.smartthings.com/docs/connected-services/hosting/webhook-smartapp/
+# See: https://developer.smartthings.com/docs/connected-services/hosting/webhook-smartapp/
 #
 # SmartThings uses Joyent's HTTP signature scheme to sign all lifecycle events.
 # See: https://github.com/TritonDataCenter/node-http-signature/blob/master/http_signing.md
