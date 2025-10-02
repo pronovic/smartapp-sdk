@@ -24,13 +24,11 @@ Release v\ |version|
 .. image:: https://coveralls.io/repos/github/pronovic/smartapp-sdk/badge.svg?branch=main
     :target: https://coveralls.io/github/pronovic/smartapp-sdk?branch=main
 
-smartapp-sdk is a Python library to build a `webhook-based SmartApp <https://developer-preview.smartthings.com/docs/connected-servic
-es/smartapp-basics/>`_ for the `SmartThings platform <https://www.smartthings.com/>`_.
+smartapp-sdk is a Python library to build a `webhook-based SmartApp <https://developer.smartthings.com/docs/connected-services/smartapp-basics/>`_ for the `SmartThings platform <https://www.smartthings.com/>`_.
 
 The SDK is intended to be easy to use no matter how you choose to structure your code, whether that's a traditional Python webapp (such as FastAPI on Uvicorn) or a serverless application (such as AWS Lambda).
 
-The SDK handles all the mechanics of the `webhook lifecycle interface <https://developer-preview.smartthings.com/docs/connected-serv
-ices/lifecycles/>`_ on your behalf.  You just implement a single endpoint to accept the SmartApp webhook requests, and a single callba ck class where you define specialized behavior for the webhook events.  A clean `attrs <https://www.attrs.org/en/stable/>`_ object interface is exposed for use by your callback.
+The SDK handles all the mechanics of the `SmartThings webhook lifecycle interface <https://developer.smartthings.com/docs/connected-services/lifecycles/>`_ on your behalf.  You just implement a single endpoint to accept the SmartApp webhook requests, and a single callback class where you define specialized behavior for the webhook events.  A clean `attrs <https://www.attrs.org/en/stable/>`_ object interface is exposed for use by your callback. The attrs interface has been designed to match the JSON interface documented by SmartThings.  If you have questions about the shape of the data or the way the lifecyle interface works, the SmartThings documentation is your best source of information.
 
 *Note: As of January 2025, I have migrated my home automation infrastructure from SmartThings to Home Assistant, so I no longer actively use this software. I will continue to maintain the library, keeping dependencies up-to-date and supporting new Python versions, etc.  Time permitting, I will also continue to accept GitHub issues for bug fixes and enhancement requests.  If you submit an issue, please keep in mind that I no longer have a SmartThings environment to test with, so I will expect you to coordinate with me on testing before I release any changes.*
 
@@ -209,7 +207,7 @@ want some exception handlers, etc.)::
 
 Then, make sure your web application is exposed on the public internet via
 https, and you are ready to follow the remaining setup steps in the
-`SmartThings documentation <https://developer-preview.smartthings.com/docs/connected-services/hosting/webhook-smartapp/>`_.
+`SmartThings documentation <https://developer.smartthings.com/docs/connected-services/hosting/webhook-smartapp/>`_.
 
 
 More Implementation Notes

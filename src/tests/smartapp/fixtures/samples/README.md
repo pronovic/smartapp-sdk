@@ -1,6 +1,7 @@
 These sample JSON files were taken
-from the [SmartApp Lifecycles](https://developer-preview.smartthings.com/docs/connected-services/lifecycles/) page
-and the [Configuration](https://developer-preview.smartthings.com/docs/connected-services/configuration/) page.
+from the [SmartApp Lifecycles](https://developer.smartthings.com/docs/connected-services/lifecycles/) page
+and the [Configuration](https://developer.smartthings.com/docs/connected-services/configuration/) page in
+June of 2022.
 
 Nearly all of these samples had to be modified slightly, because the sample JSON is not actually valid.
 For instance, there are illegal and/or trailing commas. I fixed the syntax errors, and in one case added a `settings`
@@ -11,3 +12,12 @@ have.
 Other than that, I have left these requests as-is. The samples amount to interface documentation, since there
 is not actually a formal interface spec. On the plus side, the samples that we have for events from this source
 do actually line up with event interface, which I derived by looking at the code.
+
+It is entirely possible that the documentation has changed in some subtle way between June of 2022
+and when you are reading this, which causes one or more of the examples to be out-of-date.
+SmartThings does not appear to version this documentation.
+
+> **Note:** The original URLs used `developer-preview.smartthings.com`.  However, in October of
+> 2025, I realized that those URLs were broken, so I switched to `developer.smartthings.com`
+> instead.  The new documentation appears to be equivalent to the original documentation from 2022,
+> but there's no practical way to be certain.
