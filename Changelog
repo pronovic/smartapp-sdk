@@ -6,6 +6,7 @@ Version 0.9.2     unreleased
 	* Fix Sphinx autoapi to generate docs for source, not tests.
 	* Add support for Visual Studio Code as an IDE.
 	* Use pytest-cov for test coverage, for more consistency.
+	* Fix pytest-testdox output in GHA Windows runner.
 
 Version 0.9.1     02 Oct 2025
 
