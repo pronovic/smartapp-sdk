@@ -133,7 +133,7 @@ class SmartAppDispatcher:
         except Exception as e:
             raise InternalError(f"{e}", context.correlation_id) from e
 
-    def _handle_request(self, correlation_id: str | None, request: AbstractRequest) -> LifecycleResponse:  # noqa: PLR0911
+    def _handle_request(self, correlation_id: str | None, request: AbstractRequest) -> LifecycleResponse:  # ruff: ignore[too-many-return-statements]
         """Handle a lifecycle request, returning the appropriate response."""
         if isinstance(request, ConfirmationRequest):
             self.event_handler.handle_confirmation(correlation_id, request)
