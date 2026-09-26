@@ -101,18 +101,18 @@ class StandardConverter(GenConverter):
         """Deserialize an object from YAML."""
         return self.structure(yaml.safe_load(data), cls)
 
-    def _to_camel_case(self, name: str) -> str:  # noqa: PLR6301
+    def _to_camel_case(self, name: str) -> str:  # ruff: ignore[no-self-use]
         """Convert a snake_case attribute name to camelCase instead."""
         components = name.split("_")
         return components[0] + "".join(x.title() for x in components[1:])
 
     # I can't figure out any way to declare this so MyPy is happy, but it does function properly
-    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # noqa: ANN202
+    def _unstructure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # ruff: ignore[missing-return-type-private-function]
         """Automatic snake_case to camelCase conversion when serializing any class."""
         return make_dict_unstructure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore[arg-type]
 
     # I can't figure out any way to declare this so MyPy is happy, but it does function properly
-    def _structure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # noqa: ANN202
+    def _structure_camel_case(self, cls: type[T]):  # type: ignore[no-untyped-def] # ruff: ignore[missing-return-type-private-function]
         """Automatic snake_case to camelCase conversion when deserializing any class."""
         return make_dict_structure_fn(cls, self, **{a.name: override(rename=self._to_camel_case(a.name)) for a in fields(cls)})  # type: ignore[arg-type]
 
@@ -131,11 +131,11 @@ class SmartAppConverter(StandardConverter):
         self.register_structure_hook(ConfigSetting, self._structure_config_setting)
         self.register_structure_hook(LifecycleRequest, self._structure_request)
 
-    def _unstructure_datetime(self, datetime: Arrow) -> str:  # noqa: PLR6301
+    def _unstructure_datetime(self, datetime: Arrow) -> str:  # ruff: ignore[no-self-use]
         """Serialize an Arrow datetime to a string."""
         return serialize_datetime(datetime)
 
-    def _structure_datetime(self, datetime: str, _: type[Arrow]) -> Arrow:  # noqa: PLR6301
+    def _structure_datetime(self, datetime: str, _: type[Arrow]) -> Arrow:  # ruff: ignore[no-self-use]
         """Deserialize a string into an Arrow datetime."""
         return deserialize_datetime(datetime)
 

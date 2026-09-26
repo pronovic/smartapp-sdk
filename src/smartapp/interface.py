@@ -376,7 +376,7 @@ class Event:
     air_quality_data: dict[str, Any] | None = None
 
     # noinspection PyUnreachableCode
-    def for_type(self, event_type: EventType) -> dict[str, Any] | None:  # noqa: PLR0911
+    def for_type(self, event_type: EventType) -> dict[str, Any] | None:  # ruff: ignore[too-many-return-statements]
         """Return the attribute associated with an event type."""
         if event_type == EventType.DEVICE_COMMANDS_EVENT:
             return self.device_commands_event
@@ -1043,9 +1043,9 @@ class SmartAppConfigManager(ABC):
     def handle_page(self, request: ConfigurationRequest, definition: SmartAppDefinition, page_id: int) -> ConfigurationPageResponse:
         """Handle a CONFIGURATION PAGE lifecycle request."""
 
-    def build_init_response(  # noqa: PLR6301
+    def build_init_response(  # ruff: ignore[no-self-use]
         self,
-        id: str,  # noqa: A002
+        id: str,  # ruff: ignore[builtin-argument-shadowing]
         name: str,
         description: str,
         permissions: list[str],
@@ -1064,13 +1064,13 @@ class SmartAppConfigManager(ABC):
             )
         )
 
-    def build_page_response(  # noqa: PLR0913,PLR0917,PLR6301
+    def build_page_response(  # ruff: ignore[too-many-arguments, too-many-positional-arguments, no-self-use]
         self,
         page_id: int,
         name: str,
         previous_page_id: int | None,
         next_page_id: int | None,
-        complete: bool,  # noqa: FBT001
+        complete: bool,  # ruff: ignore[boolean-type-hint-positional-argument]
         sections: list[ConfigSection],
     ) -> ConfigurationPageResponse:
         """Build a ConfigurationPageResponse."""

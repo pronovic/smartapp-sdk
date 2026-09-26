@@ -368,7 +368,7 @@ class TestStringSecrets:
     def test_secrets(self, requests, source):
         json = requests[source]
         request = CONVERTER.from_json(json, LifecycleRequest)
-        for string in ["%s" % request, f"{request}", str(request), repr(request)]:  # noqa: UP031
+        for string in ["%s" % request, f"{request}", str(request), repr(request)]:  # ruff: ignore[printf-string-formatting]
             assert "auth_token" not in string and "authTokenValue" not in string
             assert "refresh_token" not in string and "refreshTokenValue" not in string
 
@@ -613,8 +613,8 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             install_data=InstallData(
-                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
-                refresh_token="refreshTokenValue",  # noqa: S106 # this is not a real secret
+                auth_token="authTokenValue",  # ruff: ignore[hardcoded-password-func-arg] # this is not a real secret
+                refresh_token="refreshTokenValue",  # ruff: ignore[hardcoded-password-func-arg] # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -667,8 +667,8 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             update_data=UpdateData(
-                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
-                refresh_token="refreshTokenValue",  # noqa: S106 # this is not a real secret
+                auth_token="authTokenValue",  # ruff: ignore[hardcoded-password-func-arg] # this is not a real secret
+                refresh_token="refreshTokenValue",  # ruff: ignore[hardcoded-password-func-arg] # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -812,7 +812,7 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             event_data=EventData(
-                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
+                auth_token="authTokenValue",  # ruff: ignore[hardcoded-password-func-arg] # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",
@@ -881,7 +881,7 @@ class TestConvertRequests:
             locale="en",
             version="1.0.0",
             event_data=EventData(
-                auth_token="authTokenValue",  # noqa: S106 # this is not a real secret
+                auth_token="authTokenValue",  # ruff: ignore[hardcoded-password-func-arg] # this is not a real secret
                 installed_app=InstalledApp(
                     installed_app_id="d692699d-e7a6-400d-a0b7-d5be96e7a564",
                     location_id="e675a3d9-2499-406c-86dc-8a492a886494",

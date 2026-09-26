@@ -1,5 +1,5 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
-# ruff: noqa: ERA001
+# ruff: file-ignore[commented-out-code]
 from unittest.mock import patch
 
 import pytest
