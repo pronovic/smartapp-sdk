@@ -1,4 +1,5 @@
 # vim: set ft=python ts=4 sw=4 expandtab:
+import math
 from pathlib import Path
 
 import pytest
@@ -119,7 +120,7 @@ class TestInstallRequest:
         assert request.as_bool("retrieve-weather-enabled") is True
         assert request.as_str("retrieve-weather-frequency") == "15"
         assert request.as_int("retrieve-weather-frequency") == 15
-        assert request.as_float("retrieve-weather-frequency") == 15.0
+        assert math.isclose(request.as_float("retrieve-weather-frequency"), 15.0, abs_tol=0)
         assert request.as_devices("humidity-devices") == [
             DeviceValue(device_id="3ac74985-XXXX-XXXX-XXXX-ea9623be6a7b", component_id="main"),
             DeviceValue(device_id="0ff440ec-XXXX-XXXX-XXXX-a39e189b8cc9", component_id="main"),
@@ -133,7 +134,7 @@ class TestUpdateRequest:
         assert request.as_str("minutes") == "5"
         assert request.as_bool("minutes") is True
         assert request.as_int("minutes") == 5
-        assert request.as_float("minutes") == 5.0
+        assert math.isclose(request.as_float("minutes"), 5.0, abs_tol=0)
         assert request.as_devices("contactSensor") == [
             DeviceValue(device_id="e457978e-5e37-43e6-979d-18112e12c961", component_id="main"),
         ]
