@@ -112,7 +112,7 @@ class SmartAppDispatcher:
         Raises:
             SmartAppError: If processing fails
         """
-        try:
+        try:  # ruff: ignore[too-many-statements-in-try-clause]
             if self.config.log_json:  # put this right at the top, so we've got an opportunity to debug unexpected data
                 _LOGGER.debug("[%s] Raw JSON: \n%s", context.correlation_id, context.body)  # note: may contain secrets!
             request: LifecycleRequest = CONVERTER.from_json(context.body, LifecycleRequest)  # type: ignore[arg-type]
