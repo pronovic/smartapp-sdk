@@ -21,3 +21,5 @@ The SDK handles all the mechanics of the [SmartThings webhook lifecycle interfac
 SDK documentation for this library is found at [smartapp-sdk.readthedocs.io](https://smartapp-sdk.readthedocs.io/en/stable/).  Look there for installation instructions, the class model documentation, and example code.
 
 Developer documentation for the smartapp-sdk repo is found in [DEVELOPER.md](DEVELOPER.md).  See that file for notes about how the code is structured, how to set up a development environment, etc.
+
+**Statement on free-threading:** This code is single-threaded by design. Starting with Python 3.14, the matrix build CI workflow in GitHub Actions ensures that the test suite passes for both standard and free-threaded interpreters.
